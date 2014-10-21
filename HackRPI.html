@@ -1,13 +1,75 @@
 <head>
+  <meta charset="utf-8">
   <title>HackRPI</title>
 </head>
 
 <body>
-  {{> hello}}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        {{> hello}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        {{> commits}}
+      </div>
+    </div>
+
+    <div class="row">
+      {{> repos }}
+    </div>
+
+  </div>
 </body>
 
 <template name="hello">
   <h1>Hello World!</h1>
   {{greeting}}
-  <input type="button" value="Click" />
+  <input type="button" value="Check for new commits" />
+</template>
+
+
+<template name="commits">
+  Commit Messages From Monitored Repos:
+  <ul>
+    {{#each message}}
+      <li>{{committer_handle}}: "{{text}}"</li>
+    {{/each}}
+  </ul>
+</template>
+
+<template name="repos">
+  Enter a new Repository:
+  <form class="form-horizontal" role="form">
+    <div class="form-group">
+      <label for="inputUsername" class="col-sm-2 control label">
+        Username
+      </label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="inputUsername" placeholder="Username">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputRepo" class="col-sm-2 control label">
+        Repo
+      </label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="inputRepo" placeholder="Repo">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button id="addRepoBtn" type="button" class="btn btn-default">Submit</button>
+      </div>
+    </div>
+  </form>
+
+  Repo List:
+  <ul>
+    {{#each names}}
+      <li>Owner: {{owner}}; Name: {{name}}</li>
+    {{/each}}
+  </ul>
 </template>
