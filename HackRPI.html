@@ -4,21 +4,31 @@
 </head>
 
 <body>
+
   <div class="container">
-    <div class="row">
-      <div class="col-md-12">
+
+    <div class="row-fluid">
+      <div class="span12">
         {{> hello}}
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
+    <div class="row-fluid">
+      <div class="span12">
+        Commit Messages From Monitored Repos:
+        <div class="row-fluid">
+          <div class="span2">Timestamp</div>
+          <div class="span2">Committer</div>
+          <div class="span8">Commit Message</div>
+        </div>
         {{> commits}}
       </div>
     </div>
 
-    <div class="row">
-      {{> repos }}
+    <div class="row-fluid">
+      <div class="span12">
+        {{> repos }}
+      </div>
     </div>
 
   </div>
@@ -32,37 +42,30 @@
 
 
 <template name="commits">
-  Commit Messages From Monitored Repos:
-  <ul>
-    {{#each message}}
-      <li>{{committer_handle}}: "{{text}}"</li>
-    {{/each}}
-  </ul>
+
+  {{#each message}}
+    <div class="row-fluid">
+      <div class="span2">{{date}}</div>
+      <div class="span2">{{committer_handle}}</div>
+      <div class="span8">{{text}}</div>
+    </div>
+  {{/each}}
+
 </template>
 
 <template name="repos">
   Enter a new Repository:
-  <form class="form-horizontal" role="form">
+  <form role="form">
     <div class="form-group">
-      <label for="inputUsername" class="col-sm-2 control label">
-        Username
-      </label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputUsername" placeholder="Username">
-      </div>
+      <label for="inputUsername">Username</label>
+      <input type="text" class="form-control" id="inputUsername" placeholder="Username">
     </div>
     <div class="form-group">
-      <label for="inputRepo" class="col-sm-2 control label">
-        Repo
-      </label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="inputRepo" placeholder="Repo">
-      </div>
+      <label for="inputRepo">Repo</label>
+      <input type="text" class="form-control" id="inputRepo" placeholder="Repo">
     </div>
     <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button id="addRepoBtn" type="button" class="btn btn-default">Submit</button>
-      </div>
+      <button id="addRepoBtn" type="button" class="btn btn-default">Submit</button>
     </div>
   </form>
 

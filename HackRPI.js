@@ -18,7 +18,8 @@ if (Meteor.isClient) {
   });
 
   Template.commits.message = function() {
-    return CommitMessages.find();
+    // return only the ten most recent commits
+    return CommitMessages.find({}, {sort: {date:-1}, limit:10});
   };
 
   Template.repos.events({
@@ -109,10 +110,12 @@ if (Meteor.isServer) {
           // if this sha doesn't already exist in the database then it is new
           else {
             // capture and store all of the data
+            // sometimes the 'committer' field is null... not sure why
+            //  but we have to check everytime if it is
             CommitMessages.insert({
               sha : commit_sha,
               text : data[i]['commit']['message'],
-              date : data[i]['commit']['committer']['email'],
+              date : data[i]['commit']['committer']['date'],
               committer_handle : data[i]['committer'] ? data[i]['committer']['login'] : data[i]['commit']['committer']['name'],
               committer_avatar : data[i]['committer'] ? data[i]['committer']['avatar_url']: null,
               committer_real : data[i]['commit']['committer']['name'],
