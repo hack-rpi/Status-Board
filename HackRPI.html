@@ -9,24 +9,26 @@
 
     <div class="row-fluid">
       <div class="span12">
-        {{> hello}}
+        <!-- {{> hello}} -->
       </div>
     </div>
 
     <div class="row-fluid">
-      <div class="span12">
-        Commit Messages From Monitored Repos:
-        <div class="row-fluid">
-          <div class="span2">Timestamp</div>
-          <div class="span2">Committer</div>
-          <div class="span8">Commit Message</div>
-        </div>
-        {{> commits}}
+      <div class="span9">
+        <h4>Commit Messages From Monitored Repos:</h4>
+        <table class="table table-striped commit-table">
+          <tr>
+            <th>Date</th>
+            <th>Committer</th>
+            <th>Commit</th>
+          </tr>
+          {{> commits }}
+        </table>
       </div>
     </div>
 
     <div class="row-fluid">
-      <div class="span12">
+      <div class="span4">
         {{> repos }}
       </div>
     </div>
@@ -44,17 +46,17 @@
 <template name="commits">
 
   {{#each message}}
-    <div class="row-fluid">
-      <div class="span2">{{date}}</div>
-      <div class="span2">{{committer_handle}}</div>
-      <div class="span8">{{text}}</div>
-    </div>
+    <tr>
+      <td>{{date}}</td>
+      <td>{{committer_handle}}</td>
+      <td>{{text}}</td>
+    </tr>
   {{/each}}
 
 </template>
 
 <template name="repos">
-  Enter a new Repository:
+  <h4>Enter a new Repository:</h4>
   <form role="form">
     <div class="form-group">
       <label for="inputUsername">Username</label>
@@ -69,10 +71,17 @@
     </div>
   </form>
 
-  Repo List:
-  <ul>
+  <h4>Repo List:</h4>
+  <table class="table table-striped">
+    <tr>
+      <th>Owner</th>
+      <th>Name</th>
+    </tr>
     {{#each names}}
-      <li>Owner: {{owner}}; Name: {{name}}</li>
+      <tr>
+        <td> {{owner}} </td>
+        <td> {{name}} </td>
+      </tr>
     {{/each}}
-  </ul>
+  </table>
 </template>

@@ -84,7 +84,6 @@ if (Meteor.isServer) {
         });
       }
       catch(err) {
-        console.log("github api failed");
         return false;
       }
     },
