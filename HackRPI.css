@@ -1,1 +1,4 @@
 /* CSS declarations go here */
+.commit-table:nth-child(odd) {
+  /*background: #d0d0d0;*/
+}
