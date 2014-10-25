@@ -8,4 +8,6 @@ autopublish
 insecure
 http
 jquery
-bootstrap
+mizzao:bootstrap-3
+steeve:jquery-qrcode
+

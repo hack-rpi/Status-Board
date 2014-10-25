@@ -5,83 +5,70 @@
 
 <body>
 
-  <div class="container">
+  {{> header}}
 
-    <div class="row-fluid">
-      <div class="span12">
-        <!-- {{> hello}} -->
-      </div>
-    </div>
-
-    <div class="row-fluid">
-      <div class="span9">
+  <div class="container viewport viewport-main">
+    <a name="top"></a>
+    <div class="row">
+      <div class="col-md-9">
         <h4>Commit Messages From Monitored Repos:</h4>
-        <table class="table table-striped commit-table">
-          <tr>
-            <th>Date</th>
-            <th>Committer</th>
-            <th>Commit</th>
-          </tr>
-          {{> commits }}
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <th>Date</th>
+              <th>Gravatar</th>
+              <th>Committer</th>
+              <th>Repo</th>
+              <th>Commit</th>
+            </tr>
+            {{> commits }}
+          </tbody>
         </table>
       </div>
-    </div>
-
-    <div class="row-fluid">
-      <div class="span4">
-        {{> repos }}
+      <div class="col-md-3">
+        <div class="row">
+          <div class="col-md-12">
+            {{> repoqr }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <!-- goHackRPI Twitter Timeline -->
+            <a class="twitter-timeline"
+              href="https://twitter.com/goHackRPI"
+              data-widget-id="523304485175558145">
+              Tweets by @goHackRPI
+            </a>
+            <script>
+              !function(d,s,id){
+                var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+                if(!d.getElementById(id)){
+                  js=d.createElement(s);
+                  js.id=id;
+                  js.src=p+"://platform.twitter.com/widgets.js";
+                  fjs.parentNode.insertBefore(js,fjs);
+                }
+              }(document,"script","twitter-wjs");
+            </script>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
+
+
+  <div class="container viewport">
+    <a name="repos"></a>
+    {{> repos }}
+  </div>
+
+
+  <div class="container viewport">
+    <a name="commits"></a>
+    {{> allCommits }}
+  </div>
+
+
+  {{> footer}}
+
 </body>
-
-<template name="hello">
-  <h1>Hello World!</h1>
-  {{greeting}}
-  <input type="button" value="Check for new commits" />
-</template>
-
-
-<template name="commits">
-
-  {{#each message}}
-    <tr>
-      <td>{{date}}</td>
-      <td>{{committer_handle}}</td>
-      <td>{{text}}</td>
-    </tr>
-  {{/each}}
-
-</template>
-
-<template name="repos">
-  <h4>Enter a new Repository:</h4>
-  <form role="form">
-    <div class="form-group">
-      <label for="inputUsername">Username</label>
-      <input type="text" class="form-control" id="inputUsername" placeholder="Username">
-    </div>
-    <div class="form-group">
-      <label for="inputRepo">Repo</label>
-      <input type="text" class="form-control" id="inputRepo" placeholder="Repo">
-    </div>
-    <div class="form-group">
-      <button id="addRepoBtn" type="button" class="btn btn-default">Submit</button>
-    </div>
-  </form>
-
-  <h4>Repo List:</h4>
-  <table class="table table-striped">
-    <tr>
-      <th>Owner</th>
-      <th>Name</th>
-    </tr>
-    {{#each names}}
-      <tr>
-        <td> {{owner}} </td>
-        <td> {{name}} </td>
-      </tr>
-    {{/each}}
-  </table>
-</template>
