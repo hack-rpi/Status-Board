@@ -23,6 +23,6 @@
   text-align: center;
 }
 
-.commitTable {
-  height: 650px;
+.commitTableContainer {
+  min-height: 600px;
 }

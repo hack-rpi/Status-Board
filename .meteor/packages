@@ -10,4 +10,7 @@ http
 jquery
 mizzao:bootstrap-3
 steeve:jquery-qrcode
+accounts-ui
+accounts-password
+alanning:roles
 
