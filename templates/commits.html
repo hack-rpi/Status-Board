@@ -19,38 +19,46 @@
 
 <template name="allCommits">
 
-  <h4>All Commits</h4>
-  <div class="commitTableContainer">
-    <table class="table table-striped commitTable">
-      <tbody>
-        <tr>
-          <th>DateTime</th>
-          <th>Gravatar</th>
-          <th>Committer</th>
-          <th>Repo</th>
-          <th>Commit</th>
-        </tr>
-        {{#each message}}
-          <tr>
-            <td>{{fdate}}</td>
-            <td class="center-data"><img class="gravatar" src="{{committer_avatar}}"/></td>
-            <td>{{committer_handle}}</td>
-            <td>{{repo}}</td>
-            <td>{{text}}</td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
-  <div class="row">
-    <div class="col-md-5" style="text-align:right;">
-      <button id="commitPrev" class="btn btn-default">Prev</button>
-    </div>
-    <div class="col-md-2" style="text-align:center;">
-      Total: {{total}}
-    </div>
-    <div class="col-md-5">
-      <button id="commitNext" class="btn btn-default">Next</button>
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-12">
+        <h4>All Commits</h4>
+        <div class="commitTableContainer">
+          <table class="table table-striped commitTable">
+            <tbody>
+              <tr>
+                <th>DateTime</th>
+                <th>Gravatar</th>
+                <th>Committer</th>
+                <th>Repo</th>
+                <th>Commit</th>
+              </tr>
+              {{#each message}}
+                <tr>
+                  <td>{{fdate}}</td>
+                  <td class="center-data"><img class="gravatar" src="{{committer_avatar}}"/></td>
+                  <td>{{committer_handle}}</td>
+                  <td>{{repo}}</td>
+                  <td>{{text}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-md-5" style="text-align:right;">
+            <button id="commitPrev" class="btn btn-default">Prev</button>
+          </div>
+          <div class="col-md-2" style="text-align:center;">
+            Total: {{total}}
+          </div>
+          <div class="col-md-5">
+            <button id="commitNext" class="btn btn-default">Next</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

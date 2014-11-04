@@ -1,0 +1,31 @@
+<template name="manage">
+
+  {{#if isInRole 'admin'}}
+
+  <div class="container">
+
+    <div class="row">
+      <ul class="list-inline">
+        <li class="btn btn-link">Flag Commits</li>
+        <li class="btn btn-link">Announcements</li>
+        <li class="btn btn-link">Repositories</li>
+        <li class="btn btn-link">Users</li>
+      </ul>
+    </div>
+
+  </div>
+
+  {{else}}
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Sorry, you are not authorized to view this page!</h3>
+        If you have credentials, please sign in to view this page.
+      </div>
+    </div>
+  </div>
+
+  {{/if}}
+
+</template>
