@@ -18,6 +18,7 @@ if (Meteor.isClient) {
 
   Template.commits.message = function() {
     // return only the ten most recent commits
+    Meteor.subscribe("CommitMessages");
     return CommitMessages.find({}, {sort: {date:-1}, limit:10});
   };
 
@@ -36,6 +37,8 @@ if (Meteor.isClient) {
   }
 
   Template.allCommits.rendered = function() {
+    // subscribe to the DB
+    Meteor.subscribe("CommitMessages");
     // advance on the commits page
     $("#commitNext").click(function() {
       var page = Session.get("commitPage");
@@ -56,6 +59,7 @@ if (Meteor.isClient) {
   };
 
   Template.repos.rendered = function() {
+    Meteor.subscribe("RepositoryList");
     // advance on the repo list
     $("#repoNext").click(function() {
       var page = Session.get("repoPage");
@@ -92,12 +96,19 @@ if (Meteor.isClient) {
 
   Template.repos.events({
     'click #addRepoBtn': function() {
+      // clear any old output messages
+      $("#repoAlertBox").empty();
       var username = $('#inputUsername').val();
       var repo = $('#inputRepo').val();
       $("#inputUsername").val('');
       $("#inputRepo").val('');
       // first check if already in database
       if (RepositoryList.find({ name: repo }).fetch().length != 0) {
+        $("<div>", {
+          "class": "alert alert-warning alert-dismissible",
+          text: "Repository has already been added!"
+        }).append('<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>').appendTo("#repoAlertBox");
+
         console.log("repo already exists");
         return;
       }
@@ -105,6 +116,10 @@ if (Meteor.isClient) {
       // this has to be asynchronous! (idk why it just does)
       Meteor.call("getCommit", username, repo, function(error, result) {
         if (!result) {
+          $("<div>", {
+            "class": "alert alert-danger alert-dismissible",
+            text: "Repository does not exist!"
+          }).append('<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>').appendTo("#repoAlertBox");
           console.log("not a valid repo");
           return;
         }
@@ -113,6 +128,10 @@ if (Meteor.isClient) {
           name: repo,
           owner: username
         });
+        $("<div>", {
+          "class": "alert alert-success alert-dismissible",
+          text: "Repository added successfully!"
+        }).append('<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>').appendTo("#repoAlertBox");
         console.log("repo added successfully");
       });
     }

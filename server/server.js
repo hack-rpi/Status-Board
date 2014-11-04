@@ -8,19 +8,21 @@ if (Meteor.isServer) {
     }, 30*1000);
 
     // create the admin account with a default password
-    if (!Meteor.users.find( {username: "admin"} )) {
+    if (Meteor.users.find( {username: "admin"} ).fetch().length == 0) {
+      console.log(">> admin account created");
       Accounts.createUser({
         "_id": "1234",
         "username": "admin",
         "email": "poegem@rpi.edu",
         "password": "admin",
         "profile": {
-          "name": "Matt Poegel"
+          "name": "Administrator"
         }
       });
 
       // give the admin admin rights
-      Roles.addUsersToRoles("1234", "admin");
+      var adminUser = Meteor.users.find( {username: 'admin'} ).fetch()[0];
+      Roles.addUsersToRoles(adminUser, "admin");
     }
 
 
@@ -33,6 +35,14 @@ if (Meteor.isServer) {
       }
 
       throw new Meteor.Error(403, "Not authorized to create new users");
+    });
+
+    // publish the databases to all clients
+    Meteor.publish("CommitMessages", function() {
+      return CommitMessages.find();
+    });
+    Meteor.publish("RepositoryList", function() {
+      return RepositoryList.find();
     });
 
   });
