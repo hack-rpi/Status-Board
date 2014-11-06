@@ -9,6 +9,9 @@ Attendees will be able to enter add their own repos at any time by scanning a
 QR code. They will then be redirected to a page to enter their Github handle
 and repo name.
 
+## Mentor Requests
+Anyone can request a mentor when he/she needs help but submitting a mentor request form. The help tags in the request will help match the person to the best fit mentor in the database. The mentor will be sent a text message when someone needs his/her help.
+
 ## Commit Messages
 Using all the repos in the database, queries are made every minute (must
 manually adjust for the number of repos) to capture all commits made. The 10
@@ -26,11 +29,13 @@ It's really just the Twitter widget embedded in the html, but still, it's there.
 
 Note: This feature does not work in Firefox! (Chrome and Internet Explorer confirmed to work.)
 
-## Announcements Pane
-Other announcements for the event can be put in a separate panel.
+## Announcements
+Current announcements will appear at the top of the home page.
 
 ## Administrator Management
 The Admin of the site has the power to
 - flag favorite commit for later reference
 - add announcements to be show on the home page at a specified time for a specified interval
-- 
+- add/delete mentors from the database
+- add/delete users from the database
+- add/delete repositories from the database
