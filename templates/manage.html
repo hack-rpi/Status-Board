@@ -5,12 +5,60 @@
   <div class="container">
 
     <div class="row">
-      <ul class="list-inline">
-        <li class="btn btn-link">Flag Commits</li>
-        <li class="btn btn-link">Announcements</li>
-        <li class="btn btn-link">Repositories</li>
-        <li class="btn btn-link">Users</li>
-      </ul>
+      <div class="col-md-12">
+        <ul class="list-inline">
+          <li id="showCommits" class="btn btn-link">Flag Commits</li>
+          <li id="showAnnouncements" class="btn btn-link">Announcements</li>
+          <li id="showRepos" class="btn btn-link">Repositories</li>
+          <li id="showMentors" class="btn btn-link">Mentors</li>
+          <li id="showUsers" class="btn btn-link">Users</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="m_commits" class="row">
+      <div class="col-md-12">
+        <h3>Manage Commits</h3>
+      </div>
+
+      {{> m_commits}}
+      
+    </div>
+
+    <div id="m_announcements" class="row hidden">
+      <div class="col-md-12">
+        <h3>Manage Announcements</h3>
+      </div>
+
+      {{> announcements}}
+
+    </div>
+
+    <div id="m_repos" class="row hidden">
+      <div class="col-md-12">
+        <h3>Manage Repositories</h3>
+      </div>
+
+      {{> m_repos}}
+
+    </div>
+
+    <div id="m_mentors" class="row hidden">
+      <div class="col-md-12">
+        <h3>Manage Mentors</h3>
+      </div>
+
+      {{> mentors}}
+
+    </div>
+
+    <div id="m_users" class="row hidden">
+      <div class="col-md-12">
+        <h3>Manage Users</h3>
+      </div>
+
+      {{> users}}
+
     </div>
 
   </div>

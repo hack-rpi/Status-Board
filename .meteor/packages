@@ -13,3 +13,6 @@ accounts-ui
 accounts-password
 alanning:roles
 iron:router
+tsega:bootstrap3-datetimepicker
+ajduke:bootstrap-tokenfield
+

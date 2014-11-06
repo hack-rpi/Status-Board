@@ -1,17 +1,5 @@
 if (Meteor.isClient) {
 
-  // get the viewport and adjust the page
-  // var viewport_height;
-  // if (typeof window.innerHeight != undefined) {
-  //   viewport_height = window.innerHeight;
-  // }
-  // else {
-  //   viewport_height = "1000px"; // default value
-  // }
-  // console.log(viewport_height);
-  // $(".viewport").css("min-height", viewport_height);
-  // $(".viewport").css("background", "#434343");
-
   var commits_per_page = 10;
   var repos_per_page = 10;
 

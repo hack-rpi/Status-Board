@@ -7,6 +7,11 @@ if (Meteor.isServer) {
       Meteor.call("refreshCommitsAllRepos");
     }, 30*1000);
 
+    // show check for new announcements to show every 30 seconds
+    Meteor.setInterval(function() {
+      Meteor.call("showAnnouncements");
+    }, 10*1000);
+
     // create the admin account with a default password
     if (Meteor.users.find( {username: "admin"} ).fetch().length == 0) {
       console.log(">> admin account created");
@@ -43,6 +48,9 @@ if (Meteor.isServer) {
     });
     Meteor.publish("RepositoryList", function() {
       return RepositoryList.find();
+    });
+    Meteor.publish("Announcements", function() {
+      return Announcements.find();
     });
 
   });
@@ -126,13 +134,33 @@ if (Meteor.isServer) {
       var min   = parseInt(dt.substr(14,2),10);
       var sec   = parseInt(dt.substr(17,2),10);
       month--; // JS months start at 0
+      hour -= 5; // timezone difference
 
       var d = new Date(year,month,day,hour,min,sec);
       d = d.toLocaleString(0,24);
 
       return d.substr(0,24);
-    }
+    },
 
+    showAnnouncements: function() {
+      // use this to update which announcements should be visible
+      var msgs = Announcements.find().fetch();
+      for (var i=0; i<msgs.length; i++) {
+        var d = new Date(); // current time
+        if (msgs[i].visible) {
+          // check if the time is up on this announcement
+          if (d > msgs[i].endTime)
+            Announcements.update({_id:msgs[i]._id},
+              {$set: {visible:false}});
+        }
+        else {
+          // check if it's time to show this announcement
+          if (d < msgs[i].startTime)
+            Announcements.update({_id:msgs[i]._id},
+              {$set: {visible:true}});
+        }
+      }
+    }
 
   });
 }

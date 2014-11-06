@@ -1,0 +1,83 @@
+<template name="announcements">
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Active Announcements</h4>
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <th>Header</th>
+            <th>Body</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Remove</th>
+          </tr>
+          {{#each activeAnnouncements}}
+            <tr>
+              <td>{{header}}</td>
+              <td>{{text}}</td>
+              <td>{{startTime}}</td>
+              <td>{{endTime}}</td>
+              <td id="{{_id}}" class="btn btn-sm btn-default removeAnnouncement">X</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Add Announcement</h4>
+      <div class="row">
+        <form class="form-horizontal" role="role">
+          <div class="form-group">
+            <label for="inputHeader" class="col-md-3 control-label">Announcement Headline</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" id="inputHeader" placeholder="Header">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputBody" class="col-md-3 control-label">Announcement Body</label>
+            <div class="col-md-5">
+              <textarea rows="3" cols="57" resize="false" id="inputBody"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="radio col-md-5 col-md-offset-3">
+              <label>
+                <input type="checkbox" name="announcementStart" value="Start Immediately" checked>
+                Start Immediately
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputStartTime" class="col-md-3 control-label">Start Time</label>
+            <div class="col-md-5">
+              <input type="datetime-local" class="form-control" id="inputStartTime">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDuration" class="col-md-3 control-label">Duration (minutes)</label>
+            <div class="col-md-5">
+              <input type="number" min="1" value="10" class="form-control" id="inputDuration" >
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-5 col-md-offset-3">
+              <div id="addAnnouncementBtn" class="btn btn-default">Submit</div>
+            </div>
+          </div>
+        </form>
+        <div id="announcementAlertBox"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Past Announcements</h4>
+    </div>
+  </div>
+
+</template>

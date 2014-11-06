@@ -1,7 +1,7 @@
 <template name="home">
 
   <div class="container">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-12">
         {{#if isInRole 'admin'}}
 
@@ -9,15 +9,10 @@
 
         {{/if}}
       </div>
-    </div>
+    </div> -->
   </div>
 
-  <div class="jumbotron hidden">
-    <div class="container">
-      <h1>Announcement!</h1>
-      <p>This is an important announcement!</p>
-    </div>
-  </div>
+  {{> jumbotron}}
 
   <div class="container">
     <a name="top"></a>
