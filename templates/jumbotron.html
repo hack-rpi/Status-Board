@@ -1,0 +1,18 @@
+<template name="jumbotron">
+
+  {{#if showJumbo}}
+    <div class="jumbotron">
+
+      <div class="container">
+
+          {{#each announcements}}
+            <h1>{{header}}</h1>
+            <p>{{text}}</p>
+          {{/each}}
+
+      </div>
+
+    </div>
+  {{/if}}
+
+</template>

@@ -8,6 +8,10 @@ body {
   height: 100%;
 }
 
+.jumbotron {
+  margin-top: -20px;
+}
+
 .footer {
   position: relative;
   bottom: 0;
@@ -15,10 +19,6 @@ body {
   height: 40px;
   background: #424242;
   color: #FFFFFF;
-}
-
-.viewport {
-  min-height: 900px;
 }
 
 .gravatar {

@@ -3,6 +3,8 @@
 
 CommitMessages = new Meteor.Collection("CommitMessages");
 RepositoryList = new Meteor.Collection("RepositoryList");
+Announcements  = new Meteor.Collection("Announcements");
+Mentors        = new Meteor.Collection("Mentors");
 
 // iron router
 Router.route("/", function() {
@@ -12,3 +14,4 @@ Router.route("/", function() {
 Router.route('allCommits');
 Router.route('repos');
 Router.route('manage');
+Router.route('mentor');
