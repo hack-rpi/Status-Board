@@ -33,3 +33,24 @@ body {
 .commitTableContainer {
   min-height: 600px;
 }
+
+.green-circle {
+  height: 25px;
+  width: 25px;
+  background-color: #00FF00;
+  border-radius: 20px;
+}
+
+.red-circle {
+  height: 25px;
+  width: 25px;
+  background-color: #FF0000;
+  border-radius: 20px;
+}
+
+.yellow-circle {
+  height: 25px;
+  width: 25px;
+  background-color: #FFFF00;
+  border-radius: 20px;
+}

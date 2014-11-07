@@ -61,8 +61,6 @@ if (Meteor.isClient) {
       var duration = $('#inputDuration').val();
       var visible = false;
 
-      console.log(startTime);
-
       if (startNow) {
         startTime = new Date(); // now
         visible = true;
@@ -101,15 +99,85 @@ if (Meteor.isClient) {
   });
 
 
-  Template.mentors.rendered = function() {
-    $('#tokenfield').tokenfield({
+  Template.m_mentors.rendered = function() {
+    $('#inputMentorTags').tokenfield({
       autocomplete: {
         source: ['red','blue','green','yellow','violet','brown','purple','black','white'],
         delay: 100
       },
       showAutocompleteOnFocus: true
     });
-  }
+  };
+
+  Template.m_mentors.helpers({
+    all_mentors: function() {
+      Meteor.subscribe("Mentors");
+      return Mentors.find();
+    },
+    mentor_queue: function() {
+      Meteor.subscribe("MentorQueue");
+      return MentorQueue.find();
+    }
+  });
+
+  Template.m_mentors.events({
+    'click #addMentor': function() {
+      var name = $("#inputMentorName").val();
+      var phone = $("#inputMentorPhone").val();
+      var tags = $("#inputMentorTags").val().split(",");
+
+      Mentors.insert({
+        name: name,
+        phone: phone,
+        tags: tags,
+        available: true,
+        suspended: false,
+      });
+
+    },
+
+    'click .removeMentor': function() {
+      Meteor.subscribe("Mentors");
+      if (confirm("Remove this mentor?"))
+        Mentors.remove({ _id:this._id });
+    },
+
+    'click .suspendMentor': function() {
+      Meteor.subscribe("Mentors");
+      var state = Mentors.find({ _id:this._id }).fetch()[0].suspended;
+      if (!state) {
+        if (confirm("Suspend this mentor?"))
+          Mentors.update({ _id:this._id}, {
+            $set: {suspended: true}
+          });
+      }
+      else {
+        if (confirm("Activate this mentor?"))
+          Mentors.update({ _id:this._id }, {
+            $set: {suspended: false}
+          });
+      }
+    },
+
+    'click .editMentor': function() {
+      // implement this later
+      return;
+    },
+
+    'click .clearMentor': function() {
+      Meteor.subscribe("Mentors");
+      if (confirm("Clear all states on this mentor?"))
+        Mentors.update({ _id:this._id }, {
+          $set: {available:true, suspended:false}
+        });
+    },
+
+    'click .removeMentorRequest': function() {
+      Meteor.subscribe("MentorQueue");
+      if (confirm("Remove this mentor request?"))
+        MentorQueue.remove({ _id:this._id });
+    }
+  });
 
 
 }
