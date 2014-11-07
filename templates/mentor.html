@@ -1,0 +1,58 @@
+<template name="mentor">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Request a Mentor</h4>
+        <p>Do you need help with your project? Just fill out this form and the
+          next available mentor will be with you as soon as possible! If you
+          need general information, but can't find a volunteer or organizer,
+          use the tag <code>Info</code> and someone will find you!</p>
+        <p>The issue tags are a compiled list of all the skills of all the
+          currently active mentors. If what you are looking for is not on the
+          list, try something similiar, or wait for a mentor to become active.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="inputFindMentorName" class="col-md-3 control-label">Name</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="inputFindMentorName" placeholder="Matt Smith">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputFindMentorLocation" class="col-md-3 control-label">Location</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="inputFindMentorLocation" placeholder="DCC 308">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputFindMentorPhone" class="col-md-3 control-label">Phone Number</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="inputFindMentorPhone" placeholder="603-867-5309">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputIssueTags" class="col-md-3 control-label">Issue Tags</label>
+          <div class="col-md-5">
+            <select id="inputIssueTags" multiple class="form-control">
+              {{#each allTags}}
+                <option>{{this}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+        <div id="findMentor" class="btn btn-success col-md-offset-3 col-md-2">Find Me a Mentor</div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div id="findMentorAlertBox" class="col-md-12"></div>
+    </div>
+
+  </div>
+
+
+</template>

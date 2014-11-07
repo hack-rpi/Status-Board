@@ -14,6 +14,7 @@ if (Meteor.isClient) {
 
     announcements: function() {
       Meteor.subscribe("Announcements");
+      // var d = new Date() // now
       return Announcements.find({ visible:true }).fetch();
     }
 

@@ -1,0 +1,114 @@
+<template name="m_mentors">
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Mentor Queue</h4>
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <th>Mentor Dispatched</th>
+              <th>Timestamp</th>
+              <th>Name</th>
+              <th>Location</th>
+              <th>Phone</th>
+              <th>Issue Tags</th>
+              <th>Action</th>
+            </tr>
+            {{#each mentor_queue}}
+              <tr>
+                <td>
+                  {{#if helped}}
+                    <div class="yellow-circle"></div>
+                  {{else}}
+                    <div class="red-circle"></div>
+                  {{/if}}
+                </td>
+                <td>{{timestamp}}</td>
+                <td>{{name}}</td>
+                <td>{{loc}}</td>
+                <td>{{phone}}</td>
+                <td>{{tags}}</td>
+                <td>
+                  <span id="{{_id}}" class="btn btn-sm btn-danger removeMentorRequest">X</span>
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Mentors</h4>
+      <table class="table table-striped">
+        <tbody>
+          <tr>
+            <th>Status</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Trigger Tags</th>
+            <th>Action</th>
+          </tr>
+          {{#each all_mentors}}
+            <tr>
+              <td>
+                {{#if suspended }}
+                  <div class="red-circle"></div>
+                {{else}}
+                  {{#if available}}
+                    <div class="green-circle"></div>
+                  {{else}}
+                    <div class="yellow-circle"></div>
+                  {{/if}}
+                {{/if}}
+              </td>
+              <td>{{name}}</td>
+              <td>{{phone}}</td>
+              <td>{{tags}}</td>
+              <td>
+                <span id="{{_id}}" class="btn btn-sm btn-danger removeMentor">X</span>
+                <span id="{{_id}}" class="btn btn-sm btn-warning suspendMentor">S</span>
+                <span id="{{_id}}" class="btn btn-sm btn-info editMentor">E</span>
+                <span id="{{_id}}" class="btn btn-sm btn-success clearMentor">C</span>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Add a New Mentor</h4>
+      <div class="row">
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="inputMentorName" class="col-md-3 control-label">Name</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" id="inputMentorName" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputMentorPhone" class="col-md-3 control-label">Phone Number</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" id="inputMentorPhone" placeholder="603-867-5309">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputMentorTags" class="col-md-3 control-label">Skill Tags</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" id="inputMentorTags" />
+            </div>
+          </div>
+          <div id="addMentor" class="btn btn-success col-md-offset-3 col-md-2">Add Mentor</div>
+        </form>
+
+        <div id="mentorInputAlertBox"></div>
+
+      </div>
+    </div>
+  </div>
+
+</template>

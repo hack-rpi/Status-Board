@@ -12,6 +12,11 @@ if (Meteor.isServer) {
       Meteor.call("showAnnouncements");
     }, 10*1000);
 
+    // assign free mentors to hackers in the queue every 60 seconds
+    Meteor.setInterval(function() {
+      Meteor.call("assignMentors");
+    }, 10*1000);
+
     // create the admin account with a default password
     if (Meteor.users.find( {username: "admin"} ).fetch().length == 0) {
       console.log(">> admin account created");
@@ -43,15 +48,11 @@ if (Meteor.isServer) {
     });
 
     // publish the databases to all clients
-    Meteor.publish("CommitMessages", function() {
-      return CommitMessages.find();
-    });
-    Meteor.publish("RepositoryList", function() {
-      return RepositoryList.find();
-    });
-    Meteor.publish("Announcements", function() {
-      return Announcements.find();
-    });
+    Meteor.publish("CommitMessages", function() { return CommitMessages.find(); });
+    Meteor.publish("RepositoryList", function() { return RepositoryList.find(); });
+    Meteor.publish("Announcements", function() {  return Announcements.find(); });
+    Meteor.publish("Mentors", function() {        return Mentors.find(); });
+    Meteor.publish("MentorQueue", function() {    return MentorQueue.find(); });
 
   });
 
@@ -160,6 +161,80 @@ if (Meteor.isServer) {
               {$set: {visible:true}});
         }
       }
+    },
+
+    assignMentors: function() {
+      // loop over the queue sorted by oldest to most recent
+      // console.log("assigning mentors...");
+
+      var reqs = MentorQueue.find().fetch();
+      var Q = reqs.sort(function(a,b) { return a.timestamp < b.timestamp; } );
+
+      var mentors = Mentors.find({ $and: [ {available:true}, {suspended:false} ] }).fetch();
+
+      // console.log("Mentors available: ", mentors.length);
+
+      // bail if there are no available mentors
+      if (mentors.length == 0)
+        return;
+
+      // we can either wait for the best fit mentor to be available, or just
+      // go with the next available mentor who best fits the person's needs
+      // >> Let's go with the latter
+      for (var i=0; i<Q.length; i++) {
+        // refresh this everytime
+        mentors = Mentors.find({ $and: [ {available:true}, {suspended:false} ] }).fetch();
+        if (mentors.length == 0)
+          return;
+
+        var most_matches = 0;
+        var most_id = "";
+        var h_tags = Q[i]["tags"]
+        // loop over the available mentors
+        for (var m=0; m<mentors.length; m++) {
+          // check the matchness of this mentor
+          var m_tags = mentors[m]["tags"];
+          var matches = 0;
+          for (var k=0; k<h_tags.length; k++) {
+            for (var n=0; n<m_tags.length; n++) {
+              if (h_tags[k] == m_tags[n])
+                matches++;
+            }
+          }
+          if (matches > most_matches) {
+            most_matches = matches;
+            most_id = mentors[m]["_id"];
+          }
+          // if we match all the tags then no sense in looking further!
+          if (most_matches == h_tags.length)
+            break;
+        } // end mentor loop
+
+        // if we couldn't find an available mentor for this person then skip him
+        if (most_id == "")
+          break;
+
+        var matched_mentor = Mentors.find({ _id:most_id }).fetch()[0];
+        // console.log("found a match for hacker ", Q[i]["name"], " with ", matched_mentor["name"]);
+
+
+        // otherwise we found a mentor
+        // now we assign the mentor to the hacker
+        // send a text to the mentor to tell them where to go
+
+        // mark the mentor as busy
+        Mentors.update({ _id:most_id }, {
+          $set: { available:false }
+        });
+        // send a text to the hacker to tell them that a mentor is on his way
+
+        // remove the hacker from the queue
+        MentorQueue.remove({ _id:Q[i]._id });
+
+        // aaaaand ya done
+
+      } // end Q loop
+
     }
 
   });
