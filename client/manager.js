@@ -44,6 +44,32 @@ if (Meteor.isClient) {
   });
 
 
+  Template.m_commits.helpers({
+    commits: function() {
+      Meteor.subscribe("CommitMessages");
+      return CommitMessages.find({}, {sort: {date:-1}, limit:10});
+    },
+    bestCommits: function() {
+      Meteor.subscribe("CommitMessages");
+      return CommitMessages.find({}, {sort: {total_flags:-1}, limit:5});
+    }
+  });
+
+  Template.m_commits.events({
+    'click .upVoteCommit': function() {
+      var user_id = Meteor.user()._id;
+      var commit_id = this._id;
+      Meteor.call("giveUpVote", commit_id, user_id);
+    },
+
+    'click .downVoteCommit': function() {
+      var user_id = Meteor.user()._id;
+      var commit_id = this._id;
+      Meteor.call("giveDownVote", commit_id, user_id);
+    }
+  });
+
+
   Template.announcements.helpers({
     activeAnnouncements: function() {
       Meteor.subscribe("Announcements");
@@ -96,6 +122,36 @@ if (Meteor.isClient) {
       }
     }
 
+  });
+
+
+  Template.m_repos.helpers({
+    repo: function() {
+      var query = $("#inputRepoSearch").val();
+      console.log(query);
+      Meteor.subscribe("RepositoryList");
+      return RepositoryList.find({  });
+    }
+  });
+
+
+  Template.m_repos.events({
+    'click .removeRepo': function() {
+      if (confirm("Delete this repository?")) {
+        // delete all commit messages associated with this repo
+        Meteor.subscribe("RepositoryList");
+        var r = RepositoryList.find({ _id:this._id }).fetch()[0];
+
+        Meteor.subscribe("CommitMessages");
+        // apparently I can only remove docs by ID from untrusted code so...
+        var msgs = CommitMessages.find({ repo:r.name }).fetch();
+        for (var i=0; i<msgs.length; i++) {
+          CommitMessages.remove({ _id:msgs[i]._id });
+        }
+
+        RepositoryList.remove({ _id:this._id })
+      }
+    }
   });
 
 
