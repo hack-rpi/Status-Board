@@ -236,4 +236,88 @@ if (Meteor.isClient) {
   });
 
 
+  Template.m_users.helpers({
+    allUsers: function() {
+      Meteor.subscribe("userData");
+      return Meteor.users.find();
+    }
+  });
+
+  Template.m_users.events({
+    'click .removeUser': function() {
+      if (!Roles.userIsInRole(Meteor.user(), 'super')) {
+        alert("You are not authorized to perform this action!");
+        return;
+      }
+      // PREVENT REMOVAL OF ADMIN
+      if (Roles.userIsInRole(this._id, 'super')) {
+        alert("Cannot remove admin account!");
+      }
+      else if (confirm("Remove this user?")) {
+        Meteor.users.remove({ _id:this._id });
+      }
+    },
+
+    'click #addUser': function() {
+      var username = $("#inputUsername").val();
+      var real = $("#inputUserReal").val();
+      var email = $("#inputUserEmail").val();
+      var pass = $("#inputUserPass").val();
+      var pass2 = $("#inputUserPass2").val();
+
+      // check that user is authorized
+      if (!Roles.userIsInRole(Meteor.user(), 'super')) {
+        alert("You are not authorized to perform this action!");
+        return;
+      }
+
+      // check that all fields are filled in
+      if (username == "" ||
+          real == "" ||
+          email == "" ||
+          pass == "" ||
+          pass2 == "") {
+        alert("All fields are required!");
+        return;
+      }
+
+      // check that the passwords match
+      if (pass != pass2) {
+        alert("Password fields do not match!");
+        return;
+      }
+
+      // create the new user
+      Meteor.call("createNewUser", username, email, pass, real);
+
+      var success = true; // fix this later
+
+      $("#inputUsername").val('');
+      $("#inputUserReal").val('');
+      $("#inputUserEmail").val('');
+      $("#inputUserPass").val('');
+      $("#inputUserPass2").val('');
+
+      $("#addUserAlertbox").empty();
+
+      if (success) {
+        $("<div>", {
+          "class": "alert alert-success alert-dismissible",
+          text: "User added successfully"
+        }).append('<button type="button" \
+          class="close" data-dismiss="alert" \
+          aria-hidden="true">&times;</button>').appendTo("#addUserAlertbox");
+      }
+      else {
+        $("<div>", {
+          "class": "alert alert-danger alert-dismissible",
+          text: "Error creating new user!"
+        }).append('<button type="button" \
+          class="close" data-dismiss="alert" \
+          aria-hidden="true">&times;</button>').appendTo("#addUserAlertbox");
+      }
+    }
+  })
+
+
 }

@@ -21,9 +21,7 @@ if (Meteor.isServer) {
     if (Meteor.users.find( {username: "admin"} ).fetch().length == 0) {
       console.log(">> admin account created");
       Accounts.createUser({
-        "_id": "1234",
         "username": "admin",
-        "email": "poegem@rpi.edu",
         "password": "admin",
         "profile": {
           "name": "Administrator"
@@ -32,20 +30,20 @@ if (Meteor.isServer) {
 
       // give the admin admin rights
       var adminUser = Meteor.users.find( {username: 'admin'} ).fetch()[0];
-      Roles.addUsersToRoles(adminUser, "admin");
+      Roles.addUsersToRoles(adminUser, ["super","admin"]);
     }
 
 
     // Prevent non-authorized users from creating new users:
-    Accounts.validateNewUser(function (user) {
-      var loggedInUser = Meteor.user();
-
-      if (Roles.userIsInRole(loggedInUser, 'admin')) {
-        return true;
-      }
-
-      throw new Meteor.Error(403, "Not authorized to create new users");
-    });
+    // Accounts.validateNewUser(function (user) {
+    //   var loggedInUser = Meteor.user();
+    //
+    //   if (Roles.userIsInRole(loggedInUser, 'admin')) {
+    //     return true;
+    //   }
+    //
+    //   throw new Meteor.Error(403, "Not authorized to create new users");
+    // });
 
     // publish the databases to all clients
     Meteor.publish("CommitMessages", function() { return CommitMessages.find(); });
@@ -53,6 +51,16 @@ if (Meteor.isServer) {
     Meteor.publish("Announcements", function() {  return Announcements.find(); });
     Meteor.publish("Mentors", function() {        return Mentors.find(); });
     Meteor.publish("MentorQueue", function() {    return MentorQueue.find(); });
+    Meteor.publish("userData", function() {
+      return Meteor.users.find({});
+    });
+
+    Meteor.users.allow({ remove:function() {
+      return true;
+    }});
+    Meteor.users.allow({ update:function() {
+      return true;
+    }});
 
   });
 
