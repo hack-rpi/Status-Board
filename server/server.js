@@ -109,7 +109,9 @@ if (Meteor.isServer) {
               committer_real : data[i]['commit']['committer']['name'],
               // probably not a good a idea to store emails?
               // (do I have access to all of them?)
-              committer_email : data[i]['commit']['committer']['email']
+              committer_email : data[i]['commit']['committer']['email'],
+              flags: [],
+              total_flags: 0
             });
           }
         }
