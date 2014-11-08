@@ -69,7 +69,24 @@ if (Meteor.isServer) {
           }
         });
       }
+    },
+
+    'createNewUser': function(username, email, pass, real) {
+      Accounts.createUser({
+        'username': username,
+        'email': email,
+        'password': pass,
+        'profile': {
+          'name': real
+        }
+      });
+
+      var newUser = Meteor.users.find( {username: username} ).fetch()[0];
+      Roles.addUsersToRoles(newUser, ***REMOVED***);
+      return true;
+
     }
+
   });
 
 }

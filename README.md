@@ -34,7 +34,7 @@ Current announcements will appear at the top of the home page.
 
 ## Administrator Management
 The Admin of the site has the power to
-- flag favorite commit for later reference
+- flag commits for later reference
 - add announcements to be show on the home page at a specified time for a specified interval
 - add/delete mentors from the database
 - add/delete users from the database
