@@ -46,29 +46,45 @@
           <tr>
             <th>Status</th>
             <th>Name</th>
+            <th>Company</th>
             <th>Phone</th>
             <th>Trigger Tags</th>
+            <th>Start</th>
+            <th>End</th>
             <th>Action</th>
           </tr>
           {{#each all_mentors}}
             <tr>
               <td>
-                {{#if suspended }}
-                  <div class="red-circle"></div>
-                {{else}}
+                {{#if override }}
                   {{#if available}}
-                    <div class="green-circle"></div>
+                    <div class="green-circle">O!</div>
                   {{else}}
-                    <div class="yellow-circle"></div>
+                    <div class="yellow-circle">O!</div>
+                  {{/if}}
+                {{else}}
+                  {{#if suspended }}
+                    <div class="red-circle"></div>
+                  {{else}}
+                    {{#if available}}
+                      <div class="green-circle"></div>
+                    {{else}}
+                      <div class="yellow-circle"></div>
+                    {{/if}}
                   {{/if}}
                 {{/if}}
+
+
               </td>
               <td>{{name}}</td>
+              <td>{{company}}</td>
               <td>{{phone}}</td>
               <td>{{tags}}</td>
+              <td>{{startTime}}</td>
+              <td>{{endTime}}</td>
               <td>
                 <span id="{{_id}}" class="btn btn-sm btn-danger removeMentor">X</span>
-                <span id="{{_id}}" class="btn btn-sm btn-warning suspendMentor">S</span>
+                <span id="{{_id}}" class="btn btn-sm btn-warning overrideMentor">O</span>
                 <span id="{{_id}}" class="btn btn-sm btn-info editMentor">E</span>
                 <span id="{{_id}}" class="btn btn-sm btn-success clearMentor">C</span>
               </td>
@@ -94,6 +110,24 @@
             <label for="inputMentorPhone" class="col-md-3 control-label">Phone Number</label>
             <div class="col-md-5">
               <input type="text" class="form-control" id="inputMentorPhone" placeholder="603-867-5309">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputMentorCompany" class="col-md-3 control-label">Company</label>
+            <div class="col-md-5">
+              <input type="text" class="form-control" id="inputMentorCompany" placeholder="RPI">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputMentorStartTime" class="col-md-3 control-label">Start Time</label>
+            <div class="col-md-5">
+              <input type="datetime-local" class="form-control" id="inputmentorStartTime">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputMentorEndTime" class="col-md-3 control-label">End Time</label>
+            <div class="col-md-5">
+              <input type="datetime-local" class="form-control" id="inputMentorEndTime">
             </div>
           </div>
           <div class="form-group">

@@ -1,5 +1,16 @@
 if (Meteor.isServer) {
 
+  Meteor.startup(function() {
+
+    // update the mentor status (active/suspended every minute)
+    Meteor.setInterval(function() {
+      Meteor.call("updateMentorStatus");
+    }, 10*1000);
+
+
+  });
+
+
   Meteor.methods({
     'giveUpVote': function(commit_id, user_id) {
       var msg = CommitMessages.find({ _id:commit_id }).fetch()[0];
@@ -84,8 +95,30 @@ if (Meteor.isServer) {
       var newUser = Meteor.users.find( {username: username} ).fetch()[0];
       Roles.addUsersToRoles(newUser, ***REMOVED***);
       return true;
+    },
 
-    }
+    'updateMentorStatus': function() {
+      // loop over all the mentors and check if their statuses should be changed
+      var mentors = Mentors.find().fetch();
+      var now = new Date();
+      for (var i=0; i<mentors.length; i++) {
+        // update status
+        var state = mentors[i].available && (!mentors[i].suspended || mentors[i].override);
+        Mentors.update({ _id:mentors[i]._id }, {
+          $set: {status:state}
+        });
+        // if the mentor is currently active, check if her/his time is up
+        if (mentors[i].suspended == false && now > mentors[i].endTime)
+          Mentors.update({ _id:mentors[i]._id }, {
+            $set: {suspended:true}
+          });
+        // if the mentor is currently not active check if s/he should be
+        else if (mentors[i].suspended == true && now < mentors[i].startTime)
+          Mentors.update({ _id:mentors[i]._id }, {
+            $set: {suspended:false}
+          });
+      }
+    },
 
   });
 

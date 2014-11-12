@@ -5,7 +5,7 @@ if (Meteor.isServer) {
     // refresh the commit database every 30 seconds
     Meteor.setInterval(function() {
       Meteor.call("refreshCommitsAllRepos");
-    }, 30*1000);
+    }, 60*1000);
 
     // show check for new announcements to show every 30 seconds
     Meteor.setInterval(function() {
@@ -15,6 +15,10 @@ if (Meteor.isServer) {
     // assign free mentors to hackers in the queue every 60 seconds
     Meteor.setInterval(function() {
       Meteor.call("assignMentors");
+    }, 10*1000);
+
+    Meteor.setInterval(function() {
+      Meteor.call("checkMentorResponses");
     }, 10*1000);
 
     // create the admin account with a default password
@@ -193,26 +197,31 @@ if (Meteor.isServer) {
       // >> Let's go with the latter
       for (var i=0; i<Q.length; i++) {
         // refresh this everytime
-        mentors = Mentors.find({ $and: [ {available:true}, {suspended:false} ] }).fetch();
+        mentors = Mentors.find({ status:true }).fetch();
         if (mentors.length == 0)
           return;
 
         var most_matches = 0;
+        var most_matched_tags = [];
         var most_id = "";
         var h_tags = Q[i]["tags"]
         // loop over the available mentors
         for (var m=0; m<mentors.length; m++) {
           // check the matchness of this mentor
           var m_tags = mentors[m]["tags"];
+          var matched_tags = [];
           var matches = 0;
           for (var k=0; k<h_tags.length; k++) {
             for (var n=0; n<m_tags.length; n++) {
-              if (h_tags[k] == m_tags[n])
+              if (h_tags[k] == m_tags[n]) {
+                matched_tags.push(h_tags[k]);
                 matches++;
+              }
             }
           }
           if (matches > most_matches) {
             most_matches = matches;
+            most_matched_tags = matched_tags;
             most_id = mentors[m]["_id"];
           }
           // if we match all the tags then no sense in looking further!
@@ -231,12 +240,27 @@ if (Meteor.isServer) {
         // otherwise we found a mentor
         // now we assign the mentor to the hacker
         // send a text to the mentor to tell them where to go
+        var s = "";
+        for (var t=0; t<most_matched_tags.length && t<3; t++) {
+          s += most_matched_tags[t];
+          if (t < 2 && t != most_matched_tags.length-1)
+            s += " and";
+          else if (t == 2 && most_matched_tags.length > 3)
+            s += " and more";
+        }
+        var msg = Q[i].name + " needs your help with " + s + "!" + " S/he can be found at " + Q[i].loc;
+        Meteor.call("sendText", matched_mentor.phone, msg);
 
         // mark the mentor as busy
         Mentors.update({ _id:most_id }, {
           $set: { available:false }
         });
+
         // send a text to the hacker to tell them that a mentor is on his way
+        if (Q[i].phone != "") {
+          msg = matched_mentor.name + " from " + matched_mentor.company + " is on his way to assist you!";
+          Meteor.call("sendText", Q[i].phone, msg);
+        }
 
         // remove the hacker from the queue
         MentorQueue.remove({ _id:Q[i]._id });
@@ -245,7 +269,75 @@ if (Meteor.isServer) {
 
       } // end Q loop
 
+    },
+
+    'sendText': function(toNum, msg) {
+      var SID = ***REMOVED***;
+      var token = ***REMOVED***;
+      var url = "https://api.twilio.com/2010-04-01/Accounts/***REMOVED***/SMS/Messages.json"
+      var fromNum = ***REMOVED***;
+      toNum = toNum.replace("-","");
+
+      try {
+        return Meteor.http.post(url, {
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          auth: SID + ":" + token,
+          params: {
+            From: fromNum,
+            To: "+1" + toNum,
+            Body: msg
+          }
+        });
+      }
+      catch(err) {
+        console.log('Twilio API Error!');
+        console.log(err);
+        return false;
+      }
+    },
+
+    'retrieveMessages': function() {
+      var SID = ***REMOVED***;
+      var token = ***REMOVED***;
+      var url = "https://api.twilio.com/2010-04-01/Accounts/***REMOVED***/SMS/Messages.json"
+      var fromNum = ***REMOVED***;
+
+      try {
+        return Meteor.http.get(url, {
+          headers: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          auth: SID + ":" + token
+        });
+      }
+      catch(err) {
+        console.log('Twilio API Error!');
+        console.log(err);
+        return false;
+      }
+    },
+
+    'checkMentorResponses': function() {
+      var msgs = Meteor.call("retrieveMessages");
+      var texts = msgs.data.sms_messages;
+      // this only gets back 50 messages so I'm not going to bother stopping
+      // the loop early (oh well I'll do it later or something)
+      for (var t=0; t<texts.length; t++) {
+        if (texts[t].direction == "inbound") {
+          var m = texts[t].body.toUpperCase();
+          var p = texts[t].from;
+          p = p.substring(2,5) + "-" + p.substring(5,8) + "-" + p.substring(8);
+          if (m == "DONE") {
+            Mentors.update({ phone:p }, {
+              $set: {available:true}
+            });
+          }
+        }
+      }
     }
+
 
   });
 }
