@@ -143,7 +143,7 @@ if (Meteor.isClient) {
     'allTags': function() {
       // create and return a list of all the tags from the mentors
       Meteor.subscribe("Mentors");
-      var mentors = Mentors.find({ suspended:false }).fetch();
+      var mentors = Mentors.find({ $or: [{suspended:false}, {override:true}] }).fetch();
       if (mentors.length == 0)
         return; // bail
       var tagSet = new Set();

@@ -39,6 +39,9 @@ body {
   width: 25px;
   background-color: #00FF00;
   border-radius: 20px;
+  padding-top:2px;
+  padding-left:5px;
+  font-weight: bold;
 }
 
 .red-circle {
@@ -53,4 +56,12 @@ body {
   width: 25px;
   background-color: #FFFF00;
   border-radius: 20px;
+}
+
+.orange-triangle {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid orange;
 }

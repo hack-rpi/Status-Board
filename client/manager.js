@@ -180,15 +180,36 @@ if (Meteor.isClient) {
     'click #addMentor': function() {
       var name = $("#inputMentorName").val();
       var phone = $("#inputMentorPhone").val();
+      var company = $("#inputMentorCompany").val();
+      var start = $("#inputMentorStartTime").val();
+      var end = $("#inputMentorEndTime").val();
       var tags = $("#inputMentorTags").val().split(",");
+
+      var startTime = new Date(start+":00");
+      startTime = new Date(startTime.getTime() + 5*60*60000); // timezone offset
+      var endTime = new Date(end+":00");
+      endTime = new Date(endTime.getTime() + 5*60*60000); // timezone offset
+      var now = new Date();
 
       Mentors.insert({
         name: name,
         phone: phone,
+        company: company,
+        startTime: startTime,
+        endTime: endTime,
         tags: tags,
+        status: false,
         available: true,
         suspended: false,
+        override: false,
       });
+
+      $("#inputMentorName").val("");
+      $("#inputMentorPhone").val("");
+      $("#inputMentorCompany").val("");
+      $("#inputMentorStartTime").val("");
+      $("#inputMentorEndTime").val("");
+      $("#inputMentorTags").val("")
 
     },
 
@@ -198,19 +219,19 @@ if (Meteor.isClient) {
         Mentors.remove({ _id:this._id });
     },
 
-    'click .suspendMentor': function() {
+    'click .overrideMentor': function() {
       Meteor.subscribe("Mentors");
-      var state = Mentors.find({ _id:this._id }).fetch()[0].suspended;
+      var state = Mentors.find({ _id:this._id }).fetch()[0].override;
       if (!state) {
-        if (confirm("Suspend this mentor?"))
+        if (confirm("Turn override ON for this mentor?"))
           Mentors.update({ _id:this._id}, {
-            $set: {suspended: true}
+            $set: {override: true}
           });
       }
       else {
-        if (confirm("Activate this mentor?"))
+        if (confirm("Turn override OFF for this mentor?"))
           Mentors.update({ _id:this._id }, {
-            $set: {suspended: false}
+            $set: {override: false}
           });
       }
     },
@@ -222,9 +243,9 @@ if (Meteor.isClient) {
 
     'click .clearMentor': function() {
       Meteor.subscribe("Mentors");
-      if (confirm("Clear all states on this mentor?"))
+      if (confirm("Clear busy state and/or override for this mentor?"))
         Mentors.update({ _id:this._id }, {
-          $set: {available:true, suspended:false}
+          $set: {available:true, override:false, status:true}
         });
     },
 
