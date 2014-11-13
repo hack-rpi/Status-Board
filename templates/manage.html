@@ -1,17 +1,27 @@
 <template name="manage">
 
-  {{#if isInRole 'admin'}}
+  {{#if isInRole 'manager'}}
 
   <div class="container">
 
     <div class="row">
       <div class="col-md-12">
         <ul class="list-inline">
-          <li id="showCommits" class="btn btn-link">Flag Commits</li>
-          <li id="showAnnouncements" class="btn btn-link">Announcements</li>
-          <li id="showRepos" class="btn btn-link">Repositories</li>
-          <li id="showMentors" class="btn btn-link">Mentors</li>
-          <li id="showUsers" class="btn btn-link">Users</li>
+          {{#if isInRole 'flagger'}}
+            <li id="showCommits" class="btn btn-link">Flag Commits</li>
+          {{/if}}
+          {{#if isInRole 'announcer'}}
+            <li id="showAnnouncements" class="btn btn-link">Announcements</li>
+          {{/if}}
+          {{#if isInRole 'admin'}}
+            <li id="showRepos" class="btn btn-link">Repositories</li>
+          {{/if}}
+          {{#if isInRole 'mentor'}}
+            <li id="showMentors" class="btn btn-link">Mentors</li>
+          {{/if}}
+          {{#if isInRole 'admin'}}
+            <li id="showUsers" class="btn btn-link">Users</li>
+          {{/if}}
         </ul>
       </div>
     </div>

@@ -56,6 +56,16 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="inputUserRoles" class="col-md-3 control-label">Roles</label>
+            <div class="col-md-5">
+              <select id="inputUserRoles" multiple class="form-control">
+                {{#each allRoles}}
+                  <option>{{name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="inputUserPass" class="col-md-3 control-label">Password</label>
             <div class="col-md-5">
               <input type="password" class="form-control" id="inputUserPass" placeholder="">

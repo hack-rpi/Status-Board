@@ -134,7 +134,7 @@ if (Meteor.isClient) {
     $("#QR-repo").qrcode({
       width: 256,
       height: 256,
-      text: "hello world" // this will have to be absolute
+      text: "http://status.hackrpi.com/repos"
     });
   };
 
