@@ -15,11 +15,14 @@ if (Meteor.isServer) {
     // assign free mentors to hackers in the queue every 60 seconds
     Meteor.setInterval(function() {
       Meteor.call("assignMentors");
-    }, 10*1000);
+    }, 60*1000);
+
+
+    Meteor.call("checkMentorResponses");
 
     Meteor.setInterval(function() {
       Meteor.call("checkMentorResponses");
-    }, 10*1000);
+    }, 60*1000);
 
     // create the admin account with a default password
     if (Meteor.users.find( {username: "admin"} ).fetch().length == 0) {
@@ -34,20 +37,20 @@ if (Meteor.isServer) {
 
       // give the admin admin rights
       var adminUser = Meteor.users.find( {username: 'admin'} ).fetch()[0];
-      Roles.addUsersToRoles(adminUser, ["super","admin"]);
+      Roles.addUsersToRoles(adminUser, ["super","admin","flagger","mentor","announcer","manager"]);
     }
 
 
     // Prevent non-authorized users from creating new users:
-    // Accounts.validateNewUser(function (user) {
-    //   var loggedInUser = Meteor.user();
-    //
-    //   if (Roles.userIsInRole(loggedInUser, 'admin')) {
-    //     return true;
-    //   }
-    //
-    //   throw new Meteor.Error(403, "Not authorized to create new users");
-    // });
+    Accounts.validateNewUser(function (user) {
+      var loggedInUser = Meteor.user();
+
+      if (Roles.userIsInRole(loggedInUser, 'admin')) {
+        return true;
+      }
+
+      throw new Meteor.Error(403, "Not authorized to create new users");
+    });
 
     // publish the databases to all clients
     Meteor.publish("CommitMessages", function() { return CommitMessages.find(); });
@@ -57,6 +60,9 @@ if (Meteor.isServer) {
     Meteor.publish("MentorQueue", function() {    return MentorQueue.find(); });
     Meteor.publish("userData", function() {
       return Meteor.users.find({});
+    });
+    Meteor.publish("userRoles", function  () {
+      return Roles.getAllRoles();
     });
 
     Meteor.users.allow({ remove:function() {
@@ -184,7 +190,7 @@ if (Meteor.isServer) {
       var reqs = MentorQueue.find().fetch();
       var Q = reqs.sort(function(a,b) { return a.timestamp < b.timestamp; } );
 
-      var mentors = Mentors.find({ $and: [ {available:true}, {suspended:false} ] }).fetch();
+      var mentors = Mentors.find({ status:true }).fetch();
 
       // console.log("Mentors available: ", mentors.length);
 
@@ -253,7 +259,7 @@ if (Meteor.isServer) {
 
         // mark the mentor as busy
         Mentors.update({ _id:most_id }, {
-          $set: { available:false }
+          $set: { available:false, status:false }
         });
 
         // send a text to the hacker to tell them that a mentor is on his way
@@ -321,10 +327,22 @@ if (Meteor.isServer) {
 
     'checkMentorResponses': function() {
       var msgs = Meteor.call("retrieveMessages");
+      if (!msgs)
+        return;
+
       var texts = msgs.data.sms_messages;
-      // this only gets back 50 messages so I'm not going to bother stopping
-      // the loop early (oh well I'll do it later or something)
+      var now = new Date();
+      var past = new Date(now.getTime() - 60000); // Date object 60 seconds in the past
+
       for (var t=0; t<texts.length; t++) {
+        // since this function is called every 60 seconds, only look at the messages
+        // from the last 60 seconds
+        var t_date = new Date(texts[t].date_sent.substring(0,26));
+        t_date = new Date(t_date.getTime() - 5*60*60000); // timezone offset
+
+        if (past > t_date)
+          break;
+
         if (texts[t].direction == "inbound") {
           var m = texts[t].body.toUpperCase();
           var p = texts[t].from;
@@ -335,7 +353,8 @@ if (Meteor.isServer) {
             });
           }
         }
-      }
+
+      } // end for
     }
 
 

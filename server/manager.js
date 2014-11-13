@@ -82,7 +82,7 @@ if (Meteor.isServer) {
       }
     },
 
-    'createNewUser': function(username, email, pass, real) {
+    'createNewUser': function(username, email, roles, pass, real) {
       Accounts.createUser({
         'username': username,
         'email': email,
@@ -93,7 +93,7 @@ if (Meteor.isServer) {
       });
 
       var newUser = Meteor.users.find( {username: username} ).fetch()[0];
-      Roles.addUsersToRoles(newUser, "admin");
+      Roles.addUsersToRoles(newUser, roles);
       return true;
     },
 
@@ -102,21 +102,23 @@ if (Meteor.isServer) {
       var mentors = Mentors.find().fetch();
       var now = new Date();
       for (var i=0; i<mentors.length; i++) {
+        // if the mentor is currently active, check if her/his time is up
+        if (mentors[i].active == true && now > mentors[i].endTime)
+          Mentors.update({ _id:mentors[i]._id }, {
+            $set: {active:false}
+          });
+        // if the mentor is currently not active check if s/he should be
+        else if (mentors[i].active == false && now > mentors[i].startTime)
+          Mentors.update({ _id:mentors[i]._id }, {
+            $set: {active:true}
+          });
         // update status
-        var state = mentors[i].available && (!mentors[i].suspended || mentors[i].override);
+        var state = ( (mentors[i].available) &&
+                      (mentors[i].active || mentors[i].override) &&
+                      (!mentors[i].suspended || mentors[i].override) );
         Mentors.update({ _id:mentors[i]._id }, {
           $set: {status:state}
         });
-        // if the mentor is currently active, check if her/his time is up
-        if (mentors[i].suspended == false && now > mentors[i].endTime)
-          Mentors.update({ _id:mentors[i]._id }, {
-            $set: {suspended:true}
-          });
-        // if the mentor is currently not active check if s/he should be
-        else if (mentors[i].suspended == true && now < mentors[i].startTime)
-          Mentors.update({ _id:mentors[i]._id }, {
-            $set: {suspended:false}
-          });
       }
     },
 

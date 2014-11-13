@@ -185,6 +185,8 @@ if (Meteor.isClient) {
       var end = $("#inputMentorEndTime").val();
       var tags = $("#inputMentorTags").val().split(",");
 
+      console.log(start);
+
       var startTime = new Date(start+":00");
       startTime = new Date(startTime.getTime() + 5*60*60000); // timezone offset
       var endTime = new Date(end+":00");
@@ -199,6 +201,7 @@ if (Meteor.isClient) {
         endTime: endTime,
         tags: tags,
         status: false,
+        active: false,
         available: true,
         suspended: false,
         override: false,
@@ -209,7 +212,7 @@ if (Meteor.isClient) {
       $("#inputMentorCompany").val("");
       $("#inputMentorStartTime").val("");
       $("#inputMentorEndTime").val("");
-      $("#inputMentorTags").val("")
+      $("#inputMentorTags").val([]);
 
     },
 
@@ -236,6 +239,23 @@ if (Meteor.isClient) {
       }
     },
 
+    'click .suspendMentor': function() {
+      Meteor.subscribe("Mentors");
+      var state = Mentors.find({ _id:this._id }).fetch()[0].suspended;
+      if (!state) {
+        if (confirm("Suspend activity for this mentor?"))
+          Mentors.update({ _id:this._id}, {
+            $set: {suspended: true}
+          });
+      }
+      else {
+        if (confirm("Unsuspend activity for this mentor?"))
+          Mentors.update({ _id:this._id }, {
+            $set: {suspended: false}
+          });
+      }
+    },
+
     'click .editMentor': function() {
       // implement this later
       return;
@@ -243,9 +263,9 @@ if (Meteor.isClient) {
 
     'click .clearMentor': function() {
       Meteor.subscribe("Mentors");
-      if (confirm("Clear busy state and/or override for this mentor?"))
+      if (confirm("Clear busy state, override, and suspend for this mentor?"))
         Mentors.update({ _id:this._id }, {
-          $set: {available:true, override:false, status:true}
+          $set: {available:true, suspended:false, override:false, status:true}
         });
     },
 
@@ -261,6 +281,16 @@ if (Meteor.isClient) {
     allUsers: function() {
       Meteor.subscribe("userData");
       return Meteor.users.find();
+    },
+    allRoles: function() {
+      Meteor.subscribe("userRoles");
+      var roles = Roles.getAllRoles().fetch();
+      var parsed_roles = [];
+      for (var i=0; i<roles.length; i++) {
+        if (roles[i].name != 'super')
+          parsed_roles.push(roles[i]);
+      }
+      return parsed_roles;
     }
   });
 
@@ -283,6 +313,7 @@ if (Meteor.isClient) {
       var username = $("#inputUsername").val();
       var real = $("#inputUserReal").val();
       var email = $("#inputUserEmail").val();
+      var roles = $("#inputUserRoles").val();
       var pass = $("#inputUserPass").val();
       var pass2 = $("#inputUserPass2").val();
 
@@ -309,13 +340,14 @@ if (Meteor.isClient) {
       }
 
       // create the new user
-      Meteor.call("createNewUser", username, email, pass, real);
+      Meteor.call("createNewUser", username, email, roles, pass, real);
 
       var success = true; // fix this later
 
       $("#inputUsername").val('');
       $("#inputUserReal").val('');
       $("#inputUserEmail").val('');
+      $("#inputUserRoles").val('');
       $("#inputUserPass").val('');
       $("#inputUserPass2").val('');
 
