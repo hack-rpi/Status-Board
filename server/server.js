@@ -65,12 +65,90 @@ if (Meteor.isServer) {
       return Roles.getAllRoles();
     });
 
-    Meteor.users.allow({ remove:function() {
-      return true;
-    }});
-    Meteor.users.allow({ update:function() {
-      return true;
-    }});
+    // COLLECTION PRIVELEDGES
+    Meteor.users.allow({
+      insert:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'admin'))
+          return true;
+      },
+      remove:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'admin'))
+          return true;
+      },
+      update:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'admin'))
+          return true;
+      }
+    });
+    CommitMessages.allow({
+      insert:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'flagger'))
+          return true;
+      },
+      remove:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'flagger'))
+          return true;
+      },
+      update:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'flagger'))
+          return true;
+      }
+    });
+    RepositoryList.allow({
+      insert:function() {
+        return true;
+      },
+      remove:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'admin'))
+          return true;
+      },
+      update:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'admin'))
+          return true;
+      }
+    });
+    Announcements.allow({
+      insert:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'announcer'))
+          return true;
+      },
+      remove:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'announcer'))
+          return true;
+      },
+      update:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'announcer'))
+          return true;
+      }
+    })
+    Mentors.allow({
+      insert:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'mentor'))
+          return true;
+      },
+      remove:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'mentor'))
+          return true;
+      },
+      update:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'mentor'))
+          return true;
+      }
+    });
+    MentorQueue.allow({
+      insert:function() {
+        return true;
+      },
+      remove:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'mentor'))
+          return true;
+      },
+      update:function() {
+        if (Roles.userIsInRole(Meteor.user(), 'mentor'))
+          return true;
+      }
+    });
+
 
   });
 

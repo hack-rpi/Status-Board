@@ -256,7 +256,15 @@ if (Meteor.isClient) {
       var end = $("#inputMentorEndTime").val();
       var tags = $("#inputMentorTags").val().split(",");
 
-      console.log(start);
+      if (name == "" ||
+          phone == "" ||
+          company == "" ||
+          start == "" ||
+          end == "" ||
+          tags.length == 0) {
+        alert("Please complete all fields!");
+        return;
+      }
 
       var startTime = new Date(start+":00");
       startTime = new Date(startTime.getTime() + 5*60*60000); // timezone offset
