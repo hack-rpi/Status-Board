@@ -47,7 +47,13 @@ if (Meteor.isClient) {
   Template.m_commits.helpers({
     commits: function() {
       Meteor.subscribe("CommitMessages");
-      return CommitMessages.find({}, {sort: {date:-1}, limit:10});
+      var commits = CommitMessages.find({}, {sort: {date:-1}, limit:50}).fetch();
+      // sets the commitPage session variable if it's undefined
+      Session.setDefault('flagCommitPage', 1);
+      var page = Session.get('flagCommitPage');
+      var end = page * 10;
+      var start = end - 10;
+      return commits.slice(start,end);
     },
     bestCommits: function() {
       Meteor.subscribe("CommitMessages");
@@ -66,6 +72,24 @@ if (Meteor.isClient) {
       var user_id = Meteor.user()._id;
       var commit_id = this._id;
       Meteor.call("giveDownVote", commit_id, user_id);
+    },
+
+    'click #flagCommitNext': function() {
+      Meteor.subscribe("CommitMessages");
+      var total = CommitMessages.find().fetch().length;
+      var page = Session.get("flagCommitPage");
+      if (page < 5 && page < total/10) {
+        page++;
+      }
+      Session.set("flagCommitPage", page);
+    },
+
+    'click #flagCommitPrev': function() {
+      var page = Session.get("flagCommitPage");
+      if (page != 1) {
+        page--;
+      }
+      Session.set("flagCommitPage", page);
     }
   });
 
@@ -127,10 +151,19 @@ if (Meteor.isClient) {
 
   Template.m_repos.helpers({
     repo: function() {
-      var query = $("#inputRepoSearch").val();
-      console.log(query);
       Meteor.subscribe("RepositoryList");
-      return RepositoryList.find({  });
+      var repos = RepositoryList.find({}).fetch();
+      // sets the commitPage session variable if it's undefined
+      Session.setDefault('m_repoPage', 1);
+      var page = Session.get('m_repoPage');
+      var end = page * 10;
+      var start = end - 10;
+      return repos.slice(start,end);
+    },
+
+    total: function() {
+      Meteor.subscribe("RepositoryList");
+      return RepositoryList.find({}).fetch().length;
     }
   });
 
@@ -151,6 +184,24 @@ if (Meteor.isClient) {
 
         RepositoryList.remove({ _id:this._id })
       }
+    },
+
+    'click #m_repoNext': function() {
+      Meteor.subscribe("RepositoryList");
+      var total = RepositoryList.find().fetch().length;
+      var page = Session.get("m_repoPage");
+      if (page < total/10) {
+        page++;
+      }
+      Session.set("m_repoPage", page);
+    },
+
+    'click #m_repoPrev': function() {
+      var page = Session.get("m_repoPage");
+      if (page != 1) {
+        page--;
+      }
+      Session.set("m_repoPage", page);
     }
   });
 
@@ -168,11 +219,31 @@ if (Meteor.isClient) {
   Template.m_mentors.helpers({
     all_mentors: function() {
       Meteor.subscribe("Mentors");
-      return Mentors.find();
+      var mentors = Mentors.find({}).fetch();
+      // sets the session variable if it's undefined
+      Session.setDefault('mentorPage', 1);
+      var page = Session.get('mentorPage');
+      var end = page * 10;
+      var start = end - 10;
+      return mentors.slice(start,end);
     },
     mentor_queue: function() {
       Meteor.subscribe("MentorQueue");
-      return MentorQueue.find();
+      var Q = MentorQueue.find({}).fetch();
+      // sets the session variable if it's undefined
+      Session.setDefault('mentorQPage', 1);
+      var page = Session.get('mentorQPage');
+      var end = page * 10;
+      var start = end - 10;
+      return Q.slice(start,end);
+    },
+    queue_length: function() {
+      Meteor.subscribe("MentorQueue");
+      return MentorQueue.find({}).fetch().length;
+    },
+    total_mentors: function() {
+      Meteor.subscribe("Mentors");
+      return Mentors.find({}).fetch().length;
     }
   });
 
@@ -273,7 +344,43 @@ if (Meteor.isClient) {
       Meteor.subscribe("MentorQueue");
       if (confirm("Remove this mentor request?"))
         MentorQueue.remove({ _id:this._id });
-    }
+    },
+
+    'click #mentorQueueNext': function() {
+      Meteor.subscribe("MentorQueue");
+      var total = MentorQueue.find().fetch().length;
+      var page = Session.get("mentorQPage");
+      if (page < total/10) {
+        page++;
+      }
+      Session.set("mentorQPage", page);
+    },
+
+    'click #mentorQueuePrev': function() {
+      var page = Session.get("mentorQPage");
+      if (page != 1) {
+        page--;
+      }
+      Session.set("mentorQPage", page);
+    },
+
+    'click #mentorListNext': function() {
+      Meteor.subscribe("Mentors");
+      var total = Mentors.find().fetch().length;
+      var page = Session.get("mentorPage");
+      if (page < total/10) {
+        page++;
+      }
+      Session.set("mentorPage", page);
+    },
+
+    'click #mentorListPrev': function() {
+      var page = Session.get("mentorPage");
+      if (page != 1) {
+        page--;
+      }
+      Session.set("mentorPage", page);
+    },
   });
 
 

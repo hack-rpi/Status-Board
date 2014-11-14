@@ -132,8 +132,8 @@ if (Meteor.isClient) {
   Template.repoqr.rendered = function() {
     // generate qr code
     $("#QR-repo").qrcode({
-      width: 256,
-      height: 256,
+      width: 250,
+      height: 250,
       text: "http://status.hackrpi.com/repos"
     });
   };
@@ -169,7 +169,7 @@ if (Meteor.isClient) {
 
       // check the spam timer
       var prev = Session.get("mentorRequestTimer");
-      prev = false; // debug
+      // prev = false; // debug
       if (!prev || now > prev ) {
 
         // error check the fields

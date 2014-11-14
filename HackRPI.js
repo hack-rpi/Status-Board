@@ -16,3 +16,4 @@ Router.route('allCommits');
 Router.route('repos');
 Router.route('manage');
 Router.route('mentor');
+Router.route('info');
