@@ -94,6 +94,7 @@ if (Meteor.isClient) {
       var repo = $('#inputRepo').val();
       $("#inputUsername").val('');
       $("#inputRepo").val('');
+      
       // first check if already in database
       if (RepositoryList.find({ name: repo }).fetch().length != 0) {
         $("<div>", {
