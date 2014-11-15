@@ -249,12 +249,11 @@ if (Meteor.isServer) {
         if (msgs[i].visible) {
           // check if the time is up on this announcement
           if (d > msgs[i].endTime)
-            Announcements.update({_id:msgs[i]._id},
-              {$set: {visible:false}});
+            Announcements.remove({_id:msgs[i]._id});
         }
         else {
           // check if it's time to show this announcement
-          if (d < msgs[i].startTime)
+          if (d > msgs[i].startTime)
             Announcements.update({_id:msgs[i]._id},
               {$set: {visible:true}});
         }
