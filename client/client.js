@@ -94,7 +94,7 @@ if (Meteor.isClient) {
       var repo = $('#inputRepo').val();
       $("#inputUsername").val('');
       $("#inputRepo").val('');
-      
+
       // first check if already in database
       if (RepositoryList.find({ name: repo }).fetch().length != 0) {
         $("<div>", {
@@ -149,6 +149,8 @@ if (Meteor.isClient) {
         return; // bail
       var tagSet = new Set();
       for (var m=0; m<mentors.length; m++) {
+        if (mentors[m].active == false && mentors[m].override == false)
+          continue; // skip unactive mentors
         for (var i=0; i<mentors[m]["tags"].length; i++) {
           tagSet.add(mentors[m]["tags"][i]);
         }
