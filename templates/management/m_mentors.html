@@ -96,11 +96,11 @@
               <td>{{startTime}}</td>
               <td>{{endTime}}</td>
               <td>
-                <span id="{{_id}}" class="btn btn-sm btn-danger removeMentor">X</span>
-                <span id="{{_id}}" class="btn btn-sm btn-warning overrideMentor">O</span>
-                <span id="{{_id}}" class="btn btn-sm btn-warning suspendMentor">S</span>
-                <!-- <span id="{{_id}}" class="btn btn-sm btn-info editMentor">E</span> -->
-                <span id="{{_id}}" class="btn btn-sm btn-success clearMentor">C</span>
+                <span title="Remove" id="{{_id}}" class="btn btn-sm btn-danger removeMentor">X</span>
+                <span title="Override" id="{{_id}}" class="btn btn-sm btn-warning overrideMentor">O</span>
+                <span title="Suspend" id="{{_id}}" class="btn btn-sm btn-warning suspendMentor">S</span>
+                <!-- <span title="Edit" id="{{_id}}" class="btn btn-sm btn-info editMentor">E</span> -->
+                <span title="Clear" id="{{_id}}" class="btn btn-sm btn-success clearMentor">C</span>
               </td>
             </tr>
           {{/each}}
