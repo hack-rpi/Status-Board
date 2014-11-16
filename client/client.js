@@ -158,7 +158,7 @@ if (Meteor.isClient) {
       // convert to an array for spacebars
       var arrayTags = [];
       tagSet.forEach(function(value){ arrayTags.push(value) });
-      return arrayTags;
+      return arrayTags.sort();
     }
   });
 
