@@ -254,7 +254,18 @@ if (Meteor.isClient) {
       var company = $("#inputMentorCompany").val();
       var start = $("#inputMentorStartTime").val();
       var end = $("#inputMentorEndTime").val();
-      var tags = $("#inputMentorTags").val().split(",");
+      var tags = $("#inputMentorTags").val().split(",")
+        .map(function(tag){
+            return tag.trim().toLowerCase();
+          });
+
+      var tagSet = new Set(tags);
+
+      tags = [];
+
+      tagSet.forEach(function(tag){
+        tags.push(tag);
+      });
 
       if (name == "" ||
           phone == "" ||
