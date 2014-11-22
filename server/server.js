@@ -28,8 +28,8 @@ if (Meteor.isServer) {
     if (Meteor.users.find( {username: ***REMOVED***} ).fetch().length == 0) {
       console.log(">> admin account created");
       Accounts.createUser({
-        "username": ***REMOVED***,
-        "password": ***REMOVED***,
+        "username": config.admin_username,
+        "password": config.admin_password,
         "profile": {
           "name": "Administrator"
         }
@@ -154,7 +154,7 @@ if (Meteor.isServer) {
 
   Meteor.methods({
     getCommit: function(username, repo) {
-      var token = ***REMOVED***;
+      var token = config.github_API_token;
       var url = "https://api.github.com/repos/" + username + "/" + repo + "/commits";
       try {
         return Meteor.http.get(url, {
@@ -355,8 +355,8 @@ if (Meteor.isServer) {
     },
 
     'sendText': function(toNum, msg) {
-      var SID = ***REMOVED***;
-      var token = ***REMOVED***;
+      var SID = config.twilio_SID;
+      var token = config.twilio_token;
       var url = "https://api.twilio.com/2010-04-01/Accounts/***REMOVED***/SMS/Messages.json"
       var fromNum = ***REMOVED***;
       toNum = toNum.replace("-","");
