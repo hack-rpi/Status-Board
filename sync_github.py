@@ -18,7 +18,7 @@ def getDatabase():
 database = getDatabase()
 
 def getCommit(username, repo):
-    token = '***REMOVED***'
+    token = 'ea86855a004a03c2a72c3a7c95ef6a5f05b5dce4'
     url = 'https://api.github.com/repos/%s/%s/commits?access_token=%s' % (username, repo, token)
     try:
         result = urllib2.urlopen(url)

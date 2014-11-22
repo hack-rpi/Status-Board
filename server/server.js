@@ -37,7 +37,7 @@ if (Meteor.isServer) {
 
       // give the admin admin rights
       var adminUser = Meteor.users.find( {username: config.admin_username} ).fetch()[0];
-      Roles.addUsersToRoles(adminUser, ["super",***REMOVED***,"flagger","mentor","announcer","manager"]);
+      Roles.addUsersToRoles(adminUser, ["super","admin","flagger","mentor","announcer","manager"]);
     }
 
 
@@ -357,8 +357,8 @@ if (Meteor.isServer) {
     'sendText': function(toNum, msg) {
       var SID = config.twilio_SID;
       var token = config.twilio_token;
-      var url = "https://api.twilio.com/2010-04-01/Accounts/***REMOVED***/SMS/Messages.json"
-      var fromNum = ***REMOVED***;
+      var url = "https://api.twilio.com/2010-04-01/Accounts/" + config.twilio_SID + "/SMS/Messages.json"
+      var fromNum = config.twilio_from_num;
       toNum = toNum.replace("-","");
 
       try {
@@ -382,10 +382,10 @@ if (Meteor.isServer) {
     },
 
     'retrieveMessages': function() {
-      var SID = ***REMOVED***;
-      var token = ***REMOVED***;
-      var url = "https://api.twilio.com/2010-04-01/Accounts/***REMOVED***/SMS/Messages.json"
-      var fromNum = ***REMOVED***;
+      var SID = config.twilio_SID;
+      var token = config.twilio_token;
+      var url = "https://api.twilio.com/2010-04-01/Accounts/" + config.twilio_SID + "/SMS/Messages.json"
+      var fromNum = config.twilio_from_num;
 
       try {
         return Meteor.http.get(url, {
