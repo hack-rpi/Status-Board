@@ -25,7 +25,7 @@ if (Meteor.isServer) {
     }, 60*1000);
 
     // create the admin account with a default password
-    if (Meteor.users.find( {username: ***REMOVED***} ).fetch().length == 0) {
+    if (Meteor.users.find( {username: config.admin_username} ).fetch().length == 0) {
       console.log(">> admin account created");
       Accounts.createUser({
         "username": config.admin_username,
@@ -36,7 +36,7 @@ if (Meteor.isServer) {
       });
 
       // give the admin admin rights
-      var adminUser = Meteor.users.find( {username: 'admin'} ).fetch()[0];
+      var adminUser = Meteor.users.find( {username: config.admin_username} ).fetch()[0];
       Roles.addUsersToRoles(adminUser, ["super",***REMOVED***,"flagger","mentor","announcer","manager"]);
     }
 
