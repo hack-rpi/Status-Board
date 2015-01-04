@@ -1,4 +1,4 @@
-config = {
+default_config = {
   default_admin_username: "",
   default_admin_password: "",
 

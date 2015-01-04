@@ -2,6 +2,11 @@ if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
 
+    // create the necessary indexes here?
+    // NOTE: The underscore before ensureIndex indicates that the function is
+    //  undocumented by the Meteor Dev Group
+    CommitMessages._ensureIndex( {"date" : -1} );
+
     // refresh the commit database every 30 seconds
     Meteor.setInterval(function() {
       Meteor.call("refreshCommitsAllRepos");
@@ -17,9 +22,7 @@ if (Meteor.isServer) {
       Meteor.call("assignMentors");
     }, 60*1000);
 
-
-    Meteor.call("checkMentorResponses");
-
+    // check for responses from mentors to clear their statuses
     Meteor.setInterval(function() {
       Meteor.call("checkMentorResponses");
     }, 60*1000);

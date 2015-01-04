@@ -18,9 +18,15 @@
     <a name="top"></a>
     <div class="row">
       <div class="col-md-9">
-        <h4>Commit Messages From Monitored Repos:</h4>
         <table class="table table-striped">
-          <tbody>
+          <colgroup>
+            <col span="1" class="date-col">
+            <col span="1" class="gravatar-col">
+            <col span="1" class="handle-col">
+            <col span="1" class="repo-col">
+            <col span="1" class="message-col">
+          </colgroup>
+          <thead>
             <tr>
               <th>DateTime</th>
               <th>Gravatar</th>
@@ -28,6 +34,8 @@
               <th>Repo</th>
               <th>Commit</th>
             </tr>
+          </thead>
+          <tbody>
             {{> commits }}
           </tbody>
         </table>

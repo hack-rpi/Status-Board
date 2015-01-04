@@ -1,8 +1,4 @@
 /* CSS declarations go here */
-.header {
-  background: #424242;
-}
-
 body {
   padding-bottom: 40px;
   height: 100%;
@@ -37,6 +33,12 @@ body {
 .commitTableContainer {
   min-height: 600px;
 }
+
+.date-col { width: 15%; }
+.gravatar-col { width: 5%; }
+.handle-col { width: 10%; }
+.repo-col { width: 15%; }
+.message-col { width: 55%; }
 
 .green-circle {
   height: 25px;

@@ -1,32 +1,33 @@
 <template name="header">
 
-  <!-- Fixed navbar -->
-  <div class="navbar navbar-static-top header" role="navigation">
+  <div class="header" role="navigation">
     <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">HackRPI Status Board</a>
+      <div class="nav-header">
+        <!-- NAV LOGO -->
+        <a href="/">
+          <img class="header-logo" src="img/hackrpi-logo2_solid-red.png">
+        </a>
+        <!-- NAV BUTTONS -->
+        <a href="/">
+          <span id="nav-home" class="nav-button">HOME</span>
+        </a>
+        <a href="/repos">
+          <span id="nav-repo" class="nav-button">REPO</span>
+        </a>
+        <a href="/allCommits">
+          <span id="nav-commits" class="nav-button">COMMITS</span>
+        </a>
+        <a href="/mentor">
+          <span id="nav-mentor" class="nav-button">MENTOR</span>
+        </a>
+        <a href="/info">
+          <span id="nav-info" class="nav-button">INFO</span>
+        </a>
+        <!-- LOG IN BUTTONS -->
+        <a class="link" href="/login">
+          <span id="nav-login" class="nav-button nav-button-login">LOG IN</span>
+        </a>
       </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="/repos">Repos</a></li>
-          <li><a href="/allCommits">Commits</a></li>
-          <li><a href="/mentor">Request a Mentor</a></li>
-          {{#if isInRole 'manager'}}
-            <li><a href="/manage">Page Management</a></li>
-          {{/if}}
-          <li><a href="/info">Important Info</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          {{> loginButtons}}
-        </ul>
-      </div><!--/.nav-collapse -->
     </div>
   </div>
 
