@@ -6,6 +6,7 @@ if (Meteor.isServer) {
     // NOTE: The underscore before ensureIndex indicates that the function is
     //  undocumented by the Meteor Dev Group
     CommitMessages._ensureIndex( {"date" : -1} );
+    CommitMessages._ensureIndex( {"sha" : 1} );
 
     // refresh the commit database every 30 seconds
     Meteor.setInterval(function() {
@@ -197,11 +198,12 @@ if (Meteor.isServer) {
             // capture and store all of the data
             // sometimes the 'committer' field is null... not sure why
             //  but we have to check everytime if it is
+            var v_date = Meteor.call('validateDate', data[i]['commit']['committer']['date']);
             CommitMessages.insert({
               sha : commit_sha,
               text : data[i]['commit']['message'],
-              date : data[i]['commit']['committer']['date'],
-              fdate :  Meteor.call('formatDateTime', data[i]['commit']['committer']['date']),
+              date : v_date,
+              fdate :  Meteor.call('formatDateTime', v_date),
               repo: repo,
               committer_handle : data[i]['committer'] ? data[i]['committer']['login'] : data[i]['commit']['committer']['name'],
               committer_avatar : data[i]['committer'] ? data[i]['committer']['avatar_url']: null,
@@ -217,7 +219,6 @@ if (Meteor.isServer) {
       }
     },
 
-
     refreshCommitsAllRepos: function() {
       // loop over all the repos in the database and check for new commit messages
       var stored_repos = RepositoryList.find().fetch();
@@ -226,6 +227,17 @@ if (Meteor.isServer) {
         var name = stored_repos[i]["name"];
         Meteor.call("addCommits", owner, name);
       }
+    },
+
+    validateDate: function(dt) {
+      // if a commit has a date in the future compared to the server time, then
+      //  assign it the server time
+      var now = new Date();
+      now.setHours( now.getHours() + 5 ); // UTC
+      if (dt > now) {
+        dt = now;
+      }
+      return dt;
     },
 
     formatDateTime: function(dt) {
@@ -357,7 +369,7 @@ if (Meteor.isServer) {
 
     },
 
-    'sendText': function(toNum, msg) {
+    sendText: function(toNum, msg) {
       var SID = config.twilio_SID;
       var token = config.twilio_token;
       var url = "https://api.twilio.com/2010-04-01/Accounts/" + config.twilio_SID + "/SMS/Messages.json"
@@ -384,7 +396,7 @@ if (Meteor.isServer) {
       }
     },
 
-    'retrieveMessages': function() {
+    retrieveMessages: function() {
       var SID = config.twilio_SID;
       var token = config.twilio_token;
       var url = "https://api.twilio.com/2010-04-01/Accounts/" + config.twilio_SID + "/SMS/Messages.json"
@@ -405,7 +417,7 @@ if (Meteor.isServer) {
       }
     },
 
-    'checkMentorResponses': function() {
+    checkMentorResponses: function() {
       var msgs = Meteor.call("retrieveMessages");
       if (!msgs)
         return;

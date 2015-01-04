@@ -15,9 +15,12 @@ if (Meteor.isClient) {
 	});
 
 	Template.header.events = {
-		'click .nav-button': function(e, b) {
+		'click .nav-button': function(e) {
 			Session.set('active-page', e.currentTarget.id);
 		},
+		'click .header-logo': function(e) {
+			Session.set('active-page', 'nav-home');
+		}
 	}
 
 
