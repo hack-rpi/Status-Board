@@ -6,4 +6,8 @@ default_config = {
 
   twilio_SID: "",
   twilio_token: "",
+  twilio_from_num: "",
+
+  event_start: new Date(),
+  event_end: new Date(),
 };

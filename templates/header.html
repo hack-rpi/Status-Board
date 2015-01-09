@@ -24,9 +24,18 @@
           <span id="nav-info" class="nav-button">INFO</span>
         </a>
         <!-- LOG IN BUTTONS -->
-        <a class="link" href="/login">
-          <span id="nav-login" class="nav-button nav-button-login">LOG IN</span>
-        </a>
+        {{#if currentUser}}
+          <a href="/">
+            <span id="nav-user" class="nav-button nav-button-user">Welcome, {{ currentUserName }}</span>
+          </a>
+          <a href="/">
+            <span id="nav-logout" class="nav-button nav-button-logout">LOG OUT</span>
+          </a>
+        {{else}}
+          <a href="/login">
+            <span id="nav-login" class="nav-button nav-button-login">LOG IN</span>
+          </a>
+        {{/if}}
       </div>
     </div>
   </div>

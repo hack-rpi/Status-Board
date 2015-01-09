@@ -25,6 +25,14 @@
 	float: right;
 }
 
+.nav-button-user {
+	float: right;
+}
+
+.nav-button-logout {
+	float: right;
+}
+
 .nav-header a {
 	text-decoration: none;
 	color: #FFFFFF;

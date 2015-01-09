@@ -3,10 +3,6 @@ if (Meteor.isClient) {
   var commits_per_page = 10;
   var repos_per_page = 10;
 
-  Accounts.ui.config({
-    passwordSignupFields: 'USERNAME_ONLY'
-  });
-
 
   Template.commits.message = function() {
     // return only the ten most recent commits

@@ -17,3 +17,5 @@ Router.route('repos');
 Router.route('manage');
 Router.route('mentor');
 Router.route('info');
+Router.route('login');
+Router.route('register');
