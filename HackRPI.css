@@ -71,3 +71,25 @@ body {
   border-right: 15px solid transparent;
   border-bottom: 15px solid orange;
 }
+
+.overlayMessage {
+  position: fixed;
+  width: 40%;
+  height: 30%;
+  opacity: 0.9;
+  filter: alpha(opacity=90); /* For IE8 and earlier */
+  padding: 5%;
+  text-align: center;
+  color: #000000;
+  font-size: 18px;
+  background: #ababab;
+  border: 3px solid #898989;
+  border-radius: 5%;
+  left: 30%;
+  top: 25%;
+  z-index: 99;
+}
+
+.msg-header {
+  font-weight: bold;
+}

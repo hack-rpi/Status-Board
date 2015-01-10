@@ -1,5 +1,38 @@
 if (Meteor.isClient) {
 
+  Tracker.autorun(function() {
+    // This function is automatically called whenever the displayMessage Session
+    //  variable is updated
+    var message = Session.get("displayMessage");
+    if (message) {
+      $(".overlayMessage").remove();
+      var stringArray = message.split('&');
+      var msg_box = $("<div>", {
+        "class" : "overlayMessage",
+      });
+      var msg_p = $("<p>").appendTo(msg_box);
+      $("<span>", {
+        "class": "msg-header",
+        text: stringArray[0],
+      }).appendTo(msg_p);
+      $("<span>", {
+        text: stringArray[1],
+      }).appendTo(msg_p);
+      $("<div>", {
+        id: "msg-box-btn",
+        "class": "btn btn-lg btn-default",
+        text: "Close",
+        click: function() {
+          Session.set("displayMessage", null);
+          $(".overlayMessage").remove();
+        },
+      }).appendTo(msg_box);
+      $("body").prepend(msg_box);
+
+      Session.set("displayMessage", null);
+    }
+  });
+
   var commits_per_page = 10;
   var repos_per_page = 10;
 
