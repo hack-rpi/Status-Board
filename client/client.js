@@ -1,8 +1,8 @@
 if (Meteor.isClient) {
 
+  // This function is automatically called whenever the displayMessage Session
+  //  variable is updated
   Tracker.autorun(function() {
-    // This function is automatically called whenever the displayMessage Session
-    //  variable is updated
     var message = Session.get("displayMessage");
     if (message) {
       $(".overlayMessage").remove();
@@ -36,26 +36,28 @@ if (Meteor.isClient) {
   var commits_per_page = 10;
   var repos_per_page = 10;
 
+  Template.commits.helpers({
+    message: function() {
+      // return only the ten most recent commits
+      Meteor.subscribe("CommitMessages");
+      return CommitMessages.find({}, {sort: {date:-1}, limit:10});
+    },
+  });
 
-  Template.commits.message = function() {
-    // return only the ten most recent commits
-    Meteor.subscribe("CommitMessages");
-    return CommitMessages.find({}, {sort: {date:-1}, limit:10});
-  };
-
-  Template.allCommits.message = function() {
-    var commits = CommitMessages.find({}, {sort: {date:-1}}).fetch();
-    // sets the commitPage session variable if it's undefined
-    Session.setDefault('commitPage', 1);
-    var page = Session.get('commitPage');
-    var end = page * commits_per_page;
-    var start = end - commits_per_page;
-    return commits.slice(start,end);
-  };
-
-  Template.allCommits.total = function() {
-    return CommitMessages.find().fetch().length;
-  }
+  Template.allCommits.helpers({
+    message: function() {
+      var commits = CommitMessages.find({}, {sort: {date:-1}}).fetch();
+      // sets the commitPage session variable if it's undefined
+      Session.setDefault('commitPage', 1);
+      var page = Session.get('commitPage');
+      var end = page * commits_per_page;
+      var start = end - commits_per_page;
+      return commits.slice(start,end);
+    },
+    total: function() {
+      return CommitMessages.find().fetch().length;
+    },
+  });
 
   Template.allCommits.rendered = function() {
     // subscribe to the DB
@@ -100,20 +102,21 @@ if (Meteor.isClient) {
     });
   };
 
-  Template.repos.total = function() {
-    return RepositoryList.find().fetch().length;
-  }
-
-  Template.repos.names = function() {
-    var repos = RepositoryList.find().fetch();
-    // sets the repoPage session variable if it's undefined
-    Session.setDefault('repoPage', 1);
-    var page = Session.get('repoPage');
-    var end = page * repos_per_page;
-    var start = end - repos_per_page;
-    // return repos.slice(start,end);
-    return repos;
-  };
+  Template.repos.helper({
+    total: function() {
+      return RepositoryList.find().fetch().length;
+    },
+    names: function() {
+      var repos = RepositoryList.find().fetch();
+      // sets the repoPage session variable if it's undefined
+      Session.setDefault('repoPage', 1);
+      var page = Session.get('repoPage');
+      var end = page * repos_per_page;
+      var start = end - repos_per_page;
+      // return repos.slice(start,end);
+      return repos;
+    },
+  });
 
   Template.repos.events({
     'click #addRepoBtn': function() {
@@ -170,7 +173,7 @@ if (Meteor.isClient) {
 
 
   Template.mentor.helpers({
-    'allTags': function() {
+    allTags: function() {
       // create and return a list of all the tags from the mentors
       Meteor.subscribe("Mentors");
       var mentors = Mentors.find({ $or: [{suspended:false}, {override:true}] }).fetch();
@@ -188,7 +191,7 @@ if (Meteor.isClient) {
       var arrayTags = [];
       tagSet.forEach(function(value){ arrayTags.push(value) });
       return arrayTags.sort();
-    }
+    },
   });
 
   Template.mentor.events({

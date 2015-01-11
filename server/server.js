@@ -7,6 +7,7 @@ if (Meteor.isServer) {
     //  undocumented by the Meteor Dev Group
     CommitMessages._ensureIndex( {"date" : -1} );
     CommitMessages._ensureIndex( {"sha" : 1} );
+    Meteor.users._ensureIndex( {"username" : 1} );
 
     // refresh the commit database every 30 seconds
     Meteor.setInterval(function() {
@@ -47,13 +48,13 @@ if (Meteor.isServer) {
 
     // Prevent non-authorized users from creating new users:
     Accounts.validateNewUser(function (user) {
-      var loggedInUser = Meteor.user();
-
-      if (Roles.userIsInRole(loggedInUser, 'admin')) {
+      // var loggedInUser = Meteor.user();
+      //
+      // if (Roles.userIsInRole(loggedInUser, 'admin')) {
         return true;
-      }
-
-      throw new Meteor.Error(403, "Not authorized to create new users");
+      // }
+      //
+      // throw new Meteor.Error(403, "Not authorized to create new users");
     });
 
     // publish the databases to all clients
