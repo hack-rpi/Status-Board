@@ -1,24 +1,46 @@
 <template name="home">
 
-  <div class="container">
-    <!-- <div class="row">
-      <div class="col-md-12">
-        {{#if isInRole 'admin'}}
-
-          <h3>Welcome, admin</h3>
-
-        {{/if}}
-      </div>
-    </div> -->
-  </div>
-
   {{> jumbotron}}
 
+  <img class="empac-banner" src="img/empac_banner.png" />
+  <!-- <img class="empac-banner" src="img/empac_cubes.png" /> -->
+  <!-- <img class="empac-banner" src="img/empac.jpg" /> -->
+
+
   <div class="container">
-    <a name="top"></a>
+
     <div class="row">
-      <div class="col-md-9">
-        <table class="table table-striped">
+      <div class="col-xs-12">
+        <div class="announcements-panel">
+          <h3>Announcements</h3>
+
+          <div class="row">
+            <div class="col-xs-1">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            </div>
+
+            <div class="col-xs-10">
+              <div class="announce-box">
+                <div class="announcement">
+                  <p>Stay tuned for information about HackRPI 2015</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs">
+              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="table">
           <colgroup>
             <col span="1" class="date-col">
             <col span="1" class="gravatar-col">
@@ -40,16 +62,12 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-3">
-        <div class="row">
-          <div class="col-md-12">
-            {{> repoqr }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
+    </div>
+
+        <!-- <div class="row">
+          <div class="col-md-12"> -->
             <!-- goHackRPI Twitter Timeline -->
-            <a class="twitter-timeline"
+            <!-- <a class="twitter-timeline"
               href="https://twitter.com/goHackRPI"
               data-widget-id="523304485175558145">
               Tweets by @goHackRPI
@@ -66,9 +84,8 @@
               }(document,"script","twitter-wjs");
             </script>
           </div>
-        </div>
-      </div>
-    </div>
+        </div> -->
+
   </div>
 
   {{> footer}}

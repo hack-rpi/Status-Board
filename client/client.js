@@ -102,7 +102,7 @@ if (Meteor.isClient) {
     });
   };
 
-  Template.repos.helper({
+  Template.repos.helpers({
     total: function() {
       return RepositoryList.find().fetch().length;
     },

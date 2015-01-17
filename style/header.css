@@ -2,7 +2,10 @@
 	background: #424242;
 	color: #FFFFFF;
 	padding: 5px;
-	margin-bottom: 10px;
+	width: 100%;
+	margin-bottom: 15px;
+	z-index: 99;
+	top: 0px;
 }
 
 .header-logo {
@@ -18,7 +21,7 @@
 }
 
 .nav-button-selected {
-	color: #CC0000;
+	color: #C03328;
 }
 
 .nav-button-login {
@@ -39,5 +42,5 @@
 }
 
 .nav-header a:hover {
-	color: #CC0000
+	color: #C03328
 }
