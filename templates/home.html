@@ -1,7 +1,5 @@
 <template name="home">
 
-  {{> jumbotron}}
-
   <img class="empac-banner" src="img/empac_banner.png" />
   <!-- <img class="empac-banner" src="img/empac_cubes.png" /> -->
   <!-- <img class="empac-banner" src="img/empac.jpg" /> -->
@@ -12,8 +10,8 @@
     {{> jumbotron}}
 
     <div class="row">
-      <div class="col-xs-12">
-        <table class="table recent-commit-table">
+      <div class="col-xs-9">
+        <table class="table">
           <colgroup>
             <col span="1" class="date-col">
             <col span="1" class="gravatar-col">
@@ -35,29 +33,28 @@
           </tbody>
         </table>
       </div>
-    </div>
 
-        <!-- <div class="row">
-          <div class="col-md-12"> -->
-            <!-- goHackRPI Twitter Timeline -->
-            <!-- <a class="twitter-timeline"
-              href="https://twitter.com/goHackRPI"
-              data-widget-id="523304485175558145">
-              Tweets by @goHackRPI
-            </a>
-            <script>
-              !function(d,s,id){
-                var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
-                if(!d.getElementById(id)){
-                  js=d.createElement(s);
-                  js.id=id;
-                  js.src=p+"://platform.twitter.com/widgets.js";
-                  fjs.parentNode.insertBefore(js,fjs);
-                }
-              }(document,"script","twitter-wjs");
-            </script>
-          </div>
-        </div> -->
+      <div class="col-xs-3">
+        <!-- goHackRPI Twitter Timeline -->
+        <a class="twitter-timeline"
+          href="https://twitter.com/goHackRPI"
+          data-widget-id="523304485175558145">
+          Tweets by @goHackRPI
+        </a>
+        <script>
+          !function(d,s,id){
+            var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+            if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src=p+"://platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+            }
+          }(document,"script","twitter-wjs");
+        </script>
+      </div>
+
+    </div>
 
   </div>
 
