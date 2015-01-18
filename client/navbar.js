@@ -10,17 +10,12 @@ if (Meteor.isClient) {
 		$('#nav-mentor').removeClass('nav-button-selected');
 		$('#nav-info').removeClass('nav-button-selected');
 		$('#nav-login').removeClass('nav-button-selected');
+		$('#nav-manage').removeClass('nav-button-selected');
 
 		$('#'+page_name).addClass('nav-button-selected');
 	});
 
 	Template.header.events({
-		'click .nav-button': function(e) {
-			Session.set('active-page', e.currentTarget.id);
-		},
-		'click .header-logo': function(e) {
-			Session.set('active-page', 'nav-home');
-		},
 		'click .nav-button-logout': function() {
 			Meteor.logout();
 		},

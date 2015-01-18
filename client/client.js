@@ -5,32 +5,34 @@ if (Meteor.isClient) {
   Tracker.autorun(function() {
     var message = Session.get("displayMessage");
     if (message) {
-      $(".overlayMessage").remove();
-      var stringArray = message.split('&');
-      var msg_box = $("<div>", {
-        "class" : "overlayMessage",
-      });
-      var msg_p = $("<p>").appendTo(msg_box);
-      $("<span>", {
-        "class": "msg-header",
-        text: stringArray[0],
-      }).appendTo(msg_p);
-      $("<span>", {
-        text: stringArray[1],
-      }).appendTo(msg_p);
-      $("<div>", {
-        id: "msg-box-btn",
-        "class": "btn btn-lg btn-default",
-        text: "Close",
-        click: function() {
-          Session.set("displayMessage", null);
-          $(".overlayMessage").remove();
-        },
-      }).appendTo(msg_box);
-      $("body").prepend(msg_box);
-
+      if (message.title && message.body) {
+        $(".overlayMessage").remove();
+        popupTitle = message.title;
+        popupBody = message.body;
+      }
+      else {
+        popupTitle = "Internal Error";
+        popupBody = "Something went wrong! :(";
+      }
+      popupDep.changed();
+      $("#info-modal").modal('show');
       Session.set("displayMessage", null);
     }
+  });
+
+  var popupTitle = "";
+  var popupBody = "";
+  var popupDep = new Tracker.Dependency;
+
+  Template.popup.helpers({
+    title: function() {
+      popupDep.depend();
+      return popupTitle;
+    },
+    body: function() {
+      popupDep.depend();
+      return popupBody;
+    },
   });
 
   var commits_per_page = 10;
@@ -43,6 +45,11 @@ if (Meteor.isClient) {
       return CommitMessages.find({}, {sort: {date:-1}, limit:10});
     },
   });
+
+  Template.commits.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-home');
+  };
 
   Template.allCommits.helpers({
     message: function() {
@@ -60,6 +67,8 @@ if (Meteor.isClient) {
   });
 
   Template.allCommits.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-commits');
     // subscribe to the DB
     Meteor.subscribe("CommitMessages");
     // advance on the commits page
@@ -82,6 +91,9 @@ if (Meteor.isClient) {
   };
 
   Template.repos.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-repo');
+
     Meteor.subscribe("RepositoryList");
     // advance on the repo list
     $("#repoNext").click(function() {
@@ -171,7 +183,6 @@ if (Meteor.isClient) {
     });
   };
 
-
   Template.mentor.helpers({
     allTags: function() {
       // create and return a list of all the tags from the mentors
@@ -244,4 +255,13 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.mentor.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-mentor');
+  };
+
+  Template.info.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-info');
+  }
 }

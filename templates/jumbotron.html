@@ -2,16 +2,36 @@
 
   {{#if showJumbo}}
     <div class="jumbotron">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="announcements-panel">
+            <h3>Announcements</h3>
 
-      <div class="container">
+            <div class="row">
+              <div class="col-xs-1">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+              </div>
 
-          {{#each announcements}}
-            <h1>{{header}}</h1>
-            <p>{{text}}</p>
-          {{/each}}
+              <div class="col-xs-10">
+                <div class="announce-box">
+                  {{#each announcements}}
+                    <div class="announcement">
+                      <h1>{{header}}</h1>
+                      <p>{{text}}</p>
+                    </div>
+                  {{/each}}
+                </div>
+              </div>
 
+              <div class="col-xs">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
       </div>
-
     </div>
   {{/if}}
 

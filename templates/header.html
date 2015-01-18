@@ -22,6 +22,11 @@
         <a href="/info">
           <span id="nav-info" class="nav-button">INFO</span>
         </a>
+        {{#if isInRole 'manager'}}
+          <a href="/manage">
+            <span id="nav-manage" class="nav-button">MANAGE</span>
+          </a>
+        {{/if}}
         <!-- LOG IN BUTTONS -->
         {{#if currentUser}}
           <a href="/">

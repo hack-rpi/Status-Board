@@ -41,7 +41,7 @@ if (Meteor.isClient) {
           // The user might not have been found, or their passwword
           // could be incorrect. Inform the user that their
           // login attempt has failed.
-          Session.set("displayMessage", "Error & Invalid username, email, or password")
+          Session.set("displayMessage", {title: "Error", body: "Invalid username, email, or password"});
 				}
         else {
           // The user has been logged in.
@@ -52,6 +52,10 @@ if (Meteor.isClient) {
       },
   });
 
+  Template.login.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-login');
+  };
   // ---------------------------------------------------------------------------
   Template.register.helpers({
     register_page: function() {
@@ -85,21 +89,21 @@ if (Meteor.isClient) {
           pass2 = t.find("#reg-participant-pass2").value;
 
       if (!isValidEmail(email)) {
-        Session.set("displayMessage", "Error & Invalid email address");
+        Session.set("displayMessage", {title: "Error", body: "Invalid email address"});
         return false;
       }
       if (!isValidPassword(pass1)) {
-        Session.set("displayMessage", "Error & Password length must be at least 6 characters");
+        Session.set("displayMessage", {title: "Error", body: "Password length must be at least 6 characters"});
         return false;
       }
       if (pass1 != pass2) {
-        Session.set("displayMessage", "Error & Passwords do not match");
+        Session.set("displayMessage", {title: "Error", body: "Passwords do not match"});
         return false;
       }
 
       Accounts.createUser({email: email, password: pass1}, function(err) {
         if (err) {
-          Session.set("displayMessage", "Error & Something went wrong. Please try again later");
+          Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
         }
         else {
           // success
@@ -120,15 +124,15 @@ if (Meteor.isClient) {
           pass1 = trimInput($("#reg-mentor-pass1").val()),
           pass2 = trimInput($("#reg-mentor-pass2").val());
       if (!fname || !lname || !affil || !phone || !email || !pass1 || !pass2)
-        Session.set("displayMessage", "Field Required & One or more required fields are empty");
+        Session.set("displayMessage", {title: "Field Required", body: "One or more required fields are empty"});
       else if (!stripPhone(phone))
-        Session.set("displayMessage", "Error & Invalid phone number");
+        Session.set("displayMessage", {title: "Error", body: "Invalid phone number"});
       else if (!isValidEmail(email))
-        Session.set("displayMessage", "Error & Invalid email");
+        Session.set("displayMessage", {title: "Error", body: "Invalid email"});
       else if (!isValidPassword(pass1))
-        Session.set("displayMessage", "Error & Password must be at least 6 characters");
+        Session.set("displayMessage", {title: "Error", body: "Password must be at least 6 characters"});
       else if (pass1 != pass2)
-        Session.set("displayMessage", "Error & Passwords do not match");
+        Session.set("displayMessage", {title: "Error", body: "Passwords do not match"});
       else {
         $("#reg-mentor-page1").toggle("slide");
         $("#reg-mentor-page2").toggle("slide");
@@ -192,7 +196,7 @@ if (Meteor.isClient) {
                             },
         }, function(err) {
         if (err) {
-          Session.set("displayMessage", "Error & Something went wrong. Please try again later");
+          Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
         }
         else {
           // success
@@ -210,15 +214,15 @@ if (Meteor.isClient) {
           pass1 = trimInput($("#reg-volunteer-pass1").val()),
           pass2 = trimInput($("#reg-volunteer-pass2").val());
       if (!fname || !lname || !phone || !email || !pass1 || !pass2)
-        Session.set("displayMessage", "Field Required & One or more required fields are empty");
+        Session.set("displayMessage", {title: "Field Required", body: "One or more required fields are empty"});
       else if (!stripPhone(phone))
-        Session.set("displayMessage", "Error & Invalid phone number");
+        Session.set("displayMessage", {title: "Error", body: "Invalid phone number"});
       else if (!isValidEmail(email))
-        Session.set("displayMessage", "Error & Invalid email");
+        Session.set("displayMessage", {title: "Error", body: "Invalid email"});
       else if (!isValidPassword(pass1))
-        Session.set("displayMessage", "Error & Password must be at least 6 characters");
+        Session.set("displayMessage", {title: "Error", body: "Password must be at least 6 characters"});
       else if (pass1 != pass2)
-        Session.set("displayMessage", "Error & Passwords do not match");
+        Session.set("displayMessage", {title: "Error", body: "Passwords do not match"});
       else {
         $("#reg-volunteer-page1").toggle("slide");
         $("#reg-volunteer-page2").toggle("slide");
@@ -272,7 +276,7 @@ if (Meteor.isClient) {
       }
 
       if (blocks.length == 0) {
-        Session.set("displayMessage", "Field Required & Please select the hours you are available");
+        Session.set("displayMessage", {title: "Field Required", body: "Please select the hours you are available"});
         return false;
       }
 
@@ -286,7 +290,7 @@ if (Meteor.isClient) {
                             },
         }, function(err) {
         if (err) {
-          Session.set("displayMessage", "Error & Something went wrong. Please try again later");
+          Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
         }
         else {
           // success
