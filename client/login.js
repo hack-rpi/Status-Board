@@ -103,7 +103,12 @@ if (Meteor.isClient) {
 
       Accounts.createUser({email: email, password: pass1}, function(err) {
         if (err) {
-          Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
+          if (err.error == 403) {
+            Session.set("displayMessage", {title: "Access Denied", body: "Account creation is currently disabled"});
+          }
+          else {
+            Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
+          }
         }
         else {
           // success
@@ -196,7 +201,12 @@ if (Meteor.isClient) {
                             },
         }, function(err) {
         if (err) {
-          Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
+          if (err.error == 403) {
+            Session.set("displayMessage", {title: "Access Denied", body: "Account creation is currently disabled"});
+          }
+          else {
+            Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
+          }
         }
         else {
           // success
@@ -290,7 +300,12 @@ if (Meteor.isClient) {
                             },
         }, function(err) {
         if (err) {
-          Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
+          if (err.error == 403) {
+            Session.set("displayMessage", {title: "Access Denied", body: "Account creation is currently disabled"});
+          }
+          else {
+            Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
+          }
         }
         else {
           // success
