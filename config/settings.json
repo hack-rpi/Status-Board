@@ -1,8 +1,8 @@
 {
 
 	"public": {
-		event_start: new Date(),
-		event_end: new Date(),
+		"event_start": "",
+		"event_end": ""
 	},
 
 	"default_admin_username": "",
@@ -12,6 +12,6 @@
 
 	"twilio_SID": "",
 	"twilio_token": "",
-	"twilio_from_num": "",
+	"twilio_from_num": ""
 
 }
