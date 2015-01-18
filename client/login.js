@@ -318,12 +318,8 @@ if (Meteor.isClient) {
   });
 
   Template.register_volunteer.rendered = function() {
-    var s = config.event_start;
-    var e = config.event_end;
-    // var s = new Date("November 15, 2014 00:00:00");
-    // var e = new Date("November 16, 2014 00:00:00");
-    // console.log(s);
-    // console.log(e);
+    var s = new Date(Meteor.settings.public.event_start);
+    var e = new Date(Meteor.settings.public.event_end);
     var box_count = 0;
     $("<div>", {
       "class": "time-grid-date row",

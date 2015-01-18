@@ -30,18 +30,18 @@ if (Meteor.isServer) {
     }, 60*1000);
 
     // create the admin account with a default password
-    if (Meteor.users.find( {username: config.admin_username} ).fetch().length == 0) {
+    if (Meteor.users.find( {username: Meteor.settings.admin_username} ).fetch().length == 0) {
       console.log(">> admin account created");
       Accounts.createUser({
-        "username": config.admin_username,
-        "password": config.admin_password,
+        "username": Meteor.settings.admin_username,
+        "password": Meteor.settings.admin_password,
         "profile": {
           "name": "Administrator"
         }
       });
 
       // give the admin admin rights
-      var adminUser = Meteor.users.find( {username: config.admin_username} ).fetch()[0];
+      var adminUser = Meteor.users.find( {username: Meteor.settings.admin_username} ).fetch()[0];
       Roles.addUsersToRoles(adminUser, ["super","admin","flagger","mentor","announcer","manager"]);
     }
 
@@ -159,7 +159,7 @@ if (Meteor.isServer) {
 
   Meteor.methods({
     getCommit: function(username, repo) {
-      var token = config.github_API_token;
+      var token = Meteor.settings.github_API_token;
       var url = "https://api.github.com/repos/" + username + "/" + repo + "/commits";
       try {
         return Meteor.http.get(url, {
@@ -371,10 +371,10 @@ if (Meteor.isServer) {
     },
 
     sendText: function(toNum, msg) {
-      var SID = config.twilio_SID;
-      var token = config.twilio_token;
-      var url = "https://api.twilio.com/2010-04-01/Accounts/" + config.twilio_SID + "/SMS/Messages.json"
-      var fromNum = config.twilio_from_num;
+      var SID = Meteor.settings.twilio_SID;
+      var token = Meteor.settings.twilio_token;
+      var url = "https://api.twilio.com/2010-04-01/Accounts/" + Meteor.settings.twilio_SID + "/SMS/Messages.json"
+      var fromNum = Meteor.settings.twilio_from_num;
       toNum = toNum.replace("-","");
 
       try {
@@ -398,10 +398,10 @@ if (Meteor.isServer) {
     },
 
     retrieveMessages: function() {
-      var SID = config.twilio_SID;
-      var token = config.twilio_token;
-      var url = "https://api.twilio.com/2010-04-01/Accounts/" + config.twilio_SID + "/SMS/Messages.json"
-      var fromNum = config.twilio_from_num;
+      var SID = Meteor.settings.twilio_SID;
+      var token = Meteor.settings.twilio_token;
+      var url = "https://api.twilio.com/2010-04-01/Accounts/" + Meteor.settings.twilio_SID + "/SMS/Messages.json"
+      var fromNum = Meteor.settings.twilio_from_num;
 
       try {
         return Meteor.http.get(url, {
