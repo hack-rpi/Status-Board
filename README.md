@@ -39,3 +39,8 @@ The Admin of the site has the power to
 - add/delete mentors from the database
 - add/delete users from the database
 - add/delete repositories from the database
+
+# Status Board Setup
+Rename `default_config.js` as `config.js` and update the settings accordingly.
+
+Then simply execute `meteor run` and you're all set.

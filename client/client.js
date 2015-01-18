@@ -1,34 +1,74 @@
 if (Meteor.isClient) {
 
+  // This function is automatically called whenever the displayMessage Session
+  //  variable is updated
+  Tracker.autorun(function() {
+    var message = Session.get("displayMessage");
+    if (message) {
+      if (message.title && message.body) {
+        $(".overlayMessage").remove();
+        popupTitle = message.title;
+        popupBody = message.body;
+      }
+      else {
+        popupTitle = "Internal Error";
+        popupBody = "Something went wrong! :(";
+      }
+      popupDep.changed();
+      $("#info-modal").modal('show');
+      Session.set("displayMessage", null);
+    }
+  });
+
+  var popupTitle = "";
+  var popupBody = "";
+  var popupDep = new Tracker.Dependency;
+
+  Template.popup.helpers({
+    title: function() {
+      popupDep.depend();
+      return popupTitle;
+    },
+    body: function() {
+      popupDep.depend();
+      return popupBody;
+    },
+  });
+
   var commits_per_page = 10;
   var repos_per_page = 10;
 
-  Accounts.ui.config({
-    passwordSignupFields: 'USERNAME_ONLY'
-  })
+  Template.commits.helpers({
+    message: function() {
+      // return only the ten most recent commits
+      Meteor.subscribe("CommitMessages");
+      return CommitMessages.find({}, {sort: {date:-1}, limit:10});
+    },
+  });
 
-
-  Template.commits.message = function() {
-    // return only the ten most recent commits
-    Meteor.subscribe("CommitMessages");
-    return CommitMessages.find({}, {sort: {date:-1}, limit:10});
+  Template.commits.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-home');
   };
 
-  Template.allCommits.message = function() {
-    var commits = CommitMessages.find({}, {sort: {date:-1}}).fetch();
-    // sets the commitPage session variable if it's undefined
-    Session.setDefault('commitPage', 1);
-    var page = Session.get('commitPage');
-    var end = page * commits_per_page;
-    var start = end - commits_per_page;
-    return commits.slice(start,end);
-  };
-
-  Template.allCommits.total = function() {
-    return CommitMessages.find().fetch().length;
-  }
+  Template.allCommits.helpers({
+    message: function() {
+      var commits = CommitMessages.find({}, {sort: {date:-1}}).fetch();
+      // sets the commitPage session variable if it's undefined
+      Session.setDefault('commitPage', 1);
+      var page = Session.get('commitPage');
+      var end = page * commits_per_page;
+      var start = end - commits_per_page;
+      return commits.slice(start,end);
+    },
+    total: function() {
+      return CommitMessages.find().fetch().length;
+    },
+  });
 
   Template.allCommits.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-commits');
     // subscribe to the DB
     Meteor.subscribe("CommitMessages");
     // advance on the commits page
@@ -51,6 +91,9 @@ if (Meteor.isClient) {
   };
 
   Template.repos.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-repo');
+
     Meteor.subscribe("RepositoryList");
     // advance on the repo list
     $("#repoNext").click(function() {
@@ -71,20 +114,21 @@ if (Meteor.isClient) {
     });
   };
 
-  Template.repos.total = function() {
-    return RepositoryList.find().fetch().length;
-  }
-
-  Template.repos.names = function() {
-    var repos = RepositoryList.find().fetch();
-    // sets the repoPage session variable if it's undefined
-    Session.setDefault('repoPage', 1);
-    var page = Session.get('repoPage');
-    var end = page * repos_per_page;
-    var start = end - repos_per_page;
-    // return repos.slice(start,end);
-    return repos;
-  };
+  Template.repos.helpers({
+    total: function() {
+      return RepositoryList.find().fetch().length;
+    },
+    names: function() {
+      var repos = RepositoryList.find().fetch();
+      // sets the repoPage session variable if it's undefined
+      Session.setDefault('repoPage', 1);
+      var page = Session.get('repoPage');
+      var end = page * repos_per_page;
+      var start = end - repos_per_page;
+      // return repos.slice(start,end);
+      return repos;
+    },
+  });
 
   Template.repos.events({
     'click #addRepoBtn': function() {
@@ -139,9 +183,8 @@ if (Meteor.isClient) {
     });
   };
 
-
   Template.mentor.helpers({
-    'allTags': function() {
+    allTags: function() {
       // create and return a list of all the tags from the mentors
       Meteor.subscribe("Mentors");
       var mentors = Mentors.find({ $or: [{suspended:false}, {override:true}] }).fetch();
@@ -159,7 +202,7 @@ if (Meteor.isClient) {
       var arrayTags = [];
       tagSet.forEach(function(value){ arrayTags.push(value) });
       return arrayTags.sort();
-    }
+    },
   });
 
   Template.mentor.events({
@@ -212,4 +255,13 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.mentor.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-mentor');
+  };
+
+  Template.info.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-info');
+  }
 }

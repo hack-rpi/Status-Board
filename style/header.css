@@ -1,0 +1,46 @@
+.header {
+	background: linear-gradient(#424242, #101010);
+	color: #FFFFFF;
+	padding: 5px;
+	width: 100%;
+	margin-bottom: 15px;
+	z-index: 99;
+	top: 0px;
+}
+
+.header-logo {
+	width: 20%;
+}
+
+.nav-button {
+	margin: 5px;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.nav-button-selected {
+	color: #C03328;
+}
+
+.nav-button-login {
+	float: right;
+}
+
+.nav-button-user {
+	float: right;
+}
+
+.nav-button-logout {
+	float: right;
+}
+
+.nav-header a {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+.nav-header a:hover {
+	color: #C03328
+}

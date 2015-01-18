@@ -26,7 +26,14 @@
         <h4>All Commits</h4>
         <div class="commitTableContainer">
           <table class="table table-striped commitTable">
-            <tbody>
+            <colgroup>
+              <col span="1" class="date-col">
+              <col span="1" class="gravatar-col">
+              <col span="1" class="handle-col">
+              <col span="1" class="repo-col">
+              <col span="1" class="message-col">
+            </colgroup>
+            <thead>
               <tr>
                 <th>DateTime</th>
                 <th>Gravatar</th>
@@ -34,6 +41,8 @@
                 <th>Repo</th>
                 <th>Commit</th>
               </tr>
+            </thead>
+            <tbody>
               {{#each message}}
                 <tr>
                   <td>{{fdate}}</td>

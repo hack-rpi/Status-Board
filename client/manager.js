@@ -43,6 +43,11 @@ if (Meteor.isClient) {
     }
   });
 
+  Template.manage.rendered = function() {
+    // mark the page as active
+    Session.set('active-page', 'nav-manage');
+  };
+
 
   Template.m_commits.helpers({
     commits: function() {
