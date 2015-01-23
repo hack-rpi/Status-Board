@@ -30,18 +30,18 @@ if (Meteor.isServer) {
     }, 60*1000);
 
     // create the admin account with a default password
-    if (Meteor.users.find( {username: Meteor.settings.admin_username} ).fetch().length == 0) {
+    if (Meteor.users.find( {username: Meteor.settings.default_admin_username} ).fetch().length == 0) {
       console.log(">> admin account created");
       Accounts.createUser({
-        "username": Meteor.settings.admin_username,
-        "password": Meteor.settings.admin_password,
+        "username": Meteor.settings.default_admin_username,
+        "password": Meteor.settings.default_admin_password,
         "profile": {
           "name": "Administrator"
         }
       });
 
       // give the admin admin rights
-      var adminUser = Meteor.users.find( {username: Meteor.settings.admin_username} ).fetch()[0];
+      var adminUser = Meteor.users.find( {username: Meteor.settings.default.admin_username} ).fetch()[0];
       Roles.addUsersToRoles(adminUser, ["super","admin","flagger","mentor","announcer","manager"]);
     }
 
