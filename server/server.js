@@ -41,8 +41,8 @@ if (Meteor.isServer) {
       });
 
       // give the admin admin rights
-      var adminUser = Meteor.users.find( {username: Meteor.settings.default.admin_username} ).fetch()[0];
-      Roles.addUsersToRoles(adminUser, ["super","admin","flagger","mentor","announcer","manager"]);
+      var adminUser = Meteor.users.find( {username: Meteor.settings.default_admin_username} ).fetch()[0];
+      Roles.addUsersToRoles(adminUser._id, ["super","admin","flagger","mentor","announcer","manager"]);
     }
 
 

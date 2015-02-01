@@ -19,3 +19,4 @@ Router.route('mentor');
 Router.route('info');
 Router.route('login');
 Router.route('register');
+Router.route('user');

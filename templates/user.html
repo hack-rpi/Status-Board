@@ -1,0 +1,110 @@
+<template name="user">
+
+<div class="container">
+
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-xs-2 user-sidebar">
+      <div class="list-group">
+        <!-- Public View -->
+        <a href="#" class="list-group-item user-sidebar-btn" id="user-profile-btn">Profile</a>
+
+        <!-- Private View -->
+        <a href="#" class="list-group-item user-sidebar-btn" id="user-settings-btn">Settings</a>
+
+        {{#if isInRole 'hacker'}}
+        <a href="#" class="list-group-item user-sidebar-btn" id="user-hacker-btn">Hacker</a>
+        {{/if}}
+
+        {{#if isInRole 'mentor'}}
+        <a href="#" class="list-group-item user-sidebar-btn" id="user-mentor-btn">Mentor</a>
+        {{/if}}
+
+        {{#if isInRole 'volunteer'}}
+        <a href="#" class="list-group-item user-sidebar-btn" id="user-volunteer-btn">Volunteer</a>
+        {{/if}}
+
+        {{#if isInRole 'announcer'}}
+        <a href="#" class="list-group-item user-sidebar-btn" id="user-announcements-btn">Announcements</a>
+        {{/if}}
+
+        {{#if isInRole 'admin'}}
+        <a href="#" class="list-group-item user-sidebar-btn" id="user-database-btn">Database Access</a>
+        {{/if}}
+
+
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="col-xs-10 user-content">
+
+      {{> Template.dynamic template=user_page}}
+
+    </div>
+
+  </div>
+
+</div>
+
+</template>
+
+
+<!-- User Profile -->
+<template name="user_profile">
+  <div id="user-profile">
+    <h1>{{ currentUserName }}</h1>
+
+  </div>
+</template>
+
+
+<!-- User Settings -->
+<template name="user_settings">
+  <div id="user-settings">
+    <h1>Settings</h1>
+
+  </div>
+</template>
+
+
+<!-- Hacker Controls -->
+<template name="user_hacker">
+  <div id="user-hacker">
+    <h1>Hacker Controls</h1>
+
+  </div>
+</template>
+
+
+<!-- Mentor Controls -->
+<template name="user_mentor">
+  <div id="user-mentor">
+    <h1>Mentor Controls</h1>
+
+  </div>
+</template>
+
+<!-- Volunteer Controls -->
+<template name="user_volunteer">
+  <div id="user-volunteer">
+    <h1>Volunteer Controls</h1>
+
+  </div>
+</template>
+
+<!-- Announcements Controls -->
+<template name="user_announcements">
+  <div id="user-announcements">
+    <h1>Announcements Controls</h1>
+
+  </div>
+</template>
+
+<!-- Database Access -->
+<template name="user_database">
+  <div id="user-database">
+    <h1>Database Access</h1>
+
+  </div>
+</template>
