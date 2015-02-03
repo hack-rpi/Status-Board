@@ -53,8 +53,20 @@
 <!-- User Profile -->
 <template name="user_profile">
   <div id="user-profile">
-    <h1>{{ currentUserName }}</h1>
+    {{#if EditActive}}
+      <h1>Edit</h1>
 
+      <div class="btn btn-primary" id="user-profile-save-btn">Save</div>
+    {{#else}}
+      <h1>{{ userName }}</h1>
+      {{ realName }}
+      {{ projectName }}
+      {{ location }}
+
+      {{#if editable}}
+        <div class="btn btn-primary" id="user-profile-edit-btn">Edit</div>
+      {{/if}}
+    {{/if}}
   </div>
 </template>
 
