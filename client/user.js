@@ -12,12 +12,13 @@ if (Meteor.isClient) {
   var s_realname = "";
   var s_projectname = "";
   var s_location = "";
+  var s_user_dep = new Tracker.Dependency;
 
   Tracker.autorun(function(){
     // called automatically whenever the session variable changes
     var selectedUserName = Session.get("selectedUserName");
     Meteor.subscribe("userData");
-    var s_user = Meteor.users().find( {username : selectedUserName} ).fetch()[0];
+    var s_user = Meteor.users.find( {username : selectedUserName} ).fetch()[0];
     if (s_user) {
       s_username = selectedUserName;
       s_userID = s_user._id;
@@ -26,6 +27,7 @@ if (Meteor.isClient) {
         s_projectname = s_user.profile.project_name;
         s_location = s_user.profile.location;
       }
+      s_user_dep.changed();
     }
   });
 
@@ -64,29 +66,42 @@ if (Meteor.isClient) {
 // =============================================================================
 
   Template.user_profile.helpers({
-    userName: function() { return s_username; },
-    realName: function() { return s_realname; },
-    projectName: function() { return s_projectname; },
-    location: function() { return s_location; },
+    userName: function() {
+      s_user_dep.depend();
+      return s_username;
+    },
+    realName: function() {
+      s_user_dep.depend();
+      return s_realname;
+    },
+    projectName: function() {
+      s_user_dep.depend();
+      return s_projectname;
+    },
+    location: function() {
+      s_user_dep.depend();
+      return s_location;
+    },
 
     editable: function() {
-      if (Meteor.user)
-        return s_userID == Meteor.user._id;
+      s_user_dep.depend();
+      if (Meteor.user())
+        return s_userID == Meteor.user()._id;
     },
     editActive: function() {
-      return user-profile-edit;
+      return user_profile_edit;
     },
   });
 
-  var user-profile-edit = false;
+  var user_profile_edit = false;
 
   Template.user_profile.events({
     'click #user-profile-edit-btn': function() {
-      user-profile-edit = true;
+      user_profile_edit = true;
     },
     'click #user-profile-save-btn': function() {
       // check edits and save to db
-      user-profile-edit = false;
+      user_profile_edit = false;
     },
   });
 
