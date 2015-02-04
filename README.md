@@ -4,7 +4,7 @@ This is the status board for HackRPI! The official event board is at [status.hac
 The outline for v2.0.0 of the Status Board has been outlined on the [wiki](https://github.com/mpoegel/HackRPI-Status-Board/wiki/Road-Map)
 
 ## Setup
-Copy `config/settings.json` to `config/hackrpi_settings.json` and update the defaults appropriately. Note: default admin username and password are required at a minimum. Be sure to run meteor with the custom settings: `meteor --settings hackrpi_settings.json`.
+Copy `config/settings.json` to `config/hackrpi_settings.json` and update the defaults appropriately. Note: default admin username and password are required at a minimum. Be sure to run meteor with the custom settings: `meteor --settings config/hackrpi_settings.json`.
 
 **Windows Users!** Meteor for Windows is still under development (now in [preview](https://github.com/meteor/meteor/wiki/Preview-of-Meteor-on-Windows) actually). It is recommended that you work in Linux. If you do decide to work with the Meteor Windows Preview, please do not commit changes to the `.meteor` directory. Nothing is guaranteed to work with the Windows Preview. You can also use a Linux VM using Vagrant:
 
