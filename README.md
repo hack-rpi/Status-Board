@@ -22,8 +22,14 @@ Open Windows Powershell (or Command Prompt if you're old school).
   4. If not previously set: `set PATH=%PATH%;C:\Program Files (x86)\Git\bin`
   5. `vagrant up` (Note: this step will take a few minutes.)
   6. `vagrant ssh`
-  7. `cd ~/shared/HackRPI-Status-Board`
-  8. Make the necessary changes to hackrpi_settings.json and run `meteor --settings config/hackrpi_settings.json`
+  7.  `cd ~/shared`
+  8.  `git clone https://github.com/mpoegel/HackRPI-Status-Board`
+  9.  `cd HackRPI-Status-Board`
+  10.  `mkdir -p ~/mock/HackRPI-Status-Board`
+  11.  `mv .meteor ~/mock/HackRPI-Status-Board`
+  12.  `mkdir .meteor`
+  13.  `sudo mount --bind /home/vagrant/mock/HackRPI-Status-Board/.meteor .meteor`
+  14. Make the necessary changes to hackrpi_settings.json and run `meteor --settings config/hackrpi_settings.json`
 
 **Important**
 
