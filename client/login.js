@@ -45,7 +45,7 @@ if (Meteor.isClient) {
 				}
         else {
           // The user has been logged in.
-          Session.setDefault("selectedUserName", Meteor.user().username);
+          Session.set("selectedUserId", Meteor.userId());
 					Router.go("/user");
 				}
       });

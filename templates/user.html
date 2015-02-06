@@ -3,45 +3,52 @@
 <div class="container">
 
   <div class="row">
-    <!-- Sidebar -->
-    <div class="col-xs-2 user-sidebar">
-      <div class="list-group">
-        <!-- Public View -->
-        <a href="#" class="list-group-item user-sidebar-btn" id="user-profile-btn">Profile</a>
 
-        <!-- Private View -->
-        <a href="#" class="list-group-item user-sidebar-btn" id="user-settings-btn">Settings</a>
+    {{#if userIsSelected}}
+      <!-- Sidebar -->
+      <div class="col-xs-2 user-sidebar">
+        <div class="list-group">
+          <!-- Public View -->
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-profile-btn">Profile</a>
 
-        {{#if isInRole 'hacker'}}
-        <a href="#" class="list-group-item user-sidebar-btn" id="user-hacker-btn">Hacker</a>
-        {{/if}}
+          <!-- Private View -->
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-settings-btn">Settings</a>
 
-        {{#if isInRole 'mentor'}}
-        <a href="#" class="list-group-item user-sidebar-btn" id="user-mentor-btn">Mentor</a>
-        {{/if}}
+          {{#if isInRole 'hacker'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-hacker-btn">Hacker</a>
+          {{/if}}
 
-        {{#if isInRole 'volunteer'}}
-        <a href="#" class="list-group-item user-sidebar-btn" id="user-volunteer-btn">Volunteer</a>
-        {{/if}}
+          {{#if isInRole 'mentor'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-mentor-btn">Mentor</a>
+          {{/if}}
 
-        {{#if isInRole 'announcer'}}
-        <a href="#" class="list-group-item user-sidebar-btn" id="user-announcements-btn">Announcements</a>
-        {{/if}}
+          {{#if isInRole 'volunteer'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-volunteer-btn">Volunteer</a>
+          {{/if}}
 
-        {{#if isInRole 'admin'}}
-        <a href="#" class="list-group-item user-sidebar-btn" id="user-database-btn">Database Access</a>
-        {{/if}}
+          {{#if isInRole 'announcer'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-announcements-btn">Announcements</a>
+          {{/if}}
 
+          {{#if isInRole 'admin'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-database-btn">Database Access</a>
+          {{/if}}
+
+
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="col-xs-10 user-content">
+
+        {{> Template.dynamic template=user_page}}
 
       </div>
-    </div>
+    {{else}}
 
-    <!-- Content -->
-    <div class="col-xs-10 user-content">
+      {{> user_search }}
 
-      {{> Template.dynamic template=user_page}}
-
-    </div>
+    {{/if}}
 
   </div>
 
@@ -49,24 +56,76 @@
 
 </template>
 
+<!-- User Search -->
+<template name="user_search">
+  <div id="user-search">
+    <h1>Search</h1>
+  </div>
+</template>
 
 <!-- User Profile -->
 <template name="user_profile">
   <div id="user-profile">
-    hello
     {{#if editActive}}
       <h1>Edit</h1>
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="UPedit-name" class="col-md-3 control-label">Name</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-name" value="{{ name }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-affiliation" class="col-md-3 control-label">Affiliation</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-affiliation" value="{{ affiliation }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-projectname" class="col-md-3 control-label">Project Name</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-projectname" value="{{ projectName }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-location" class="col-md-3 control-label">Location</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-location" value="{{ location }}">
+          </div>
+        </div>
 
-      <div class="btn btn-primary" id="user-profile-save-btn">Save</div>
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-1">
+            <button type="click" id="user-profile-save-btn" class="btn btn-primary">Save</button>
+          </div>
+          <div class="col-sm-offset-1 col-sm-1">
+            <button type="click" id="user-profile-cancel-btn" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </form>
+
     {{else}}
-      <h1>{{ userName }}</h1>
-      {{ realName }}
-      {{ projectName }}
-      {{ location }}
+      <div class="row">
+        <div class="col-xs-11">
+          <h1>{{ userName }}</h1>
+        </div>
+        <div class="col-xs-1">
+          {{#if editable}}
+            <div class="btn btn-primary" id="user-profile-edit-btn" title="Edit">
+              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </div>
+          {{/if}}
+        </div>
+      </div>
 
-      {{#if editable}}
-        <div class="btn btn-primary" id="user-profile-edit-btn">Edit</div>
-      {{/if}}
+      <dl class='dl-horizontal'>
+        <dt>Name</dt><dd>{{ name }}</dd>
+        <dt>Affiliation</dt><dd>{{ affiliation }}</dd>
+        <dt>Project Name</dt><dd>{{ projectName }}</dd>
+        <dt>Location</dt><dd>{{ location }}</dd>
+      </dl>
+
+
     {{/if}}
   </div>
 </template>

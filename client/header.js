@@ -12,6 +12,9 @@ if (Meteor.isClient) {
 		'click .nav-button-logout': function() {
 			Meteor.logout();
 		},
+		'click #nav-user': function() {
+			Session.set("selectedUserId", Meteor.userId());
+		}
 	});
 
 	Template.header.helpers({
