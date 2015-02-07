@@ -9,6 +9,8 @@ if (Meteor.isServer) {
     CommitMessages._ensureIndex( {"sha" : 1} );
     Meteor.users._ensureIndex( {"username" : 1} );
 
+    // Repeating Server Actions ================================================
+
     // refresh the commit database every 30 seconds
     Meteor.setInterval(function() {
       Meteor.call("refreshCommitsAllRepos");
@@ -28,6 +30,7 @@ if (Meteor.isServer) {
     Meteor.setInterval(function() {
       Meteor.call("checkMentorResponses");
     }, 60*1000);
+    // =========================================================================
 
     // create the admin account with a default password
     if (Meteor.users.find( {username: Meteor.settings.default_admin_username} ).fetch().length == 0) {
@@ -36,26 +39,32 @@ if (Meteor.isServer) {
         "username": Meteor.settings.default_admin_username,
         "password": Meteor.settings.default_admin_password,
         "profile": {
-          "name": "Administrator"
+          "name": "Administrator",
+          "settings": {
+            "allow_account_creation": false
+          }
         }
       });
 
       // give the admin admin rights
-      var adminUser = Meteor.users.find( {username: Meteor.settings.default_admin_username} ).fetch()[0];
-      Roles.addUsersToRoles(adminUser._id, ["super","admin","flagger","mentor","announcer","manager"]);
+      var adminUser = Meteor.users.findOne( {username: Meteor.settings.default_admin_username} );
+      Roles.addUsersToRoles(adminUser, ["super","admin","flagger","announcer","manager"]);
     }
 
+    // Server Variables ========================================================
+    var admin_user = Meteor.users.findOne({ username: Meteor.settings.default_admin_username });
+    // =========================================================================
 
     // Prevent non-authorized users from creating new users:
     Accounts.validateNewUser(function (user) {
-      var loggedInUser = Meteor.user();
-
-      if (Roles.userIsInRole(loggedInUser, 'admin')) {
+      if (admin_user.profile.settings.allow_account_creation) {
         return true;
       }
 
       throw new Meteor.Error(403, "Not authorized to create new users");
     });
+
+    // Database Controls =======================================================
 
     // publish the databases to all clients
     Meteor.publish("CommitMessages", function() { return CommitMessages.find(); });
@@ -63,8 +72,18 @@ if (Meteor.isServer) {
     Meteor.publish("Announcements", function() {  return Announcements.find(); });
     Meteor.publish("Mentors", function() {        return Mentors.find(); });
     Meteor.publish("MentorQueue", function() {    return MentorQueue.find(); });
+    // users can view all of their own data but only the profiles and usernames
+    //  of other users
     Meteor.publish("userData", function() {
-      return Meteor.users.find({});
+        return Meteor.users.find({ "_id": this.userId });
+    });
+    Meteor.publish("allUserData", function() {
+      return Meteor.users.find({}, {
+        fields: {
+            username: 1,
+            profile: 1,
+          }
+        });
     });
     Meteor.publish("userRoles", function  () {
       return Roles.getAllRoles();
@@ -80,9 +99,13 @@ if (Meteor.isServer) {
         if (Roles.userIsInRole(Meteor.user(), 'admin'))
           return true;
       },
-      update:function() {
-        if (Roles.userIsInRole(Meteor.user(), 'admin'))
+      update:function(userId, targer_user) {
+        // users can only edit their own data
+        if (target_user._id == UserId || Roles.userIsInRole(Meteor.user(), 'admin')) {
           return true;
+        }
+        else
+          return false;
       }
     });
     CommitMessages.allow({
@@ -154,8 +177,10 @@ if (Meteor.isServer) {
       }
     });
 
-
+    // =========================================================================
   });
+
+  // Server Methods
 
   Meteor.methods({
     getCommit: function(username, repo) {
@@ -449,7 +474,6 @@ if (Meteor.isServer) {
 
       } // end for
     }
-
 
   });
 }

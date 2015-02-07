@@ -7,42 +7,8 @@ if (Meteor.isClient) {
     $("#user-profile-btn").addClass("active");
   };
 
-  var s_username = "";
-  var s_userID = "";
-  var s_name = "";
-  var s_affiliation = "";
-  var s_projectname = "";
-  var s_location = "";
-  var s_user_dep = new Tracker.Dependency;
-
-  Tracker.autorun(function(){
-    // called automatically whenever the session variable changes
-    var selectedUserId = Session.get("selectedUserId");
-    if (!selectedUserId) return;
-    Meteor.subscribe("userData");
-    var s_user = Meteor.users.findOne( {"_id" : selectedUserId} );
-    if (s_user) {
-      s_username = s_user.username;
-      s_userID = selectedUserId;
-      if (s_user.profile) {
-        s_name = s_user.profile.name;
-        s_projectname = s_user.profile.project_name;
-        s_affiliation = s_user.profile.affiliation;
-        s_location = s_user.profile.location;
-      }
-      s_user_dep.changed();
-    }
-  });
-
 
   Template.user.helpers({
-    userIsSelected: function() {
-      s_user_dep.depend();
-      if (s_userID)
-        return true;
-      else
-        return false;
-    },
     user_page: function() {
       var page = Session.get("user-page");
       $(".user-sidebar-btn").removeClass("active");
@@ -59,6 +25,8 @@ if (Meteor.isClient) {
         return "user_announcements";
       else if (page == "user-database-btn")
         return "user_database";
+      else if (page == "user-server-settings-btn")
+        return "user_server_settings";
       else {
         $("#user-profile-btn").addClass("active");
         return "user_profile";
@@ -77,30 +45,29 @@ if (Meteor.isClient) {
 
   Template.user_profile.helpers({
     userName: function() {
-      s_user_dep.depend();
-      return s_username;
+      if (Meteor.userId())
+        return Meteor.user().username;
+      else return "";
     },
     name: function() {
-      s_user_dep.depend();
-      return s_name;
+      if (Meteor.userId())
+        return Meteor.user().profile.name;
+      else return "";
     },
     affiliation: function() {
-      s_user_dep.depend();
-      return s_affiliation;
+      if (Meteor.userId())
+        return Meteor.user().profile.affiliation;
+      else return "";
     },
     projectName: function() {
-      s_user_dep.depend();
-      return s_projectname;
+      if (Meteor.userId())
+        return Meteor.user().profile.project_name;
+      else return "";
     },
     location: function() {
-      s_user_dep.depend();
-      return s_location;
-    },
-
-    editable: function() {
-      s_user_dep.depend();
-      if (Meteor.user())
-        return s_userID == Meteor.user()._id;
+      if (Meteor.userId())
+        return Meteor.user().profile.location;
+      else return "";
     },
     editActive: function() {
       user_profile_edit_dep.depend();

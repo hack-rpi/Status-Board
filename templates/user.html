@@ -4,7 +4,7 @@
 
   <div class="row">
 
-    {{#if userIsSelected}}
+    {{#if currentUser}}
       <!-- Sidebar -->
       <div class="col-xs-2 user-sidebar">
         <div class="list-group">
@@ -32,6 +32,7 @@
 
           {{#if isInRole 'admin'}}
           <a href="#" class="list-group-item user-sidebar-btn" id="user-database-btn">Database Access</a>
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-server-settings-btn">Server Settings</a>
           {{/if}}
 
 
@@ -46,7 +47,7 @@
       </div>
     {{else}}
 
-      {{> user_search }}
+      <p>Please <a href="/login">login</a> to view your profile.</p>
 
     {{/if}}
 
@@ -56,12 +57,6 @@
 
 </template>
 
-<!-- User Search -->
-<template name="user_search">
-  <div id="user-search">
-    <h1>Search</h1>
-  </div>
-</template>
 
 <!-- User Profile -->
 <template name="user_profile">
@@ -110,11 +105,9 @@
           <h1>{{ userName }}</h1>
         </div>
         <div class="col-xs-1">
-          {{#if editable}}
-            <div class="btn btn-primary" id="user-profile-edit-btn" title="Edit">
-              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-            </div>
-          {{/if}}
+          <div class="btn btn-primary" id="user-profile-edit-btn" title="Edit">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+          </div>
         </div>
       </div>
 
@@ -142,41 +135,72 @@
 
 <!-- Hacker Controls -->
 <template name="user_hacker">
+  {{#if isInRole 'hacker'}}
   <div id="user-hacker">
     <h1>Hacker Controls</h1>
 
   </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
 </template>
 
 
 <!-- Mentor Controls -->
 <template name="user_mentor">
+  {{#if isInRole 'mentor'}}
   <div id="user-mentor">
     <h1>Mentor Controls</h1>
 
   </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
 </template>
 
 <!-- Volunteer Controls -->
 <template name="user_volunteer">
+  {{#if isInRole 'volunteer'}}
   <div id="user-volunteer">
     <h1>Volunteer Controls</h1>
 
   </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
 </template>
 
 <!-- Announcements Controls -->
 <template name="user_announcements">
+  {{#if isInRole 'announcer'}}
   <div id="user-announcements">
     <h1>Announcements Controls</h1>
 
   </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
 </template>
 
 <!-- Database Access -->
 <template name="user_database">
+  {{#if isInRole 'admin'}}
   <div id="user-database">
     <h1>Database Access</h1>
 
   </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<template name="user_server_settings">
+  {{#if isInRole 'admin'}}
+  <div id="user-server-settings">
+    <h1>Server Settings</h1>
+
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
 </template>
