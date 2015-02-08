@@ -1,38 +1,46 @@
 <template name="jumbotron">
 
-  {{#if showJumbo}}
-    <div class="jumbotron">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="announcements-panel">
-            <h3>Announcements</h3>
+  <div class="jumbotron-container">
 
-            <div class="row">
-              <div class="col-xs-1">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-              </div>
+    <img class="banner-logo" src="img/hackrpi-logo2_solid-red.png" />
 
-              <div class="col-xs-10">
-                <div class="announce-box">
-                  {{#each announcements}}
-                    <div class="announcement">
-                      <h1>{{header}}</h1>
-                      <p>{{text}}</p>
-                    </div>
-                  {{/each}}
+    <div class="container">
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="announcements-panel">
+              <h3>Announcements</h3>
+
+              <div class="row">
+                <div class="col-xs-1">
+                  <i class="fa fa-angle-left fa-5x accent"></i>
                 </div>
-              </div>
 
-              <div class="col-xs">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <div class="col-xs-10">
+                  <div class="announce-box">
+                    {{#each announcements}}
+                      <div class="announcement">
+                        <h1>{{header}}</h1>
+                        <p>{{text}}</p>
+                      </div>
+                    {{/each}}
+                  </div>
+                </div>
+
+                <div class="col-xs-1">
+                  <i class="fa fa-angle-right fa-5x accent"></i>
+                </div>
+
               </div>
 
             </div>
-
           </div>
         </div>
       </div>
-    </div>
-  {{/if}}
+    </div> <!-- End Container -->
+
+
+
+  </div>
 
 </template>

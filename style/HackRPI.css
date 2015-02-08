@@ -1,20 +1,70 @@
+/* GLOBAL =================================================================== */
+
 body {
   height: 100%;
-  background-image: url('img/brickwall.png');
+  background: #cdcdcd;
+  width: 100%;
 }
 
-.empac-banner {
-  width: 100%;
-  margin-top: -15px;
-  margin-bottom: 3%;
-  border-bottom: 10px solid #101010;
+.content-container {
+  background: #cdcdcd;
+}
+
+.accent {
+  color: #C03328;
+}
+
+/* JUMBOTRON ================================================================ */
+
+.jumbotron-container {
+  background: #FFFFFF;
+}
+
+.jumbotron {
+  background: #FFFFFF;
+}
+
+.banner-logo {
+  width: 20%;
 }
 
 .announcements-panel {
   text-align: center;
   padding: 5% 0;
-  margin: 5% 0;
 }
+
+/* COMMIT MESSAGES ========================================================== */
+
+.commit-box {
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.commit-repo {
+  font-size: 32px;
+}
+
+.commit-text {
+  font-size: 18px;
+}
+
+.commit-flag-count {
+  float:right;
+  font-size: 14px;
+}
+
+.commit-flag-count i {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.commit-date {
+  color: #cdcdcd;
+  float: right;
+}
+
+/* ========================================================================== */
 
 .recent-commit-table {
   margin-top: 5%;
