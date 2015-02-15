@@ -9,3 +9,8 @@
 .section-header-span {
   font-size: 32px;
 }
+
+.user-information-label {
+  text-align: right;
+  font-weight: bold;
+}

@@ -29,6 +29,7 @@ if (Meteor.isClient) {
 		},
 		'click .user-popup-btn': function(e) {
 			$(".user-popup").fadeToggle(200);
+			e.stopPropagation();
 		}
 	});
 

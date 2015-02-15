@@ -61,8 +61,17 @@
 <!-- User Profile -->
 <template name="user_profile">
   <div id="user-profile">
+    <div class="row">
+      <div class="col-xs-1">
+        <div class="btn btn-primary" id="user-profile-edit-btn" title="Edit">
+          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="col-xs-11">
+        <span class="section-header-span">{{ userName }}</span>
+      </div>
+    </div>
     {{#if editActive}}
-      <h1>Edit</h1>
       <form class="form-horizontal" role="form">
         <div class="form-group">
           <label for="UPedit-name" class="col-md-3 control-label">Name</label>
@@ -101,23 +110,21 @@
 
     {{else}}
       <div class="row">
-        <div class="col-xs-11">
-          <h1>{{ userName }}</h1>
-        </div>
-        <div class="col-xs-1">
-          <div class="btn btn-primary" id="user-profile-edit-btn" title="Edit">
-            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-          </div>
-        </div>
+        <div class="col-xs-4 user-information-label">Name</div>
+        <div class="col-xs-8">{{ name }}</div>
       </div>
-
-      <dl class='dl-horizontal'>
-        <dt>Name</dt><dd>{{ name }}</dd>
-        <dt>Affiliation</dt><dd>{{ affiliation }}</dd>
-        <dt>Project Name</dt><dd>{{ projectName }}</dd>
-        <dt>Location</dt><dd>{{ location }}</dd>
-      </dl>
-
+      <div class="row">
+        <div class="col-xs-4 user-information-label">Affiliation</div>
+        <div class="col-xs-8">{{ affiliation }}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 user-information-label">Project Name</div>
+        <div class="col-xs-8">{{ projectName }}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 user-information-label">Location</div>
+        <div class="col-xs-8">{{ location }}</div>
+      </div>
 
     {{/if}}
   </div>

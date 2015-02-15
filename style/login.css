@@ -2,7 +2,6 @@
 	padding: 50px 20px;
 	width: 600px;
 	margin: 0px auto;
-	margin-top: 50px;
 }
 
 .login-panel-2 {
@@ -12,7 +11,7 @@
 }
 
 .register-panel {
-	padding: 100px 20px;
+	padding: 30px 20px;
 	width: 700px;
 	margin: 0px auto;
 	text-align: center;
@@ -25,7 +24,7 @@
 }
 
 .register-panel-title {
-	margin-bottom: -50px;
+	/*margin-bottom: -50px;*/
 	text-align: center;
 }
 

@@ -16,6 +16,10 @@ body {
   color: #343434;
 }
 
+#info-modal {
+  color: #000000;
+}
+
 /* JUMBOTRON ================================================================ */
 
 .jumbotron-container {
@@ -29,6 +33,7 @@ body {
 
 .banner-logo {
   width: 200px;
+  margin-top: 20px;
 }
 
 .announcements-panel {
