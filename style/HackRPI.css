@@ -2,16 +2,18 @@
 
 body {
   height: 100%;
-  background: #cdcdcd;
+  background: #424242;
   width: 100%;
+  color: #FFFFFF;
+  padding-bottom: 100px;
 }
 
-.content-container {
-  background: #cdcdcd;
-}
-
-.accent {
+.accent, a, a:hover, .btn-link, .btn-link:hover {
   color: #C03328;
+}
+
+.faded-text {
+  color: #343434;
 }
 
 /* JUMBOTRON ================================================================ */
@@ -22,15 +24,15 @@ body {
 
 .jumbotron {
   background: #FFFFFF;
+  height: 200px;
 }
 
 .banner-logo {
-  width: 20%;
+  width: 200px;
 }
 
 .announcements-panel {
   text-align: center;
-  padding: 5% 0;
 }
 
 /* COMMIT MESSAGES ========================================================== */
@@ -39,6 +41,8 @@ body {
   background: #FFFFFF;
   border-radius: 10px;
   padding: 20px;
+  margin-bottom: 20px;
+  color: #000000;
 }
 
 .commit-repo {
@@ -62,6 +66,12 @@ body {
 .commit-date {
   color: #cdcdcd;
   float: right;
+}
+
+/* ========================================================================== */
+
+.announce-box {
+  color: #000000;
 }
 
 /* ========================================================================== */

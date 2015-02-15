@@ -8,7 +8,7 @@ if (Meteor.isClient) {
 		$('#'+page_name).addClass('nav-button-selected');
 	});
 
-	$(document).click(function() {
+	$(document).click(function(e) {
 		if ($(".user-popup").is(":visible"))
 			$(".user-popup").fadeToggle(200);
 	});
@@ -16,7 +16,6 @@ if (Meteor.isClient) {
 	Template.header.events({
 		'click .nav-button-logout': function(e) {
 			Meteor.logout();
-			// e.stopPropagation();
 		},
 		'click #nav-user': function(e) {
 			var moveLeft = 20;
@@ -30,7 +29,6 @@ if (Meteor.isClient) {
 		},
 		'click .user-popup-btn': function(e) {
 			$(".user-popup").fadeToggle(200);
-			// e.stopPropagation();
 		}
 	});
 
