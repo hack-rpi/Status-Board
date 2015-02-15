@@ -1,42 +1,17 @@
 <template name="home">
 
-  <img class="empac-banner" src="img/empac_banner.png" />
-  <!-- <img class="empac-banner" src="img/empac_cubes.png" /> -->
-  <!-- <img class="empac-banner" src="img/empac.jpg" /> -->
-
-
   <div class="container">
 
-    {{> jumbotron}}
-
     <div class="row">
-      <div class="col-xs-9">
-        <table class="table">
-          <colgroup>
-            <col span="1" class="date-col">
-            <col span="1" class="gravatar-col">
-            <col span="1" class="handle-col">
-            <col span="1" class="repo-col">
-            <col span="1" class="message-col">
-          </colgroup>
-          <thead>
-            <tr>
-              <th>DateTime</th>
-              <th>Gravatar</th>
-              <th>Committer</th>
-              <th>Repo</th>
-              <th>Commit</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{> commits }}
-          </tbody>
-        </table>
+      <div class="col-xs-12">
+
+        {{> commits }}
+
       </div>
 
-      <div class="col-xs-3">
+      <!-- <div class="col-xs-3"> -->
         <!-- goHackRPI Twitter Timeline -->
-        <a class="twitter-timeline"
+        <!-- <a class="twitter-timeline"
           href="https://twitter.com/goHackRPI"
           data-widget-id="523304485175558145">
           Tweets by @goHackRPI
@@ -52,12 +27,10 @@
             }
           }(document,"script","twitter-wjs");
         </script>
-      </div>
+      </div> -->
 
     </div>
 
   </div>
-
-  {{> footer}}
 
 </template>
