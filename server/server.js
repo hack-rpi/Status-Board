@@ -8,6 +8,7 @@ if (Meteor.isServer) {
     CommitMessages._ensureIndex( {"date" : -1} );
     CommitMessages._ensureIndex( {"sha" : 1} );
     Meteor.users._ensureIndex( {"username" : 1} );
+    RepositoryList._ensureIndex( {"name": 1} );
 
     // Repeating Server Actions ================================================
 
@@ -32,10 +33,17 @@ if (Meteor.isServer) {
     }, 60*1000);
     // =========================================================================
 
+    // Server Variables ========================================================
+    var admin_doc = Meteor.users.findOne({ "username":Meteor.settings.default_admin_username });
+    var admin_id = "";
+    if (admin_doc)
+      admin_id = admin_doc._id;
+    // =========================================================================
+
     // create the admin account with a default password
     if (Meteor.users.find( {username: Meteor.settings.default_admin_username} ).fetch().length == 0) {
       console.log(">> admin account created");
-      Accounts.createUser({
+      admin_id = Accounts.createUser({
         "username": Meteor.settings.default_admin_username,
         "password": Meteor.settings.default_admin_password,
         "profile": {
@@ -45,23 +53,31 @@ if (Meteor.isServer) {
           }
         }
       });
-
       // give the admin admin rights
-      var adminUser = Meteor.users.findOne( {username: Meteor.settings.default_admin_username} );
+      var adminUser = Meteor.users.findOne({ "_id":admin_id });
       Roles.addUsersToRoles(adminUser, ["super","admin","flagger","announcer","manager"]);
     }
 
-    // Server Variables ========================================================
-    var admin_user = Meteor.users.findOne({ username: Meteor.settings.default_admin_username });
-    // =========================================================================
-
     // Prevent non-authorized users from creating new users:
     Accounts.validateNewUser(function (user) {
-      if (admin_user.profile.settings.allow_account_creation) {
+      if (Meteor.users.findOne({ "_id":admin_id }).profile.settings.allow_account_creation) {
         return true;
       }
 
       throw new Meteor.Error(403, "Not authorized to create new users");
+    });
+
+    // Construct new users, add to roles, and validate new user data
+    Accounts.onCreateUser(function(options, user) {
+      user.profile = options.profile;
+      user.settings = {};
+      if (options.profile.role == "hacker")
+        user.roles = ["hacker"];
+      else if (options.profile.role == "mentor")
+        user.roles = ["mentor"];
+      else if (options.profile.role == "volunteer")
+        user.roles = ["volunteer"];
+      return user;
     });
 
     // Database Controls =======================================================
@@ -131,8 +147,8 @@ if (Meteor.isServer) {
           return true;
       },
       update:function() {
-        if (Roles.userIsInRole(Meteor.user(), 'admin'))
-          return true;
+        // if (Roles.userIsInRole(Meteor.user(), 'admin'))
+        return true;
       }
     });
     Announcements.allow({

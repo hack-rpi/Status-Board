@@ -16,8 +16,18 @@ body {
   color: #343434;
 }
 
-#info-modal {
+.modal {
   color: #000000;
+}
+
+.fa-toggle-on {
+  color: #11aa11;
+  cursor: pointer;
+}
+
+.fa-toggle-off {
+  color: #aa1111;
+  cursor: pointer;
 }
 
 /* JUMBOTRON ================================================================ */
