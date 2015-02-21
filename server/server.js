@@ -143,7 +143,7 @@ if (Meteor.isServer) {
         return true;
       },
       remove:function() {
-        if (Roles.userIsInRole(Meteor.user(), 'admin'))
+        // if (Roles.userIsInRole(Meteor.user(), 'admin'))
           return true;
       },
       update:function() {
