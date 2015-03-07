@@ -147,7 +147,7 @@
   <div id="user-hacker">
     <h1>Hacker Controls</h1>
     <div class="row">
-      <i>Connect with your team!</i> If no one on your team has added your
+      <i>Connect with your team.</i> If no one on your team has added your
       repository yet, then you should go ahead and do that now! Otherwise,
       you can join an existing project.*
     </div>
@@ -173,11 +173,18 @@
       </div>
       <div class="row">
         <div class="col-xs-4 user-information-label">ChallengePost Link</div>
-        <div class="col-xs-8"></div>
+        <div class="col-xs-8">
+          {{#if challengePost }}
+            <a href="{{ challengePost }}">Link</a>
+          {{/if}}
+          <div class="btn btn-link" id="user-challengePost-edit" data-toggle="modal" data-target="#edit-ChallengePost-modal">Edit</div>
+        </div>
       </div>
       <div class="row">
         <div class="col-xs-4 user-information-label">Team Members</div>
-        <div class="col-xs-8"></div>
+        <div class="col-xs-8">
+          {{ teamMembers }}
+        </div>
       </div>
     </div>
 
@@ -221,6 +228,29 @@
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" id="user-hacker-join-repo">Join Project</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="edit-ChallengePost-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Edit ChallengePost Link</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="challengePost-input">Enter a link to your project on ChallengePost! (Set it up now *hint, hint*)</label>
+              <input type="text" class="form-control" id="challengePost-input">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="user-challengePost-save">Save</button>
         </div>
       </div>
     </div>

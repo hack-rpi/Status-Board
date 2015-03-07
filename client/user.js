@@ -128,6 +128,21 @@ if (Meteor.isClient) {
   // ===========================================================================
   // USER HACKER
 
+  // update database reactively instead of in modals
+  var challengePost_link = "";
+  var challengePost_dep = new Tracker.Dependency;
+  Tracker.autorun(function() {
+    challengePost_dep.depend();
+    var sub = Meteor.subscribe("RepositoryList");
+    if (sub.ready() && challengePost_link) {
+      RepositoryList.update({"_id": Meteor.user().profile.repositoryId}, {
+        $set: {
+          "challengePost": challengePost_link
+        }
+      });
+    }
+  });
+
   var add_new_repo_flag = 0;
   var add_new_repo_dep = new Tracker.Dependency;
   var project_dep = new Tracker.Dependency;
@@ -171,10 +186,22 @@ if (Meteor.isClient) {
       return Meteor.user().profile.repository;
     },
     challengePost: function() {
-
+      project_dep.depend();
+      var sub = Meteor.subscribe("RepositoryList");
+      if (sub.ready()) {
+        return RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId }).challengePost;
+      }
+      else {
+        return "";
+      }
     },
     teamMembers: function() {
-
+      project_dep.depend();
+      var sub = Meteor.subscribe("RepositoryList");
+      if (sub.ready())
+        return RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId }).contributors;
+      else
+        return [];
     },
     add_new_repo: function() {
       add_new_repo_dep.depend();
@@ -275,7 +302,13 @@ if (Meteor.isClient) {
         RepositoryList.remove({ "_id": repo_id });
       }
     },
+    'click #user-challengePost-save': function() {
+      challengePost_link = $("#challengePost-input").val();
+      challengePost_dep.changed();
+      $("#edit-ChallengePost-modal").modal("hide");
+    },
   });
+
 
   // ===========================================================================
   // USER SERVER SETTINGS
