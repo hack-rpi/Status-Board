@@ -249,7 +249,7 @@ if (Meteor.isClient) {
 
     },
     'click #user-hacker-leave-repo': function() {
-      if (!confirm("Are you want to leave this project?"))
+      if (!confirm("Are you sure want to leave this project?"))
         return false;
       Meteor.subscribe("userData");
       Meteor.subscribe("RepositoryList");

@@ -42,4 +42,9 @@
 	padding: 10px;
 	background: #dfdfdf;
 	border-radius: 5px;
+	width: 150px;
+}
+
+.user-popup-btn {
+	width: 130px;
 }
