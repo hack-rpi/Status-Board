@@ -145,6 +145,10 @@ if (Meteor.isClient) {
 
   var add_new_repo_flag = 0;
   var add_new_repo_dep = new Tracker.Dependency;
+  var repo_add_owner_handle = null;
+  var repo_add_handle = null;
+  var repo_add_repo_name = null;
+  var repo_add_dep = new Tracker.Dependency;
   var project_dep = new Tracker.Dependency;
 
   var linkUserToRepo = function(handle, repo_doc) {
@@ -176,6 +180,55 @@ if (Meteor.isClient) {
     }
   }
 
+  Tracker.autorun(function() {
+    repo_add_dep.depend();
+    Meteor.subscribe("RepositoryList");
+    if (add_new_repo_flag && repo_add_owner_handle) {
+      // check if the repo is valid (exists on github)
+      // this has to be asynchronous
+      Meteor.call("getCommit", repo_add_owner_handle, repo_add_repo_name, function(error, result) {
+        if (!result) {
+          $("<div>", {
+            "class": "alert alert-warning alert-dismissible",
+            text: "This repository cannot be found on GitHub! Are you sure the repository is public?"
+          }).append('<button type="button" class="close" \
+              data-dismiss="alert" aria-hidden="true">&times;</button>').
+                appendTo("#user-hacker-alertbox");
+          return false;
+        }
+        contributors = [repo_add_owner_handle];
+        userIds = [Meteor.userId()];
+        // if all good, then go ahead and add it to the database
+        RepositoryList.insert({
+          'name': repo_add_repo_name,
+          'owner': repo_add_owner_handle,
+          'contributors': contributors,
+          'userIds': userIds
+        });
+        var repo_doc = RepositoryList.findOne({ "name":repo_add_repo_name });
+        $("#join-repo-modal").modal("hide");
+        add_new_repo_flag = false;
+        add_new_repo_dep.changed();
+        // update the user's profile
+        linkUserToRepo(repo_add_handle, repo_doc);
+      });
+    }
+    else if (repo_add_repo_name && repo_add_handle) {
+      var repo_doc = RepositoryList.findOne({ "name":repo_add_repo_name });
+      if (repo_doc) {
+        // found repository in the database so just connect the current user
+        $("#join-repo-modal").modal("hide");
+        linkUserToRepo(repo_add_handle, repo_doc);
+      }
+      else {
+        // existing repository not found
+        add_new_repo_flag = true;
+        add_new_repo_dep.changed();
+        return false;
+      }
+    }
+  });
+
   Template.user_hacker.helpers({
     handle: function() {
       project_dep.depend();
@@ -205,15 +258,13 @@ if (Meteor.isClient) {
     },
     add_new_repo: function() {
       add_new_repo_dep.depend();
-      return add_new_repo_flag > 1;
+      return add_new_repo_flag;
     },
   });
 
   Template.user_hacker.events({
     'click #user-hacker-join-repo': function() {
       // clear any old output messages
-      var repo_sub = Meteor.subscribe("RepositoryList");
-      Meteor.subscribe("userData");
       $("#user-hacker-alertbox").empty();
       var handle = $('#github-handle-input').val();
       var repo = $('#github-repo-input').val();
@@ -228,50 +279,11 @@ if (Meteor.isClient) {
               appendTo("#user-hacker-alertbox");
         return false;
       }
-
-      if (add_new_repo_flag > 1) {
-        // check if the repo is valid (exists on github)
-        // this has to be asynchronous
-        Meteor.call("getCommit", owner_handle, repo, function(error, result) {
-          if (!result) {
-            $("<div>", {
-              "class": "alert alert-warning alert-dismissible",
-              text: "This repository cannot be found on GitHub! Are you sure the repository is public?"
-            }).append('<button type="button" class="close" \
-                data-dismiss="alert" aria-hidden="true">&times;</button>').
-                  appendTo("#user-hacker-alertbox");
-            return false;
-          }
-          contributors = [owner_handle];
-          userIds = [Meteor.userId()];
-          // if all good, then go ahead and add it to the database
-          RepositoryList.insert({
-            'name': repo,
-            'owner': owner_handle,
-            'contributors': contributors,
-            'userIds': userIds
-          });
-          var repo_doc = RepositoryList.findOne({ "name":repo });
-          $("#join-repo-modal").modal("hide");
-          add_new_repo_flag = false;
-          add_new_repo_dep.changed();
-          // update the user's profile
-          linkUserToRepo(handle, repo_doc);
-        });
-      }
       else {
-        var repo_doc = RepositoryList.findOne({ "name":repo });
-        if (repo_doc) {
-          // found repository in the database so just connect the current user
-          $("#join-repo-modal").modal("hide");
-          linkUserToRepo(handle, repo_doc);
-        }
-        else {
-          // existing repository not found
-          add_new_repo_flag++;
-          add_new_repo_dep.changed();
-          return false;
-        }
+        repo_add_handle = handle;
+        repo_add_repo_name = repo;
+        repo_add_owner_handle = owner_handle;
+        repo_add_dep.changed();
       }
 
     },
