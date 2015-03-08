@@ -1,47 +1,26 @@
 <template name="header">
+
   <div class="header" role="navigation">
-    <div class="container">
-      <div class="nav-header">
-        <!-- NAV LOGO -->
-        <a class="header-logo" href="/">
-          <img class="header-logo" src="img/hackrpi-logo2_solid-red.png">
-        </a>
-        <!-- NAV BUTTONS -->
-        <a href="/">
-          <span id="nav-home" class="nav-button">HOME</span>
-        </a>
-        <a href="/repos">
-          <span id="nav-repo" class="nav-button">REPO</span>
-        </a>
-        <a href="/allCommits">
-          <span id="nav-commits" class="nav-button">COMMITS</span>
-        </a>
-        <a href="/mentor">
-          <span id="nav-mentor" class="nav-button">MENTOR</span>
-        </a>
-        <a href="/info">
-          <span id="nav-info" class="nav-button">INFO</span>
-        </a>
-        {{#if isInRole 'manager'}}
-          <a href="/manage">
-            <span id="nav-manage" class="nav-button">MANAGE</span>
-          </a>
-        {{/if}}
-        <!-- LOG IN BUTTONS -->
-        {{#if currentUser}}
-          <a href="/">
-            <span id="nav-user" class="nav-button nav-button-user">Welcome, {{ currentUserName }}</span>
-          </a>
-          <a href="/">
-            <span id="nav-logout" class="nav-button nav-button-logout">LOG OUT</span>
-          </a>
-        {{else}}
-          <a href="/login">
-            <span id="nav-login" class="nav-button nav-button-login">LOG IN</span>
-          </a>
-        {{/if}}
-      </div>
+    <div class="nav-header">
+      <!-- NAV BUTTONS -->
+      <ul class="nav-list">
+        <li id="nav-home" class="nav-button"><a href="/">Commits</a></li>
+        <li id="nav-mentor" class="nav-button"><a href="/mentor">Mentor</a></li>
+        <li id="nav-data" class="nav-button"><a href="/">Data</a></li>
+        <li id="nav-info" class="nav-button"><a href="/Info">Info</a></li>
+        <li id="nav-user" class="nav-button nav-button-user"><i class="fa fa-user"></i>
+        </li>
+      </ul>
     </div>
+  </div>
+
+  <div class="user-popup accent">
+    {{#if currentUser}}
+    <a href="/user"><div class="btn btn-primary user-popup-btn">View Profile</div></a>
+    <div class="btn btn-primary nav-button-logout user-popup-btn">Logout</div>
+    {{else}}
+    <a href="/login"><div class="btn btn-primary user-popup-btn">Login</div></a>
+    {{/if}}
   </div>
 
 </template>

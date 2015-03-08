@@ -51,44 +51,44 @@ if (Meteor.isClient) {
     Session.set('active-page', 'nav-home');
   };
 
-  Template.allCommits.helpers({
-    message: function() {
-      var commits = CommitMessages.find({}, {sort: {date:-1}}).fetch();
-      // sets the commitPage session variable if it's undefined
-      Session.setDefault('commitPage', 1);
-      var page = Session.get('commitPage');
-      var end = page * commits_per_page;
-      var start = end - commits_per_page;
-      return commits.slice(start,end);
-    },
-    total: function() {
-      return CommitMessages.find().fetch().length;
-    },
-  });
-
-  Template.allCommits.rendered = function() {
-    // mark the page as active
-    Session.set('active-page', 'nav-commits');
-    // subscribe to the DB
-    Meteor.subscribe("CommitMessages");
-    // advance on the commits page
-    $("#commitNext").click(function() {
-      var page = Session.get("commitPage");
-      var total = CommitMessages.find().fetch().length;
-      if (page < total/10) {
-        page++;
-      }
-      Session.set("commitPage", page);
-    });
-    // move back on the commits page
-    $("#commitPrev").click(function() {
-      var page = Session.get("commitPage");
-      if (page != 1) {
-        page--;
-      }
-      Session.set("commitPage", page);
-    });
-  };
+  // Template.allCommits.helpers({
+  //   message: function() {
+  //     var commits = CommitMessages.find({}, {sort: {date:-1}}).fetch();
+  //     // sets the commitPage session variable if it's undefined
+  //     Session.setDefault('commitPage', 1);
+  //     var page = Session.get('commitPage');
+  //     var end = page * commits_per_page;
+  //     var start = end - commits_per_page;
+  //     return commits.slice(start,end);
+  //   },
+  //   total: function() {
+  //     return CommitMessages.find().fetch().length;
+  //   },
+  // });
+  //
+  // Template.allCommits.rendered = function() {
+  //   // mark the page as active
+  //   Session.set('active-page', 'nav-commits');
+  //   // subscribe to the DB
+  //   Meteor.subscribe("CommitMessages");
+  //   // advance on the commits page
+  //   $("#commitNext").click(function() {
+  //     var page = Session.get("commitPage");
+  //     var total = CommitMessages.find().fetch().length;
+  //     if (page < total/10) {
+  //       page++;
+  //     }
+  //     Session.set("commitPage", page);
+  //   });
+  //   // move back on the commits page
+  //   $("#commitPrev").click(function() {
+  //     var page = Session.get("commitPage");
+  //     if (page != 1) {
+  //       page--;
+  //     }
+  //     Session.set("commitPage", page);
+  //   });
+  // };
 
   Template.repos.rendered = function() {
     // mark the page as active

@@ -1,0 +1,333 @@
+<template name="user">
+
+<div class="container">
+
+  <div class="row">
+
+    {{#if currentUser}}
+      <!-- Sidebar -->
+      <div class="col-xs-2 user-sidebar">
+        <div class="list-group">
+          <!-- Public View -->
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-profile-btn">Profile</a>
+
+          <!-- Private View -->
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-settings-btn">Settings</a>
+
+          {{#if isInRole 'hacker'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-hacker-btn">Hacker</a>
+          {{/if}}
+
+          {{#if isInRole 'mentor'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-mentor-btn">Mentor</a>
+          {{/if}}
+
+          {{#if isInRole 'volunteer'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-volunteer-btn">Volunteer</a>
+          {{/if}}
+
+          {{#if isInRole 'announcer'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-announcements-btn">Announcements</a>
+          {{/if}}
+
+          {{#if isInRole 'admin'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-database-btn">Database Access</a>
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-server-settings-btn">Server Settings</a>
+          {{/if}}
+
+
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="col-xs-10 user-content">
+
+        {{> Template.dynamic template=user_page}}
+
+      </div>
+    {{else}}
+
+      <p>Please <a href="/login">login</a> to view your profile.</p>
+
+    {{/if}}
+
+  </div>
+
+</div>
+
+</template>
+
+
+<!-- User Profile -->
+<template name="user_profile">
+  <div id="user-profile">
+    <div class="row">
+      <div class="col-xs-1">
+        <div class="btn btn-primary btn-sm" id="user-profile-edit-btn" title="Edit">
+          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="col-xs-11">
+        <span class="section-header-span">{{ userName }}</span>
+      </div>
+    </div>
+    {{#if editActive}}
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="UPedit-name" class="col-md-3 control-label">Name</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-name" value="{{ name }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-affiliation" class="col-md-3 control-label">Affiliation</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-affiliation" value="{{ affiliation }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-projectname" class="col-md-3 control-label">Project Name</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-projectname" value="{{ projectName }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-location" class="col-md-3 control-label">Location</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-location" value="{{ location }}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-1">
+            <button type="click" id="user-profile-save-btn" class="btn btn-primary">Save</button>
+          </div>
+          <div class="col-sm-offset-1 col-sm-1">
+            <button type="click" id="user-profile-cancel-btn" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </form>
+
+    {{else}}
+      <div class="user-settings-table">
+        <div class="row">
+          <div class="col-xs-4 user-information-label">Name</div>
+          <div class="col-xs-8">{{ name }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 user-information-label">Affiliation</div>
+          <div class="col-xs-8">{{ affiliation }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 user-information-label">Project Name</div>
+          <div class="col-xs-8">{{ projectName }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 user-information-label">Location</div>
+          <div class="col-xs-8">{{ location }}</div>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</template>
+
+
+<!-- User Settings -->
+<template name="user_settings">
+  <div id="user-settings">
+    <h1>Settings</h1>
+
+  </div>
+</template>
+
+
+<!-- Hacker Controls -->
+<template name="user_hacker">
+  {{#if isInRole 'hacker'}}
+  <div id="user-hacker">
+    <h1>Hacker Dashboard</h1>
+    <div class="row">
+      <i>Connect with your team.</i> If no one on your team has added your
+      repository yet, then you should go ahead and do that now! Otherwise,
+      you can join an existing project.*
+    </div>
+    <div class="row">
+      {{#if repository}}
+      <div class="col-xs-1 col-xs-offset-4">
+        <div class="btn btn-danger" id="user-hacker-leave-repo">Leave Project</div>
+      </div>
+      {{else}}
+      <div class="col-xs-1 col-xs-offset-4">
+        <div class="btn btn-primary" data-toggle="modal" data-target="#join-repo-modal">Join Project</div>
+      </div>
+      {{/if}}
+    </div>
+    <div class="user-settings-table">
+      <div class="row">
+        <div class="col-xs-4 user-information-label">GitHub Handle</div>
+        <div class="col-xs-8">{{ handle }}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 user-information-label">GitHub Repository</div>
+        <div class="col-xs-8">{{ repository }}</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 user-information-label">ChallengePost Link</div>
+        <div class="col-xs-8">
+          {{#if challengePost }}
+            <a href="{{ challengePost }}">Link</a>
+          {{/if}}
+          <div class="btn btn-link" id="user-challengePost-edit" data-toggle="modal" data-target="#edit-ChallengePost-modal">Edit</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 user-information-label">Team Members</div>
+        <div class="col-xs-8">
+          {{ teamMembers }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      *Status Board is currently only compatible with GitHub repositories. If
+      for some reason, your team has elected to not use GitHub, then you will be
+       unable to participate in this aspect of the Status Board.
+    </div>
+  </div>
+
+  <div class="modal fade" id="join-repo-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Join a Project</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="github-handle-input">GitHub Handle</label>
+              <input type="text" class="form-control" id="github-handle-input">
+            </div>
+            <div class="form-group">
+              <label for="github-repo-input">GitHub Repository Name</label>
+              <input type="text" class="form-control" id="github-repo-input">
+            </div>
+            {{#if add_new_repo}}
+              <div class="alert alert-info">
+                It appears this is a new repository! Please provide the GitHub handle
+                of the owner of the repository.
+              </div>
+              <div class="form-group">
+                <label for="github-repo-owner-input">GitHub Repository Owner Handle</label>
+                <input type="text" class="form-control" id="github-repo-owner-input">
+              </div>
+            {{/if}}
+            <div id="user-hacker-alertbox"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="user-hacker-join-repo">Join Project</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="edit-ChallengePost-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Edit ChallengePost Link</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="challengePost-input">Enter a link to your project on ChallengePost! (Set it up now *hint, hint*)</label>
+              <input type="text" class="form-control" id="challengePost-input">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="user-challengePost-save">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+
+<!-- Mentor Controls -->
+<template name="user_mentor">
+  {{#if isInRole 'mentor'}}
+  <div id="user-mentor">
+    <h1>Mentor Controls</h1>
+
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<!-- Volunteer Controls -->
+<template name="user_volunteer">
+  {{#if isInRole 'volunteer'}}
+  <div id="user-volunteer">
+    <h1>Volunteer Controls</h1>
+
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<!-- Announcements Controls -->
+<template name="user_announcements">
+  {{#if isInRole 'announcer'}}
+  <div id="user-announcements">
+    <h1>Announcements Controls</h1>
+
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<!-- Database Access -->
+<template name="user_database">
+  {{#if isInRole 'admin'}}
+  <div id="user-database">
+    <h1>Database Access</h1>
+
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<template name="user_server_settings">
+  {{#if isInRole 'admin'}}
+  <div id="user-server-settings">
+    <h1>Server Settings</h1>
+    <div class="user-settings-table">
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">Allow Account Creation</div>
+        <div class="col-xs-8">
+          {{#if allowAccountCreation}}
+          <i class="fa fa-toggle-on fa-lg" id="admin-allow-account-creation-off-btn"></i>
+          {{else}}
+          <i class="fa fa-toggle-off fa-lg"  id="admin-allow-account-creation-on-btn"></i>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>

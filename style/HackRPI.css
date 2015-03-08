@@ -1,20 +1,95 @@
+/* GLOBAL =================================================================== */
+
 body {
   height: 100%;
-  background-image: url('img/brickwall.png');
+  background: #424242;
+  width: 100%;
+  color: #FFFFFF;
+  padding-bottom: 100px;
 }
 
-.empac-banner {
-  width: 100%;
-  margin-top: -15px;
-  margin-bottom: 3%;
-  border-bottom: 10px solid #101010;
+.accent, a, a:hover, .btn-link, .btn-link:hover {
+  color: #C03328;
+}
+
+.faded-text {
+  color: #343434;
+}
+
+.modal {
+  color: #000000;
+}
+
+.fa-toggle-on {
+  color: #11aa11;
+  cursor: pointer;
+}
+
+.fa-toggle-off {
+  color: #aa1111;
+  cursor: pointer;
+}
+
+/* JUMBOTRON ================================================================ */
+
+.jumbotron-container {
+  background: #FFFFFF;
+}
+
+.jumbotron {
+  background: #FFFFFF;
+  height: 200px;
+}
+
+.banner-logo {
+  width: 200px;
+  margin-top: 20px;
 }
 
 .announcements-panel {
   text-align: center;
-  padding: 5% 0;
-  margin: 5% 0;
 }
+
+/* COMMIT MESSAGES ========================================================== */
+
+.commit-box {
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+.commit-repo {
+  font-size: 32px;
+}
+
+.commit-text {
+  font-size: 18px;
+}
+
+.commit-flag-count {
+  float:right;
+  font-size: 14px;
+}
+
+.commit-flag-count i {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.commit-date {
+  color: #cdcdcd;
+  float: right;
+}
+
+/* ========================================================================== */
+
+.announce-box {
+  color: #000000;
+}
+
+/* ========================================================================== */
 
 .recent-commit-table {
   margin-top: 5%;

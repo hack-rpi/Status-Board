@@ -1,0 +1,32 @@
+.user-sidebar {
+
+}
+
+.user-content {
+
+}
+
+.section-header-span {
+  font-size: 32px;
+}
+
+.user-information-label {
+  text-align: right;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+#user-profile-edit-btn {
+  margin-bottom: -20px;
+}
+
+.user-settings-table {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+#user-challengePost-edit {
+  font-size: 14px;
+  float: right;
+}

@@ -1,75 +1,23 @@
 <template name="commits">
 
   {{#each message}}
-    <tr>
-      <td>{{fdate}}</td>
-      <td class="center-data">
-        <a href="http://github.com/{{committer_handle}}">
-          <img class="gravatar" src="{{committer_avatar}}"/>
-        </a>
-      </td>
-      <td><a href="https://github.com/{{committer_handle}}">{{committer_handle}}</a></td>
-      <td><a href="https://github.com/{{committer_handle}}/{{repo}}">{{repo}}</a></td>
-      <td>{{text}}</td>
-    </tr>
-  {{/each}}
-
-</template>
-
-
-<template name="allCommits">
-
-  <div class="container">
     <div class="row">
-
-      <div class="col-md-12">
-        <h4>All Commits</h4>
-        <div class="commitTableContainer">
-          <table class="table table-striped commitTable">
-            <colgroup>
-              <col span="1" class="date-col">
-              <col span="1" class="gravatar-col">
-              <col span="1" class="handle-col">
-              <col span="1" class="repo-col">
-              <col span="1" class="message-col">
-            </colgroup>
-            <thead>
-              <tr>
-                <th>DateTime</th>
-                <th>Gravatar</th>
-                <th>Committer</th>
-                <th>Repo</th>
-                <th>Commit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each message}}
-                <tr>
-                  <td>{{fdate}}</td>
-                  <td class="center-data"><img class="gravatar" src="{{committer_avatar}}"/></td>
-                  <td>{{committer_handle}}</td>
-                  <td>{{repo}}</td>
-                  <td>{{text}}</td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </div>
-        <div class="row">
-          <div class="col-md-5" style="text-align:right;">
-            <button id="commitPrev" class="btn btn-default">Prev</button>
-          </div>
-          <div class="col-md-2" style="text-align:center;">
-            Total: {{total}}
-          </div>
-          <div class="col-md-5">
-            <button id="commitNext" class="btn btn-default">Next</button>
-          </div>
+      <div class="col-xs-1">
+        <i class="fa fa-quote-left fa-5x faded-text"></i>
+      </div>
+      <div class="col-xs-11">
+        <div class="commit-box">
+          <span class="commit-repo accent">{{repo}}</span>
+          <span class="commit-flag-count">{{total_flags}}
+            <i class="fa fa-angle-up accent"></i>
+            <i class="fa fa-angle-down accent"></i>
+          </span>
+          <p class="commit-text">{{text}}</p>
+          <span class="commit-handle accent">{{committer_handle}}</span>
+          <span class="commit-date">{{fdate}}</span>
         </div>
       </div>
-
     </div>
-  </div>
-
+  {{/each}}
 
 </template>

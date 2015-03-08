@@ -45,7 +45,8 @@ if (Meteor.isClient) {
 				}
         else {
           // The user has been logged in.
-					Router.go("/");
+          Session.set("selectedUserId", Meteor.userId());
+					Router.go("/user");
 				}
       });
       return false;
@@ -101,10 +102,14 @@ if (Meteor.isClient) {
         return false;
       }
 
-      Accounts.createUser({email: email, password: pass1}, function(err) {
+      var profile = {
+        "role": "hacker"
+      }
+
+      Accounts.createUser({email: email, password: pass1, profile: profile}, function(err) {
         if (err) {
           if (err.error == 403) {
-            Session.set("displayMessage", {title: "Access Denied", body: "Account creation is currently disabled"});
+            Session.set("displayMessage", {title: "Access Denied", body: "Account creation may currently disabled"});
           }
           else {
             Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});

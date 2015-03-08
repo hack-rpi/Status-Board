@@ -1,39 +1,30 @@
 .header {
-	background: linear-gradient(#424242, #101010);
 	color: #FFFFFF;
 	padding: 5px;
-	width: 100%;
 	margin-bottom: 15px;
-	z-index: 99;
-	top: 0px;
 }
 
 .header-logo {
 	width: 20%;
 }
 
+.nav-list {
+	margin: 0 auto;
+	text-align: center;
+	padding: 1em 0;
+}
+
 .nav-button {
-	margin: 5px;
+	display: inline;
 	padding: 10px;
-	font-size: 16px;
-	font-weight: bold;
+	font-size: 20px;
+	width: 100px;
 	cursor: pointer;
 }
 
-.nav-button-selected {
-	color: #C03328;
-}
-
-.nav-button-login {
-	float: right;
-}
-
-.nav-button-user {
-	float: right;
-}
-
-.nav-button-logout {
-	float: right;
+.nav-header {
+	width: 50%;
+	margin: auto;
 }
 
 .nav-header a {
@@ -42,5 +33,19 @@
 }
 
 .nav-header a:hover {
-	color: #C03328
+	color: #efefef;
+}
+
+.user-popup {
+	display: none;
+	position: absolute;
+	padding: 10px;
+	background: #dfdfdf;
+	border-radius: 5px;
+	width: 150px;
+}
+
+.user-popup-btn {
+	width: 130px;
+	margin-top: 5px;
 }
