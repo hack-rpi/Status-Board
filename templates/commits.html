@@ -7,13 +7,13 @@
       </div>
       <div class="col-xs-11">
         <div class="commit-box">
-          <span class="commit-repo accent">{{repo}}</span>
+          <a href="{{repo_url}}"><span class="commit-repo accent">{{repo}}</span></a>
           <span class="commit-flag-count">{{total_flags}}
             <i class="fa fa-angle-up accent"></i>
             <i class="fa fa-angle-down accent"></i>
           </span>
           <p class="commit-text">{{text}}</p>
-          <span class="commit-handle accent">{{committer_handle}}</span>
+          <a href="{{committer_url}}"><span class="commit-handle accent">{{committer_handle}}</span></a>
           <span class="commit-date">{{fdate}}</span>
         </div>
       </div>
