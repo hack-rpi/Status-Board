@@ -141,7 +141,7 @@ if (Meteor.isServer) {
     });
     RepositoryList.allow({
       insert:function() {
-        return Meteor.users.findOne({ "_id":admin_id }).profile.settings.mentoring_system;
+        return true;
       },
       remove:function() {
         // if (Roles.userIsInRole(Meteor.user(), 'admin'))
@@ -182,7 +182,7 @@ if (Meteor.isServer) {
     });
     MentorQueue.allow({
       insert:function() {
-        return true;
+        return Meteor.users.findOne({ "_id":admin_id }).profile.settings.mentoring_system;
       },
       remove:function() {
         if (Roles.userIsInRole(Meteor.user(), 'mentor'))
