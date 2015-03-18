@@ -49,7 +49,8 @@ if (Meteor.isServer) {
         "profile": {
           "name": "Administrator",
           "settings": {
-            "allow_account_creation": false
+            "allow_account_creation": false,
+            "mentoring_system": false
           }
         }
       });
@@ -181,7 +182,7 @@ if (Meteor.isServer) {
     });
     MentorQueue.allow({
       insert:function() {
-        return true;
+        return Meteor.users.findOne({ "_id":admin_id }).profile.settings.mentoring_system;
       },
       remove:function() {
         if (Roles.userIsInRole(Meteor.user(), 'mentor'))
@@ -250,6 +251,8 @@ if (Meteor.isServer) {
               committer_handle : data[i]['committer'] ? data[i]['committer']['login'] : data[i]['commit']['committer']['name'],
               committer_avatar : data[i]['committer'] ? data[i]['committer']['avatar_url']: null,
               committer_real : data[i]['commit']['committer']['name'],
+              committer_url : data[i]['author']['html_url'],
+              repo_url : "https://github.com/" + username + '/' + repo,
               // probably not a good a idea to store emails?
               // (do I have access to all of them?)
               committer_email : data[i]['commit']['committer']['email'],

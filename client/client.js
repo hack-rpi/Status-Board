@@ -223,30 +223,43 @@ if (Meteor.isClient) {
           alert("Name field cannot be empty!");
         else if (loc == "")
           alert("Location field cannot be empty!");
-        else if (tags.length == 0)
+        else if (!tags)
           alert("What's the issue deary?");
         else {
-          MentorQueue.insert({
+          if (MentorQueue.insert({
             name: name,
             loc: loc,
             phone: phone,
             tags: tags,
             helped: false,
             timestamp: now,
-          });
+          })) {
+            $("<div>", {
+              "class": "alert alert-success alert-dismissible",
+              text: "Mentor requested successfully! If you provided a phone number, \
+                      we will text you when a mentor is looking for you!"
+            }).append('<button type="button" class="close" \
+                        data-dismiss="alert" aria-hidden="true">\
+                        &times;</button>').appendTo("#findMentorAlertBox");
 
-          $("<div>", {
-            "class": "alert alert-success alert-dismissible",
-            text: "Mentor requested successfully! If you provided a phone number, \
-                    we will text you when a mentor is looking for you!"
-          }).append('<button type="button" class="close" \
-                      data-dismiss="alert" aria-hidden="true">\
-                      &times;</button>').appendTo("#findMentorAlertBox");
+            // set a timer to avoid being spammed
+            var d = new Date();
+            var goTime = new Date(d.getTime() + 5*60000);
+            Session.set("mentorRequestTimer", goTime);
+          }
+          else {
+            $("<div>", {
+              "class": "alert alert-danger alert-dismissible",
+              text: "Sorry, the mentoring system is not currently active. \
+                    Please try again later."
+            }).append('<button type="button" class="close" \
+                        data-dismiss="alert" aria-hidden="true">\
+                        &times;</button>').appendTo("#findMentorAlertBox");
+          }
 
-          // set a timer to avoid being spammed
-          var d = new Date();
-          var goTime = new Date(d.getTime() + 5*60000);
-          Session.set("mentorRequestTimer", goTime);
+
+
+
         }
       }
       else {

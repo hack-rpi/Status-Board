@@ -325,6 +325,16 @@
           {{/if}}
         </div>
       </div>
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">Activate Mentoring System</div>
+        <div class="col-xs-8">
+          {{#if mentoringSystemStatus}}
+          <i class="fa fa-toggle-on fa-lg" id="admin-mentoring-off-btn"></i>
+          {{else}}
+          <i class="fa fa-toggle-off fa-lg"  id="admin-mentoring-on-btn"></i>
+          {{/if}}
+        </div>
+      </div>
     </div>
   </div>
   {{else}}

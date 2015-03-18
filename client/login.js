@@ -109,7 +109,7 @@ if (Meteor.isClient) {
       Accounts.createUser({email: email, password: pass1, profile: profile}, function(err) {
         if (err) {
           if (err.error == 403) {
-            Session.set("displayMessage", {title: "Access Denied", body: "Account creation may currently disabled"});
+            Session.set("displayMessage", {title: "Access Denied", body: "Account creation may be currently disabled"});
           }
           else {
             Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
