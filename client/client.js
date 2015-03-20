@@ -233,6 +233,7 @@ if (Meteor.isClient) {
             tags: tags,
             helped: false,
             timestamp: now,
+            completed: false,
           })) {
             $("<div>", {
               "class": "alert alert-success alert-dismissible",

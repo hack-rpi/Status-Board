@@ -9,6 +9,7 @@ if (Meteor.isServer) {
     CommitMessages._ensureIndex( {"sha" : 1} );
     Meteor.users._ensureIndex( {"username" : 1} );
     RepositoryList._ensureIndex( {"name": 1} );
+    MentorQueue._ensureIndex( {"completed": 1} );
 
     // Repeating Server Actions ================================================
 
@@ -324,7 +325,7 @@ if (Meteor.isServer) {
       // loop over the queue sorted by oldest to most recent
       // console.log("assigning mentors...");
 
-      var reqs = MentorQueue.find().fetch();
+      var reqs = MentorQueue.find({ "completed":false }).fetch();
       var Q = reqs.sort(function(a,b) { return a.timestamp < b.timestamp; } );
 
       var mentors = Mentors.find({ status:true }).fetch();
@@ -406,7 +407,9 @@ if (Meteor.isServer) {
         }
 
         // remove the hacker from the queue
-        MentorQueue.remove({ _id:Q[i]._id });
+        MentorQueue.update({ _id:Q[i]._id }, {
+          $set: { "completed": true }
+        });
 
         // aaaaand ya done
 
