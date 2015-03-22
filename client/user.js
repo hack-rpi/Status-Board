@@ -321,6 +321,41 @@ if (Meteor.isClient) {
     },
   });
 
+  // ===========================================================================
+  // USER MENTOR
+  Template.user_mentor.helpers({
+    active: function() {
+      // return the status of the mentor
+      return Meteor.user().profile.active;
+    },
+    assignment: function() {
+      // returns the details of the mentor's current assignment
+      return false;
+    },
+    skills: function() {
+      // returns the mentor's list of skills
+      return Meteor.user().profile.tags;
+    },
+    history: function() {
+      // returns a list of the mentor's past assignments
+      return [];
+    }
+  });
+
+  Template.user_mentor.events({
+    'click #suspend-mentor-btn': function() {
+      // toggle the mentor as unactive
+      Meteor.users.update({ '_id':Meteor.userId() }, {
+        $set: { 'profile.active': false }
+      });
+    },
+    'click #active-mentor-btn': function() {
+      // toggle the mentor as active
+      Meteor.users.update({ '_id':Meteor.userId() }, {
+        $set: { 'profile.active': true }
+      });
+    },
+  });
 
   // ===========================================================================
   // USER SERVER SETTINGS

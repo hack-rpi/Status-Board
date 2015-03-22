@@ -266,8 +266,44 @@
 <template name="user_mentor">
   {{#if isInRole 'mentor'}}
   <div id="user-mentor">
-    <h1>Mentor Controls</h1>
+    <div class="user-settings-table">
 
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">Mentor Status</div>
+        <div class="col-xs-8">
+          {{#if active}}
+          <div class="btn btn-lg btn-danger" id="suspend-mentor-btn">Suspend</div>
+          {{else}}
+          <div class="btn btn-lg btn-success" id="active-mentor-btn">Activate</div>
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">Current Assignment</div>
+        <div class="col-xs-8">
+          {{#if assignment}}
+
+          {{else}}
+          None
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">Skills</div>
+        <div class="col-xs-8">{{skills}}</div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">History</div>
+        <div class="col-xs-8">
+        {{history}}
+        </div>
+      </div>
+
+    </div>
   </div>
   {{else}}
   <h1>Unauthorized Access</h1>

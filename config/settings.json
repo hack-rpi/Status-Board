@@ -2,7 +2,11 @@
 
 	"public": {
 		"event_start": "",
-		"event_end": ""
+		"event_end": "",
+
+		"languages": [],
+		"frameworks": [],
+		"apis": []
 	},
 
 	"default_admin_username": "",
