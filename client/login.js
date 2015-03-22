@@ -323,6 +323,18 @@ if (Meteor.isClient) {
     },
   });
 
+  Template.register_mentor.helpers({
+    'languages': function() {
+      return Meteor.settings.public.languages;
+    },
+    'frameworks': function() {
+      return Meteor.settings.public.frameworks;
+    },
+    'apis': function() {
+      return Meteor.settings.public.apis;
+    },
+  });
+
   Template.register_volunteer.rendered = function() {
     var s = new Date(Meteor.settings.public.event_start);
     var e = new Date(Meteor.settings.public.event_end);

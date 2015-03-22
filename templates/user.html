@@ -291,8 +291,58 @@
       </div>
 
       <div class="row">
-        <div class="col-xs-4 user-settings-label">Skills</div>
-        <div class="col-xs-8">{{skills}}</div>
+        <div class="col-xs-4 user-settings-label">
+          Skills
+          <span class="btn btn-link btn-sm" id="user-mentor-edit-skills-btn">edit</span>
+        </div>
+        <div class="col-xs-8">
+          {{#if editSkills}}
+            <div class="row">
+              <div class="col-xs-4" id="user-mentor-checkbox-langs">
+                {{#each modifyLangs}}
+                  <div class="checkbox">
+                    {{#if checked}}
+                      <label><input type="checkbox" name="{{name}}" checked>{{name}}</label>
+                    {{else}}
+                      <label><input type="checkbox" name="{{name}}">{{name}}</label>
+                    {{/if}}
+                  </div>
+                {{/each}}
+              </div>
+              <div class="col-xs-4" id="user-mentor-checkbox-frames">
+                {{#each modifyFrames}}
+                  <div class="checkbox">
+                    {{#if checked}}
+                      <label><input type="checkbox" name="{{name}}" checked>{{name}}</label>
+                    {{else}}
+                      <label><input type="checkbox" name="{{name}}">{{name}}</label>
+                    {{/if}}
+                  </div>
+                {{/each}}
+              </div>
+              <div class="col-xs-4" id="user-mentor-checkbox-apis">
+                {{#each modifyApis}}
+                  <div class="checkbox">
+                    {{#if checked}}
+                      <label><input type="checkbox" name="{{name}}" checked>{{name}}</label>
+                    {{else}}
+                      <label><input type="checkbox" name="{{name}}">{{name}}</label>
+                    {{/if}}
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-offset-4 col-xs-2">
+                <div class="btn btn-primary" id="user-mentor-save-skills-btn">Save Changes</div>
+              </div>
+            </div>
+          {{else}}
+            {{#each skills}}
+              {{this}}
+            {{/each}}
+          {{/if}}
+        </div>
 
       </div>
 

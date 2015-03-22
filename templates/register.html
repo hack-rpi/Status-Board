@@ -120,41 +120,11 @@
 				</div>
 				<div id="reg-mentor-languages" class="form-group checkbox-list">
 					<div class="col-sm-4">
-						<div class="checkbox">
-							<label><input name="Arduino" type="checkbox">Arduino</label>
-						</div>
-						<div class="checkbox">
-							<label><input name="C/C++" type="checkbox">C/C++</label>
-						</div>
-						<div class="checkbox">
-							<label><input name="C#" type="checkbox">C#</label>
-						</div>
-						<div class="checkbox">
-							<label><input name="Java" type="checkbox">Java</label>
-						</div>
-						<div class="checkbox">
-							<label><input name="JavaScript" type="checkbox">JavaScript</label>
-						</div>
-						<div class="checkbox">
-							<label><input name="Objective-C" type="checkbox">Objective-C</label>
-						</div>
-						<div class="checkbox">
-							<label><input name="PHP" type="checkbox">PHP</label>
-						</div>
-						<div class="checkbox">
-							<label><input name="Python" type="checkbox">Python</label>
-						</div>
-						<div class="checkbox">
-							<label><input name="Ruby" type="checkbox">Ruby</label>
-						</div>
-						<div class="checkbox">
-							<label><input name="SQL" type="checkbox">SQL</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox"><input type="text" id="reg-lang-other1" class="form-control">
-							</label>
-						</div>
+						{{#each languages}}
+							<div class="checkbox">
+								<label><input name="{{this}}" type="checkbox">{{this}}</label>
+							</div>
+						{{/each}}
 					</div>
 				</div>
 				<div>2 of 4</div>
@@ -168,26 +138,11 @@
 				</div>
 				<div id="reg-mentor-frameworks" class="form-group checkbox-list">
 					<div class="col-sm-4">
-						<div class="checkbox">
-							<label><input type="checkbox" name="Andriod">Andriod</label>
-						</div>
-						<div class="checkbox">
-							<label><input type="checkbox" name="iOS">iOS</label>
-						</div>
-						<div class="checkbox">
-							<label><input type="checkbox" name="Meteor">Meteor</label>
-						</div>
-						<div class="checkbox">
-							<label><input type="checkbox" name="Node.js">Node.js</label>
-						</div>
-						<div class="checkbox">
-							<label><input type="checkbox" name="Rails">Rails</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox"><input type="text" id="reg-frame-other1" class="form-control">
-							</label>
-						</div>
+						{{#each frameworks}}
+							<div class="checkbox">
+								<label><input name="{{this}}" type="checkbox">{{this}}</label>
+							</div>
+						{{/each}}
 					</div>
 				</div>
 				<div>3 of 4</div>
@@ -201,14 +156,11 @@
 				</div>
 				<div id="reg-mentor-apis" class="form-group checkbox-list">
 					<div class="col-sm-4">
-						<div class="checkbox">
-							<label><input type="checkbox" name="Microsoft">Microsoft</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox"><input type="text" id="reg-frame-other1" class="form-control">
-							</label>
-						</div>
+						{{#each apis}}
+							<div class="checkbox">
+								<label><input name="{{this}}" type="checkbox">{{this}}</label>
+							</div>
+						{{/each}}
 					</div>
 				</div>
 				<div>4 of 4</div>

@@ -323,6 +323,9 @@ if (Meteor.isClient) {
 
   // ===========================================================================
   // USER MENTOR
+  var edit_skills_flag = false,
+      edit_skills_dep  = new Tracker.Dependency;
+
   Template.user_mentor.helpers({
     active: function() {
       // return the status of the mentor
@@ -334,11 +337,50 @@ if (Meteor.isClient) {
     },
     skills: function() {
       // returns the mentor's list of skills
-      return Meteor.user().profile.tags;
+      var arr = [];
+      Meteor.user().profile.tags.forEach(function(val) {
+        arr.push(val);
+      });
+      return arr;
     },
     history: function() {
       // returns a list of the mentor's past assignments
       return [];
+    },
+    editSkills: function() {
+      // toggle editting the mentor's skills
+      edit_skills_dep.depend();
+      return edit_skills_flag;
+    },
+    modifyLangs: function() {
+      // return a list of the mentor's languages with the selected ones marked
+      var all = [];
+      Meteor.settings.public.languages.forEach(function(lang) {
+        all.push({
+          name: lang,
+          checked: $.inArray(lang, Meteor.user().profile.languages) != -1 });
+      });
+      return all;
+    },
+    modifyFrames: function() {
+      // return a list of the mentor's frameworks with the selected ones marked
+      var all = [];
+      Meteor.settings.public.frameworks.forEach(function(frame) {
+        all.push({
+          name: frame,
+          checked: $.inArray(frame, Meteor.user().profile.frameworks) != -1 });
+      });
+      return all;
+    },
+    modifyApis: function() {
+      // return a list of the mentor's APIs with the selected ones marked
+      var all = [];
+      Meteor.settings.public.apis.forEach(function(api) {
+        all.push({
+          name: api,
+          checked: $.inArray(api, Meteor.user().profile.apis) != -1 });
+      });
+      return all;
     }
   });
 
@@ -355,6 +397,49 @@ if (Meteor.isClient) {
         $set: { 'profile.active': true }
       });
     },
+    'click #user-mentor-edit-skills-btn': function() {
+      // toggle editting the mentor's skills
+      edit_skills_flag = !edit_skills_flag;
+      edit_skills_dep.changed();
+    },
+    'click #user-mentor-save-skills-btn': function() {
+      // save all changes made the selected skills
+      Meteor.subscribe("userData");
+      var languages = [],
+          frameworks = [],
+          apis = [],
+          all = [];
+      $("#user-mentor-checkbox-langs input:checked").each(function() {
+        languages.push(this.name); all.push(this.name);
+      });
+      $("#user-mentor-checkbox-frames input:checked").each(function() {
+        frameworks.push(this.name); all.push(this.name);
+      });
+      $("#user-mentor-checkbox-apis input:checkbox").each(function() {
+        apis.push(this.name); all.push(this.name);
+      });
+      if (Meteor.users.update({ '_id': Meteor.userId() }, {
+        $set: {
+          'profile.languages': languages,
+          'profile.frameworks': frameworks,
+          'profile.apis': apis,
+          'profile.tags': all
+        }
+      })) {
+        Session.set("displayMessage", {
+          title: 'Success',
+          body: 'Data saved successfully'
+        });
+        edit_skills_flag = false;
+        edit_skills_dep.changed();
+      }
+      else {
+        Session.set("displayMessage", {
+          title: "Error",
+          body: "Something went wrong trying to save your changes. Please try again later!"
+        });
+      }
+    }
   });
 
   // ===========================================================================
