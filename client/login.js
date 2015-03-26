@@ -203,6 +203,9 @@ if (Meteor.isClient) {
             frameworks: frameworks,
             apis: apis,
             active: false,
+            available: true,
+            mentee_id: null,
+            history: [],
             tags: tags
           },
         }, function(err) {

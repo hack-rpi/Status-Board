@@ -333,7 +333,12 @@ if (Meteor.isClient) {
     },
     assignment: function() {
       // returns the details of the mentor's current assignment
-      return false;
+      Meteor.subscribe("MentorQueue");
+      if (Meteor.user().profile.mentee_id)
+        return MentorQueue.find({
+          '_id': Meteor.user().profile.mentee_id
+        });
+      else return false;
     },
     skills: function() {
       // returns the mentor's list of skills
@@ -345,7 +350,7 @@ if (Meteor.isClient) {
     },
     history: function() {
       // returns a list of the mentor's past assignments
-      return [];
+      return Meteor.user().profile.history;
     },
     editSkills: function() {
       // toggle editting the mentor's skills
@@ -439,7 +444,45 @@ if (Meteor.isClient) {
           body: "Something went wrong trying to save your changes. Please try again later!"
         });
       }
-    }
+    },
+    'click #user-mentor-complete-task-btn': function() {
+      // complete the mentor's current assignment
+      var mentee_id = Meteor.user().profile.mentee_id;
+      Meteor.subscribe("MentorQueue");
+      var mentee = MentorQueue.find({ "_id":mentee_id }).fetch()[0];
+      Meteor.users.update({ "_id":Meteor.userId() }, {
+        $set: {
+          "profile.available": true,
+          "profile.mentee_id": null
+        },
+        $push: {
+          "profile.history": {
+            "name": mentee.name,
+            "_id": mentee_id,
+            "tag": mentee.tag,
+            "loc": mentee.loc,
+            "time": (new Date()).toLocaleString()
+          }
+        }
+      });
+
+    },
+    'click #user-mentor-waive-task-btn': function() {
+      // return the current task back to the queue to be assigned to someone
+      //   else (nothing preventing self re-assignment!)
+      var mentee_id = Meteor.user().profile.mentee_id;
+      Meteor.subscribe("MentorQueue");
+      MentorQueue.update({ "_id":mentee_id }, {
+        $set: { "completed":false }
+      });
+      Meteor.users.update({ "_id": Meteor.userId() }, {
+        $set: {
+          "profile.available": true,
+          "profile.active": false,
+          "profile.mentee_id": null,
+        }
+      })
+    },
   });
 
   // ===========================================================================

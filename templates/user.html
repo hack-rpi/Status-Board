@@ -283,7 +283,23 @@
         <div class="col-xs-4 user-settings-label">Current Assignment</div>
         <div class="col-xs-8">
           {{#if assignment}}
-
+            <div class="row">
+              {{#each assignment}}
+                <div class="col-xs-3">{{name}}</div>
+                <div class="col-xs-2">{{tag}}</div>
+                <div class="col-xs-3">{{loc}}</div>
+                <div class="col-xs-4">
+                  <div class="btn btn-success" id="user-mentor-complete-task-btn"
+                    title="Mark the current assignment as complete">
+                    Complete
+                  </div>
+                  <div class="btn btn-warning" id="user-mentor-waive-task-btn"
+                    title="Give the current assignment to someone else">
+                    Waive
+                  </div>
+                </div>
+              {{/each}}
+            </div>
           {{else}}
           None
           {{/if}}
@@ -349,7 +365,24 @@
       <div class="row">
         <div class="col-xs-4 user-settings-label">History</div>
         <div class="col-xs-8">
-        {{history}}
+          <table class="table">
+            <tr>
+              <th>Name</th>
+              <th>Tag</th>
+              <th>Location</th>
+              <th>Time Completed</th>
+            </tr>
+            <tbody>
+              {{#each history}}
+                <tr>
+                  <td>{{name}}</td>
+                  <td>{{tag}}</td>
+                  <td>{{loc}}</td>
+                  <td>{{time}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
         </div>
       </div>
 
