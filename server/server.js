@@ -324,7 +324,7 @@ if (Meteor.isServer) {
 
     assignMentors: function() {
       // loop over the queue sorted by oldest to most recent
-      console.log("assigning mentors...");
+      // console.log("assigning mentors...");
 
       var reqs = MentorQueue.find({ "completed":false }).fetch();
       var Q = reqs.sort(function(a,b) { return a.timestamp < b.timestamp; } );
@@ -335,7 +335,7 @@ if (Meteor.isServer) {
         { "profile.available": true }
       ] }).fetch();
 
-      console.log("Mentors available: ", mentors.length);
+      // console.log("Mentors available: ", mentors.length);
 
       // bail if there are no available mentors
       if (mentors.length == 0)
@@ -372,13 +372,13 @@ if (Meteor.isServer) {
           break;
 
         var matched_mentor = Meteor.users.find({ '_id':matched_id }).fetch()[0];
-        console.log("found a match for hacker ", Q[i]["name"], " with ", matched_mentor["profile"]["name"]);
+        // console.log("found a match for hacker ", Q[i]["name"], " with ", matched_mentor["profile"]["name"]);
 
         // otherwise we found a mentor
         // now we assign the mentor to the hacker
         // send a text to the mentor to tell them where to go
         var msg = Q[i].name + " needs your help with " + h_tag + "!" + " S/he can be found at " + Q[i].loc;
-        // Meteor.call("sendText", matched_mentor.phone, msg);
+        Meteor.call("sendText", matched_mentor.profile.phone, msg);
 
         // mark the mentor as busy and give him a pointer to his task
         Meteor.users.update({ '_id':matched_id }, {
@@ -390,8 +390,8 @@ if (Meteor.isServer) {
 
         // send a text to the hacker to tell them that a mentor is on his way
         if (Q[i].phone != "") {
-          msg = matched_mentor.name + " from " + matched_mentor.affiliation + " is on his way to assist you!";
-          // Meteor.call("sendText", Q[i].phone, msg);
+          msg = matched_mentor.profile.name + " from " + matched_mentor.profile.affiliation + " is on his way to assist you!";
+          Meteor.call("sendText", Q[i].phone, msg);
         }
 
         // remove the hacker from the queue
@@ -476,8 +476,8 @@ if (Meteor.isServer) {
           var p = texts[t].from;
           p = p.substring(2,5) + "-" + p.substring(5,8) + "-" + p.substring(8);
           if (m == "DONE") {
-            Mentors.update({ phone:p }, {
-              $set: {available:true}
+            Meteor.users.update({ 'profile.phone':p }, {
+              $set: { 'profile.available':true }
             });
           }
         }
