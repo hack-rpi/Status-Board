@@ -126,14 +126,13 @@ if (Meteor.isClient) {
     // -------------------------------------------------------------------------
     'click #reg-mentor-page1-next': function(e) {
       // check input on page 1
-      var fname = trimInput($("#reg-mentor-fname").val()),
-          lname = trimInput($("#reg-mentor-lname").val()),
+      var name = trimInput($("#reg-mentor-name").val()),
           affil = trimInput($("#reg-mentor-affiliation").val()),
           phone = trimInput($("#reg-mentor-phone").val()),
           email = trimInput($("#reg-mentor-email").val()),
           pass1 = trimInput($("#reg-mentor-pass1").val()),
           pass2 = trimInput($("#reg-mentor-pass2").val());
-      if (!fname || !lname || !affil || !phone || !email || !pass1 || !pass2)
+      if (!name || !affil || !phone || !email || !pass1 || !pass2)
         Session.set("displayMessage", {title: "Field Required", body: "One or more required fields are empty"});
       else if (!stripPhone(phone))
         Session.set("displayMessage", {title: "Error", body: "Invalid phone number"});
@@ -170,8 +169,7 @@ if (Meteor.isClient) {
     },
     'click #reg-mentor-submit': function(e,t) {
       e.preventDefault();
-      var fname = trimInput($("#reg-mentor-fname").val()),
-          lname = trimInput($("#reg-mentor-lname").val()),
+      var name  = trimInput($("#reg-mentor-name").val()),
           affil = trimInput($("#reg-mentor-affiliation").val()),
           phone = trimInput($("#reg-mentor-phone").val()),
           email = trimInput($("#reg-mentor-email").val()),
@@ -179,31 +177,37 @@ if (Meteor.isClient) {
           pass2 = trimInput($("#reg-mentor-pass2").val()),
           languages = [],
           frameworks = [],
-          apis = [];
+          apis = [],
+          tags = [];
 
       $("#reg-mentor-languages input:checked").each(function() {
-        languages.push(this.name);
+        languages.push(this.name); tags.push(this.name);
       });
       $("#reg-mentor-frameworks input:checked").each(function() {
-        frameworks.push(this.name);
+        frameworks.push(this.name); tags.push(this.name);
       });
       $("#reg-mentor-apis input:checked").each(function() {
-        apis.push(this.name);
+        apis.push(this.name); tags.push(this.name);
       });
 
       phone = stripPhone(phone);
 
       Accounts.createUser({ email: email,
-                            password: pass1,
-                            profile: {
-                              first_name: fname,
-                              last_name: lname,
-                              affiliation: affil,
-                              phone: phone,
-                              languages: languages,
-                              frameworks: frameworks,
-                              apis: apis,
-                            },
+          password: pass1,
+          profile: {
+            role: "mentor",
+            name: name,
+            affiliation: affil,
+            phone: phone,
+            languages: languages,
+            frameworks: frameworks,
+            apis: apis,
+            active: false,
+            available: true,
+            mentee_id: null,
+            history: [],
+            tags: tags
+          },
         }, function(err) {
         if (err) {
           if (err.error == 403) {
@@ -319,6 +323,18 @@ if (Meteor.isClient) {
       });
 
       return false;
+    },
+  });
+
+  Template.register_mentor.helpers({
+    'languages': function() {
+      return Meteor.settings.public.languages;
+    },
+    'frameworks': function() {
+      return Meteor.settings.public.frameworks;
+    },
+    'apis': function() {
+      return Meteor.settings.public.apis;
     },
   });
 

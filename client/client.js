@@ -186,16 +186,19 @@ if (Meteor.isClient) {
   Template.mentor.helpers({
     allTags: function() {
       // create and return a list of all the tags from the mentors
-      Meteor.subscribe("Mentors");
-      var mentors = Mentors.find({ $or: [{suspended:false}, {override:true}] }).fetch();
+      Meteor.subscribe("allUserData");
+      var mentors = Meteor.users.find({ $and: [
+          {"profile.role": "mentor"},
+          {"profile.active": true}
+        ] }).fetch();
+
       if (mentors.length == 0)
         return; // bail
+
       var tagSet = new Set();
       for (var m=0; m<mentors.length; m++) {
-        if (mentors[m].active == false && mentors[m].override == false)
-          continue; // skip unactive mentors
-        for (var i=0; i<mentors[m]["tags"].length; i++) {
-          tagSet.add(mentors[m]["tags"][i]);
+        for (var i=0; i<mentors[m]["profile"]["tags"].length; i++) {
+          tagSet.add(mentors[m]["profile"]["tags"][i]);
         }
       }
       // convert to an array for spacebars
@@ -210,7 +213,7 @@ if (Meteor.isClient) {
       var name = $("#inputFindMentorName").val();
       var loc = $("#inputFindMentorLocation").val();
       var phone = $("#inputFindMentorPhone").val();
-      var tags = $("#inputIssueTags").val();
+      var tag = $("#inputIssueTags").val();
       var now = new Date();
 
       // check the spam timer
@@ -223,15 +226,14 @@ if (Meteor.isClient) {
           alert("Name field cannot be empty!");
         else if (loc == "")
           alert("Location field cannot be empty!");
-        else if (!tags)
+        else if (!tag)
           alert("What's the issue deary?");
         else {
           if (MentorQueue.insert({
             name: name,
             loc: loc,
             phone: phone,
-            tags: tags,
-            helped: false,
+            tag: tag,
             timestamp: now,
             completed: false,
           })) {

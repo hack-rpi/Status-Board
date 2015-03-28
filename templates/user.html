@@ -266,8 +266,127 @@
 <template name="user_mentor">
   {{#if isInRole 'mentor'}}
   <div id="user-mentor">
-    <h1>Mentor Controls</h1>
+    <div class="user-settings-table">
 
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">Mentor Status</div>
+        <div class="col-xs-8">
+          {{#if active}}
+          <div class="btn btn-lg btn-danger" id="suspend-mentor-btn">Suspend</div>
+          {{else}}
+          <div class="btn btn-lg btn-success" id="active-mentor-btn">Activate</div>
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">Current Assignment</div>
+        <div class="col-xs-8">
+          {{#if assignment}}
+            <div class="row">
+              {{#each assignment}}
+                <div class="col-xs-3">{{name}}</div>
+                <div class="col-xs-2">{{tag}}</div>
+                <div class="col-xs-3">{{loc}}</div>
+                <div class="col-xs-4">
+                  <div class="btn btn-success" id="user-mentor-complete-task-btn"
+                    title="Mark the current assignment as complete">
+                    Complete
+                  </div>
+                  <div class="btn btn-warning" id="user-mentor-waive-task-btn"
+                    title="Give the current assignment to someone else">
+                    Waive
+                  </div>
+                </div>
+              {{/each}}
+            </div>
+          {{else}}
+          None
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">
+          Skills
+          <span class="btn btn-link btn-sm" id="user-mentor-edit-skills-btn">edit</span>
+        </div>
+        <div class="col-xs-8">
+          {{#if editSkills}}
+            <div class="row">
+              <div class="col-xs-4" id="user-mentor-checkbox-langs">
+                {{#each modifyLangs}}
+                  <div class="checkbox">
+                    {{#if checked}}
+                      <label><input type="checkbox" name="{{name}}" checked>{{name}}</label>
+                    {{else}}
+                      <label><input type="checkbox" name="{{name}}">{{name}}</label>
+                    {{/if}}
+                  </div>
+                {{/each}}
+              </div>
+              <div class="col-xs-4" id="user-mentor-checkbox-frames">
+                {{#each modifyFrames}}
+                  <div class="checkbox">
+                    {{#if checked}}
+                      <label><input type="checkbox" name="{{name}}" checked>{{name}}</label>
+                    {{else}}
+                      <label><input type="checkbox" name="{{name}}">{{name}}</label>
+                    {{/if}}
+                  </div>
+                {{/each}}
+              </div>
+              <div class="col-xs-4" id="user-mentor-checkbox-apis">
+                {{#each modifyApis}}
+                  <div class="checkbox">
+                    {{#if checked}}
+                      <label><input type="checkbox" name="{{name}}" checked>{{name}}</label>
+                    {{else}}
+                      <label><input type="checkbox" name="{{name}}">{{name}}</label>
+                    {{/if}}
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-offset-4 col-xs-2">
+                <div class="btn btn-primary" id="user-mentor-save-skills-btn">Save Changes</div>
+              </div>
+            </div>
+          {{else}}
+            {{#each skills}}
+              {{this}}
+            {{/each}}
+          {{/if}}
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">History</div>
+        <div class="col-xs-8">
+          <table class="table">
+            <tr>
+              <th>Name</th>
+              <th>Tag</th>
+              <th>Location</th>
+              <th>Time Completed</th>
+            </tr>
+            <tbody>
+              {{#each history}}
+                <tr>
+                  <td>{{name}}</td>
+                  <td>{{tag}}</td>
+                  <td>{{loc}}</td>
+                  <td>{{time}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
   {{else}}
   <h1>Unauthorized Access</h1>
