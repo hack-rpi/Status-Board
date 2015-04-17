@@ -1,0 +1,29 @@
+body {
+  height: 100%;
+  background: #424242;
+  width: 100%;
+  color: #FFFFFF;
+  padding-bottom: 100px;
+}
+
+.accent, a, a:hover, .btn-link, .btn-link:hover {
+  color: #C03328;
+}
+
+.faded-text {
+  color: #343434;
+}
+
+.modal {
+  color: #000000;
+}
+
+.fa-toggle-on {
+  color: #11aa11;
+  cursor: pointer;
+}
+
+.fa-toggle-off {
+  color: #aa1111;
+  cursor: pointer;
+}
