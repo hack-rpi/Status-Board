@@ -1,0 +1,10 @@
+<template name="user_announcements">
+  {{#if isInRole 'announcer'}}
+  <div id="user-announcements">
+    <h1>Announcements Controls</h1>
+
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>

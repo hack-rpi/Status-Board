@@ -1,0 +1,31 @@
+<template name="user_server_settings">
+  {{#if isInRole 'admin'}}
+  <div id="user-server-settings">
+    <h1>Server Settings</h1>
+    <div class="user-settings-table">
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">Allow Account Creation</div>
+        <div class="col-xs-8">
+          {{#if allowAccountCreation}}
+          <i class="fa fa-toggle-on fa-lg" id="admin-allow-account-creation-off-btn"></i>
+          {{else}}
+          <i class="fa fa-toggle-off fa-lg"  id="admin-allow-account-creation-on-btn"></i>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 user-settings-label">Activate Mentoring System</div>
+        <div class="col-xs-8">
+          {{#if mentoringSystemStatus}}
+          <i class="fa fa-toggle-on fa-lg" id="admin-mentoring-off-btn"></i>
+          {{else}}
+          <i class="fa fa-toggle-off fa-lg"  id="admin-mentoring-on-btn"></i>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>

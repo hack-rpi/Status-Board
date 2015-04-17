@@ -1,0 +1,58 @@
+<template name="user">
+
+<div class="container">
+
+  <div class="row">
+
+    {{#if currentUser}}
+      <!-- Sidebar -->
+      <div class="col-xs-2 user-sidebar">
+        <div class="list-group">
+          <!-- Public View -->
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-profile-btn">Profile</a>
+
+          <!-- Private View -->
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-settings-btn">Settings</a>
+
+          {{#if isInRole 'hacker'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-hacker-btn">Hacker</a>
+          {{/if}}
+
+          {{#if isInRole 'mentor'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-mentor-btn">Mentor</a>
+          {{/if}}
+
+          {{#if isInRole 'volunteer'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-volunteer-btn">Volunteer</a>
+          {{/if}}
+
+          {{#if isInRole 'announcer'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-announcements-btn">Announcements</a>
+          {{/if}}
+
+          {{#if isInRole 'admin'}}
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-database-btn">Database Access</a>
+          <a href="#" class="list-group-item user-sidebar-btn" id="user-server-settings-btn">Server Settings</a>
+          {{/if}}
+
+
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="col-xs-10 user-content">
+
+        {{> Template.dynamic template=user_page}}
+
+      </div>
+    {{else}}
+
+      <p>Please <a href="/login">login</a> to view your profile.</p>
+
+    {{/if}}
+
+  </div>
+
+</div>
+
+</template>

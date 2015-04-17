@@ -1,0 +1,10 @@
+<template name="user_database">
+  {{#if isInRole 'admin'}}
+  <div id="user-database">
+    <h1>Database Access</h1>
+
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
