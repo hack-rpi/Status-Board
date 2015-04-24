@@ -3,6 +3,76 @@
   <div id="user-announcements">
     <h1>Announcements Controls</h1>
 
+    <div class="row">
+      <div class="col-md-12">
+        <h4>New Announcement</h4>
+        <div class="row">
+          <form class="form-horizontal" role="role">
+            <div class="form-group">
+              <label for="inputHeader" class="col-md-3 control-label">
+                Title</label>
+              <div class="col-md-5">
+                <input type="text" class="form-control" id="inputHeader">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputBody" class="col-md-3 control-label">
+                Subtitle</label>
+              <div class="col-md-5">
+                <textarea class="form-control" rows="3" cols="57" resize="false"
+                  id="inputBody"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputStartTime" class="col-md-3 control-label">
+                Start Time</label>
+              <div class="col-md-5">
+                <div class="input-group datetimepicker">
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  <input class="set-due-date form-control" id="inputStartTime"
+                    type="text"/>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-5 col-md-offset-3">
+                <div id="addAnnouncementBtn" class="btn btn-success">Submit</div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <h4>All Announcements</h4>
+
+        <table class="table">
+          <tbody>
+            <tr>
+              <th style="width:20%;">Header</th>
+              <th style="width:50%;">Body</th>
+              <th style="width:20%;">Start Time</th>
+              <th style="width:10%; text-align:center;">Remove</th>
+            </tr>
+            {{#each announcements}}
+              <tr>
+                <td>{{header}}</td>
+                <td>{{text}}</td>
+                <td>{{fStartTime}}</td>
+                <td style="text-align:center;">
+                  <div id="{{_id}}"
+                    class="btn btn-sm btn-danger removeAnnouncement">X</div>
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
   </div>
   {{else}}
   <h1>Unauthorized Access</h1>

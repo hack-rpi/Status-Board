@@ -27,3 +27,7 @@ body {
   color: #aa1111;
   cursor: pointer;
 }
+
+.datetimepicker {
+  color: #343434;
+}
