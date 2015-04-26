@@ -1,0 +1,44 @@
+<template name="jumbotron">
+
+  <div class="jumbotron-container">
+
+    <div class="container">
+
+      <img class="banner-logo" src="img/hackrpi_logo_red.png" />
+
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="announcements-panel">
+
+              <div class="row">
+                <div class="col-xs-1">
+                  <i class="fa fa-angle-left fa-5x accent"></i>
+                </div>
+
+                <div class="col-xs-10">
+                  <div class="announce-box">
+                    {{#each announcements}}
+                      <div class="announcement">
+                        <h1>{{header}}</h1>
+                        <p>{{text}}</p>
+                      </div>
+                    {{/each}}
+                  </div>
+                </div>
+
+                <div class="col-xs-1">
+                  <i class="fa fa-angle-right fa-5x accent"></i>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- End Container -->
+
+  </div>
+
+</template>

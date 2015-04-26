@@ -1,0 +1,10 @@
+<template name="user_volunteer">
+  {{#if isInRole 'volunteer'}}
+  <div id="user-volunteer">
+    <h1>Volunteer Controls</h1>
+
+  </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>

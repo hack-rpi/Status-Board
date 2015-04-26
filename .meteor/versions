@@ -15,7 +15,7 @@ deps@1.0.7
 ejson@1.0.6
 email@1.0.6
 fastclick@1.0.3
-fortawesome:fontawesome@4.2.0_2
+fortawesome:fontawesome@4.3.0
 geojson-utils@1.0.3
 html-tools@1.0.4
 htmljs@1.0.4
@@ -62,7 +62,7 @@ standard-app-packages@1.0.5
 steeve:jquery-qrcode@0.2.2
 templating@1.1.1
 tracker@1.0.7
-tsega:bootstrap3-datetimepicker@4.7.14_3
+tsega:bootstrap3-datetimepicker@4.7.14_4
 ui@1.0.6
 underscore@1.0.3
 url@1.0.4

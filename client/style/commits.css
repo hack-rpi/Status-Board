@@ -1,0 +1,30 @@
+.commit-box {
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+.commit-repo {
+  font-size: 32px;
+}
+
+.commit-text {
+  font-size: 18px;
+}
+
+.commit-flag-count {
+  float:right;
+  font-size: 14px;
+}
+
+.commit-flag-count i {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.commit-date {
+  color: #cdcdcd;
+  float: right;
+}

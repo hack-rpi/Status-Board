@@ -1,0 +1,71 @@
+<template name="user_profile">
+  <div id="user-profile">
+    <div class="row">
+      <div class="col-xs-1">
+        <div class="btn btn-primary btn-sm" id="user-profile-edit-btn" title="Edit">
+          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="col-xs-11">
+        <span class="section-header-span">{{ userName }}</span>
+      </div>
+    </div>
+    {{#if editActive}}
+      <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="UPedit-name" class="col-md-3 control-label">Name</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-name" value="{{ name }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-affiliation" class="col-md-3 control-label">Affiliation</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-affiliation" value="{{ affiliation }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-projectname" class="col-md-3 control-label">Project Name</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-projectname" value="{{ projectName }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-location" class="col-md-3 control-label">Location</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-location" value="{{ location }}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-1">
+            <button type="click" id="user-profile-save-btn" class="btn btn-primary">Save</button>
+          </div>
+          <div class="col-sm-offset-1 col-sm-1">
+            <button type="click" id="user-profile-cancel-btn" class="btn btn-default">Cancel</button>
+          </div>
+        </div>
+      </form>
+
+    {{else}}
+      <div class="user-settings-table">
+        <div class="row">
+          <div class="col-xs-4 user-information-label">Name</div>
+          <div class="col-xs-8">{{ name }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 user-information-label">Affiliation</div>
+          <div class="col-xs-8">{{ affiliation }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 user-information-label">Project Name</div>
+          <div class="col-xs-8">{{ projectName }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4 user-information-label">Location</div>
+          <div class="col-xs-8">{{ location }}</div>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</template>
