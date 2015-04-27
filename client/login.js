@@ -1,27 +1,3 @@
-// trim helper
-var trimInput = function(val) {
-  return val.replace(/^\s*|\s*$/g, "");
-};
-
-// valid password as per requirements
-var isValidPassword = function(val) {
-   return val.length >= 6;
-};
-
-// validate input email
-var isValidEmail = function(email) {
-	return email.length > 6 && email.search("@");
-};
-
-// trim whitespace from the input
-var trimInput = function(val) {
-  return val.replace(/^\s*|\s*$/g, "");
-};
-
-var stripPhone = function(phone) {
-  return phone;
-};
-
 Template.login.events({
   'submit #login-form' : function(e, t){
     e.preventDefault();

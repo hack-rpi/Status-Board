@@ -11,8 +11,8 @@ Meteor.startup(function() {
 	MentorQueue._ensureIndex( {"completed": 1} );
 
 	// Server Variables ========================================================
-	var admin_doc = Meteor.users.findOne({ "username":Meteor.settings.default_admin_username });
-	var admin_id = "";
+	admin_doc = Meteor.users.findOne({ "username":Meteor.settings.default_admin_username });
+	admin_id = "";
 	if (admin_doc)
 		admin_id = admin_doc._id;
 	// =========================================================================

@@ -10,6 +10,7 @@ blaze-tools@1.0.3
 boilerplate-generator@1.0.3
 callback-hook@1.0.3
 check@1.0.5
+coffeescript@1.0.6
 ddp@1.1.0
 deps@1.0.7
 ejson@1.0.6
@@ -43,6 +44,7 @@ mizzao:bootstrap-3@3.3.1_1
 mobile-status-bar@1.0.3
 momentjs:moment@2.8.4
 mongo@1.1.0
+nimble:restivus@0.6.4
 npm-bcrypt@0.7.8_2
 observe-sequence@1.0.6
 ordered-dict@1.0.3
