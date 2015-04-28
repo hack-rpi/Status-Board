@@ -1,7 +1,22 @@
 Template.user.rendered = function() {
-  Session.set("user-page", "user-profile-btn");
   $(".user-sidebar-btn").removeClass("active");
   $("#user-profile-btn").addClass("active");
+  // get to see if we have an incoming code from GitHub
+  if (window.location.search) {
+    params = window.location.search.split('=');
+    if (params[0] === '?code') {
+      Meteor.call('getGitHubAccessToken', params[1], Meteor.userId(),
+        function(error, result) {
+          if (! error) {
+            Session.set('displayMessage', {
+              title: 'Success',
+              body: 'Github connected successfully. Happy hacking!'
+            });
+          }
+          console.log(error);
+      });
+    }
+  }
 };
 
 Template.user.helpers({

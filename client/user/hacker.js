@@ -24,7 +24,11 @@ var updateRepository = function(repo_obj) {
       'owner': repo_obj.owner_handle,
       'url': repo_obj.url,
       'contributors': [],
-      'userIds': []
+      'userIds': [],
+      'webhook': {
+        'created': false,
+        'createdBy': ''
+      }
     });
     repo_doc = RepositoryList.findOne({ '_id': repo_id });
   }
@@ -56,8 +60,8 @@ var updateRepository = function(repo_obj) {
 };
 
 Template.user_hacker.rendered = function() {
-  Meteor.subscribe("RepositoryList"),
-  Meteor.subscribe("userData");
+  repo_sub = Meteor.subscribe("RepositoryList");
+  userData_sub = Meteor.subscribe("userData");
 }
 
 Template.user_hacker.helpers({
@@ -71,8 +75,8 @@ Template.user_hacker.helpers({
   },
   challengePost: function() {
     project_dep.depend();
-    var sub = Meteor.subscribe("RepositoryList");
-    if (sub.ready() &&
+    repo_sub = Meteor.subscribe("RepositoryList");
+    if (repo_sub.ready() &&
       RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId })) {
       return RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId }).challengePost;
     }
@@ -82,13 +86,24 @@ Template.user_hacker.helpers({
   },
   teamMembers: function() {
     project_dep.depend();
-    var sub = Meteor.subscribe("RepositoryList");
-    if (sub.ready() &&
+    repo_sub = Meteor.subscribe("RepositoryList");
+    if (repo_sub.ready() &&
       RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId })) {
       return RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId }).contributors;
     }
     else {
       return [];
+    }
+  },
+  hasWebhook: function() {
+    project_dep.depend();
+    repo_sub = Meteor.subscribe("RepositoryList");
+    if (repo_sub.ready() &&
+      RepositoryList.findOne({ '_id': Meteor.user().profile.repositoryId })) {
+        return ! RepositoryList.findOne({ '_id': Meteor.user().profile.repositoryId }).webhook.created;
+      }
+    else {
+      return true;
     }
   }
 });
@@ -173,6 +188,12 @@ Template.user_hacker.events({
     challengePost_link = $("#challengePost-input").val();
     challengePost_dep.changed();
     $("#edit-ChallengePost-modal").modal("hide");
+  },
+
+  'click #github-signin': function() {
+    Meteor.call('getGitHubRedirect', function(error, result) {
+      window.location = result;
+    });
   },
 
   'click #github-btn': function() {
