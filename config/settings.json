@@ -12,7 +12,8 @@
 	"default_admin_username": "",
 	"default_admin_password": "",
 
-	"github_API_token": "",
+	"github_clientId": "",
+	"github_secret": "",
 
 	"twilio_SID": "",
 	"twilio_token": "",

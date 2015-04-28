@@ -1,4 +1,18 @@
 Meteor.methods({
+	isValidUrl: function(url) {
+		try {
+			return Meteor.http.get(url, {
+				headers: {
+					'User-Agent': 'Meteor/1.1'
+				}
+			});
+		}
+		catch (e) {
+			return false;
+		}
+
+	},
+
 	getCommit: function(username, repo) {
 		var token = Meteor.settings.github_API_token;
 		var url = "https://api.github.com/repos/" + username + "/" + repo + "/commits";
