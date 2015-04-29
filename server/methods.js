@@ -12,40 +12,6 @@ Meteor.methods({
 		}
 	},
 
-	getGitHubRedirect: function() {
-		return 'https://github.com/login/oauth/authorize?'
-        + 'client_id=' + Meteor.settings.github_clientId
-				+ '&redirect_uri=http://localhost:3000/user'
-				+ '&scope=admin:repo_hook,admin:org_hook';
-	},
-
-	getGitHubAccessToken: function(code, userId) {
-		var url = 'https://github.com/login/oauth/access_token?'
-			+ 'client_id=' + Meteor.settings.github_clientId
-			+ '&client_secret=' + Meteor.settings.github_secret
-			+ '&code=' + code
-		try {
-			Meteor.http.post(url, {
-				headers: {
-					'User-Agent': 'Meteor/1.1'
-				}
-			}, function(error, result) {
-				var content = decodeURIComponent(result.content).split('&')
-					.map(function(d) { return d.split('='); });
-				Meteor.users.update({ '_id': userId }, {
-					$set: {
-						'services.Github.access_token': content[0][1],
-						'services.Github.scope': content[1][1].split(','),
-						'services.Github.token_type': content[2][1]
-					}
-				});
-			});
-		}
-		catch (e) {
-			return e;
-		}
-	},
-
 	getCommit: function(username, repo) {
 		var token = Meteor.settings.github_API_token;
 		var url = "https://api.github.com/repos/" + username + "/" + repo + "/commits";

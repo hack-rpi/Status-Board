@@ -191,18 +191,14 @@ Template.user_hacker.events({
   },
 
   'click #github-signin': function() {
-    Meteor.call('getGitHubRedirect', function(error, result) {
-      window.location = result;
+    Meteor.call('getGitHubRedirect', Meteor.userId(), function(error, result) {
+      if (error) {
+        console.log(error);
+      }
+      else {
+        window.location = result;
+      }      
     });
   },
 
-  'click #github-btn': function() {
-    Meteor.loginWithGithub({
-      requestPermissions: ['user', 'public_repo']
-    }, function (err) {
-      if (err)
-        Session.set('errorMessage', err.reason || 'Unknown error');
-        console.log(err);
-    });
-  }
 });

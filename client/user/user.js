@@ -3,17 +3,19 @@ Template.user.rendered = function() {
   $("#user-profile-btn").addClass("active");
   // get to see if we have an incoming code from GitHub
   if (window.location.search) {
-    params = window.location.search.split('=');
-    if (params[0] === '?code') {
-      Meteor.call('getGitHubAccessToken', params[1], Meteor.userId(),
-        function(error, result) {
+    params = window.location.search.split('&').map(function(d) { return d.split('='); });
+    if (params.length > 1 && params[0][0] === '?code' && params[1][0] === 'state') {
+      Meteor.call('getGitHubAccessToken', params[0][1], params[1][1], Meteor.userId(),
+        function(result, error) {
           if (! error) {
             Session.set('displayMessage', {
               title: 'Success',
               body: 'Github connected successfully. Happy hacking!'
             });
           }
-          console.log(error);
+          else {
+            console.log(error.error + '\n' + error.reason);
+          }
       });
     }
   }
