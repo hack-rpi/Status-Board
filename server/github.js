@@ -8,7 +8,7 @@ Meteor.methods({
 		user_states[userId] = state;
 		return 'https://github.com/login/oauth/authorize?'
         + 'client_id=' + Meteor.settings.github_clientId
-				+ '&redirect_uri=http://localhost:3000/user'
+				+ '&redirect_uri=' + Meteor.settings.root_url + '/user'
 				+ '&scope=admin:repo_hook,admin:org_hook'
 				+ '&state=' + state;
 	},
@@ -48,20 +48,6 @@ Meteor.methods({
 	createRepositoryWebhook: function(userId) {
 		var user_doc = Meteor.users.findOne({ '_id': userId }),
 				repo_doc = RepositoryList.findOne({ '_id': user_doc.profile.repositoryId });
-		var data = JSON.stringify({
-			headers: {
-				'User-Agent': 'Meteor/1.1'
-			},
-			params: {
-				'name': 'web',
-				'active': true,
-				'events': ['push'],
-				'config': {
-					'url': 'http://1b50beba.ngrok.io/api/CommitMessages',
-					'content-type': 'json'
-				}
-			}
-		});
 		try {
 			return Meteor.http.post(
 				'https://api.github.com/repos/' + repo_doc.full_name + '/hooks'
@@ -75,21 +61,42 @@ Meteor.methods({
 						'active': true,
 						'events': ['push'],
 						'config': {
-							'url': 'http://1b50beba.ngrok.io/api/CommitMessages',
+							'url': Meteor.settings.root_url + '/api/CommitMessages',
 							'content-type': 'json'
 						}
 					}
-				}, function(result) {
+				}, function(error, result) {
 					RepositoryList.update({ '_id': repo_doc._id }, {
 						$set: {
 							'webhook.created': true,
-							'webhook.createdBy': userId
+							'webhook.createdBy': userId,
+							'webhook.id': result.data.id,
+							'webhook.events': result.data.events
 						}
 					});
 				});
 		}
 		catch (e) {
 			throw new Meteor.Error('GitHub Error', 'Unable to create webhook.');
+		}
+	},
+
+	deleteRepositoryWebhook: function(userId, repo_full_name, hookId) {
+		var user_doc = Meteor.users.findOne({ '_id': userId });
+		try {
+			return Meteor.http.del(
+				'https://api.github.com/repos/' + repo_full_name + '/hooks/'
+					+ hookId
+					+ '?access_token=' + user_doc.services.Github.access_token,
+				{
+					headers: {
+						'User-Agent': 'Meteor/1.1'
+					}
+				});
+		}
+		catch (e) {
+			console.log(e);
+			throw new Meteor.Error('GitHub Error', 'Unable to delete webhook.');
 		}
 	}
 });

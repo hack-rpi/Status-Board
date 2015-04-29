@@ -9,6 +9,8 @@
 		"apis": []
 	},
 
+	"root_url": "",
+
 	"default_admin_username": "",
 	"default_admin_password": "",
 

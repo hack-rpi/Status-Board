@@ -180,8 +180,28 @@ Template.user_hacker.events({
       }
     });
     // delete the repository if they were the last person on the project
-    if (RepositoryList.find({ "_id":repo_id }).fetch()[0].contributors.length == 0) {
-      RepositoryList.remove({ "_id": repo_id });
+    var repo_doc = RepositoryList.findOne({ '_id': repo_id });
+    if (repo_doc.contributors.length == 0) {
+      // but first remove the webhook
+      if (repo_doc.webhook.created) {
+        Meteor.call('deleteRepositoryWebhook', Meteor.userId(),
+          repo_doc.full_name,
+          repo_doc.webhook.id,
+          function(error, result) {
+            if (error) {
+              Session.set('displayMessage', {
+                title: error.error,
+                body: error.reason
+              });
+            }
+            else {
+              RepositoryList.remove({ "_id": repo_id });
+            }
+          });
+      }
+      else {
+        RepositoryList.remove({ "_id": repo_id });
+      }
     }
   },
   'click #user-challengePost-save': function() {
