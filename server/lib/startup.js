@@ -48,11 +48,6 @@ Meteor.startup(function() {
 
 	// Repeating Server Actions ==================================================
 
-	// refresh the commit database every 30 seconds
-	// Meteor.setInterval(function() {
-	// 	Meteor.call("refreshCommitsAllRepos");
-	// }, 60*1000);
-
 	// show check for new announcements to show every 30 seconds
 	Meteor.setInterval(function() {
 		Meteor.call("showAnnouncements");

@@ -26,6 +26,17 @@ Template.user.rendered = function() {
                   });
                 }
               });
+            // then grab any (at most 30) commits that we may have missed
+            Meteor.call('addCommits', Meteor.userId(),
+              function(error, result) {
+                if (error) {
+                  Session.set('displayMessage', {
+                    title: error.error,
+                    body: error.reason
+                  });
+                }
+              }
+            );
           }
           else {
             Session.set('displayMessage', {

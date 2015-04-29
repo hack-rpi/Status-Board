@@ -111,5 +111,146 @@ Meteor.methods({
 			console.log(e);
 			throw new Meteor.Error('GitHub Error', 'Unable to delete webhook.');
 		}
+	},
+
+	// retreives the commit messages in the master branch for a given
+	// repository using a user's access token
+	getRepoCommitData: function(token, full_repo_name) {
+		try {
+			return Meteor.http.get(
+				'https://api.github.com/repos/' + full_repo_name + '/commits',
+				{
+					headers: {
+						'User-Agent': 'Meteor/1.1'
+					},
+					params: {
+						access_token: token
+					}
+				}
+			);
+		}
+		catch (e) {
+			throw new Meteor.Error('GitHub Error',
+				'Unable to retrieve commit messages.');
+		}
+	},
+
+	// retrieves the information about a given repository (full name) using
+	// a user's access token
+	getRepositoryData: function(token, full_repo_name) {
+		try {
+			return Meteor.http.get(
+				'https://api.github.com/repos/' + full_repo_name,
+				{
+					headers: {
+						'User-Agent': 'Meteor/1.1'
+					},
+					params: {
+						access_token: token
+					}
+				}
+			);
+		}
+		catch (e) {
+			throw new Meteor.Error('GitHub Error',
+				'Unable to retrieve repository data.');
+		}
+	},
+
+	// grabs the 30 most recent commits from a given repository using a user's
+	// access token and adds all of the new commits to the collection
+	addCommits: function(userId) {
+		var user_doc = Meteor.users.findOne({ '_id': userId }),
+				token = user_doc.services.Github.access_token,
+				full_repo_name = RepositoryList.findOne({
+					'_id': user_doc.profile.repositoryId
+				}).full_name;
+		try {
+			// make synchronous calls (blocking)
+			var commits_result = Meteor.call('getRepoCommitData', token, full_repo_name),
+					repo_result = Meteor.call('getRepositoryData', token, full_repo_name);
+		}
+		catch (e) {
+			throw e;
+		}
+		try {
+			var commits = JSON.parse(commits_result.content),
+					raw_repo_data = JSON.parse(repo_result.content),
+					// create repo object to attach to every commit
+					repo_data = {
+						id: raw_repo_data.id,
+						name: raw_repo_data.name,
+						full_name: raw_repo_data.full_name,
+						owner: {
+							name: raw_repo_data.owner.login,
+							email: raw_repo_data.owner.email,
+						},
+						description: raw_repo_data.description,
+						url: raw_repo_data.html_url,
+						homepage: raw_repo_data.homepage,
+						language: raw_repo_data.language
+					};
+			// loop over all the commits that were found
+			// stop if we get to something we've already added
+			for (var i=0; i<commits.length; i++) {
+				// check if this commit was already added to the collection
+				if (CommitMessages.findOne({ '_id': commits[i].sha })) {
+					// all of the rest will not be new either so stop here
+					break;
+				}
+				// if this sha doesn't already exist in the database then it is new
+				else {
+					// capture and store all of the data
+					var v_date = Meteor.call('validateDate',
+						commits[i]['commit']['author']['date']);
+					CommitMessages.insert({
+						_id : commits[i].sha,
+						text : commits[i].commit.message,
+						url: commits[i],
+						date : v_date,
+						fdate :  Meteor.call('formatDateTime', v_date),
+						author: {
+							name: commits[i].commit.author.name,
+							email: commits[i].commit.author.email,
+							username: commits[i].author.login
+						},
+						repo: repo_data,
+						flags: [],
+						total_flags: 0
+					});
+				}
+			} // end commits for loop
+		}
+		catch (e) {
+			console.log(e);
+			throw new Meteor.Error('GitHub Error',
+				'Unable to parse commit messages.');
+		}
+	},
+
+	validateDate: function(dt) {
+		// if a commit has a date in the future compared to the server time, then
+		//  assign it the server time
+		var now = new Date();
+		now.setHours( now.getHours() + 5 ); // UTC
+		if (dt > now) {
+			dt = now;
+		}
+		return dt;
+	},
+
+	formatDateTime: function(dt) {
+		var year  = parseInt(dt.substr(0,4),10);
+		var month = parseInt(dt.substr(5,2),10);
+		var day   = parseInt(dt.substr(8,2),10);
+		var hour  = parseInt(dt.substr(11,2),10);
+		var min   = parseInt(dt.substr(14,2),10);
+		var sec   = parseInt(dt.substr(17,2),10);
+		month--; // JS months start at 0
+
+		var d = new Date(year,month,day,hour,min,sec);
+		d = d.toLocaleString(0,24);
+
+		return d.substr(0,24);
 	}
 });
