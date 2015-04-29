@@ -193,11 +193,14 @@ Template.user_hacker.events({
   'click #github-signin': function() {
     Meteor.call('getGitHubRedirect', Meteor.userId(), function(error, result) {
       if (error) {
-        console.log(error);
+        Session.set('displayMessage', {
+          title: error.error,
+          body: error.reason
+        });
       }
       else {
         window.location = result;
-      }      
+      }
     });
   },
 

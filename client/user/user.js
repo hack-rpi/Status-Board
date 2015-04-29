@@ -6,15 +6,30 @@ Template.user.rendered = function() {
     params = window.location.search.split('&').map(function(d) { return d.split('='); });
     if (params.length > 1 && params[0][0] === '?code' && params[1][0] === 'state') {
       Meteor.call('getGitHubAccessToken', params[0][1], params[1][1], Meteor.userId(),
-        function(result, error) {
+        function(error, result) {
           if (! error) {
-            Session.set('displayMessage', {
-              title: 'Success',
-              body: 'Github connected successfully. Happy hacking!'
-            });
+            Meteor.call('createRepositoryWebhook', Meteor.userId(),
+              function(error, result) {
+                if (! error) {
+                  Session.set('displayMessage', {
+                    title: 'Success',
+                    body: 'Github was connected successfully and a webhook was '
+                      + 'created. Happy hacking!'
+                  });
+                }
+                else {
+                  Session.set('displayMessage', {
+                    title: error.error,
+                    body: error.reason
+                  });
+                }
+              });
           }
           else {
-            console.log(error.error + '\n' + error.reason);
+            Session.set('displayMessage', {
+              title: error.error,
+              body: error.reason
+            });
           }
       });
     }

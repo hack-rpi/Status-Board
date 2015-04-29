@@ -8,7 +8,7 @@ Meteor.methods({
 			});
 		}
 		catch (e) {
-			return false;
+			throw new Meteor.Error('Invalid Url', 'Input URL is not valid.');
 		}
 	},
 

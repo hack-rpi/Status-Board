@@ -4,7 +4,7 @@ Meteor.methods({
 	getGitHubRedirect: function(userId) {
 		var state = Random.secret();
 		if (! Meteor.users.find({ '_id': userId }))
-			throw 'bad userId';
+			throw new Meteor.Error('GitHub Error', 'Invalid userId.');
 		user_states[userId] = state;
 		return 'https://github.com/login/oauth/authorize?'
         + 'client_id=' + Meteor.settings.github_clientId
@@ -20,7 +20,6 @@ Meteor.methods({
 			+ '&code=' + code
 		try {
 			if (user_states[userId] != state) {
-				console.log(state);
 				throw new Meteor.Error('State-Error',
 					'bad state! request created by third party!');
 			}
@@ -42,7 +41,55 @@ Meteor.methods({
 			});
 		}
 		catch (e) {
-			return e;
+			throw new Meteor.Error('GitHub Error', 'Unable to obtain access token.')
+		}
+	},
+
+	createRepositoryWebhook: function(userId) {
+		var user_doc = Meteor.users.findOne({ '_id': userId }),
+				repo_doc = RepositoryList.findOne({ '_id': user_doc.profile.repositoryId });
+		var data = JSON.stringify({
+			headers: {
+				'User-Agent': 'Meteor/1.1'
+			},
+			params: {
+				'name': 'web',
+				'active': true,
+				'events': ['push'],
+				'config': {
+					'url': 'http://1b50beba.ngrok.io/api/CommitMessages',
+					'content-type': 'json'
+				}
+			}
+		});
+		try {
+			return Meteor.http.post(
+				'https://api.github.com/repos/' + repo_doc.full_name + '/hooks'
+					+ '?access_token=' + user_doc.services.Github.access_token,
+				{
+					headers: {
+						'User-Agent': 'Meteor/1.1'
+					},
+					data: {
+						'name': 'web',
+						'active': true,
+						'events': ['push'],
+						'config': {
+							'url': 'http://1b50beba.ngrok.io/api/CommitMessages',
+							'content-type': 'json'
+						}
+					}
+				}, function(result) {
+					RepositoryList.update({ '_id': repo_doc._id }, {
+						$set: {
+							'webhook.created': true,
+							'webhook.createdBy': userId
+						}
+					});
+				});
+		}
+		catch (e) {
+			throw new Meteor.Error('GitHub Error', 'Unable to create webhook.');
 		}
 	}
 });
