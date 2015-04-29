@@ -1,4 +1,6 @@
 Meteor.methods({
+	// checks to see if the given url is valid or not with a simple get request
+	// returns an error if invalid or the request responce if valid
 	isValidUrl: function(url) {
 		try {
 			return Meteor.http.get(url, {

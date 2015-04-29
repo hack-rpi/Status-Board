@@ -5,9 +5,11 @@ Template.user.rendered = function() {
   if (window.location.search) {
     params = window.location.search.split('&').map(function(d) { return d.split('='); });
     if (params.length > 1 && params[0][0] === '?code' && params[1][0] === 'state') {
+      // grab access token
       Meteor.call('getGitHubAccessToken', params[0][1], params[1][1], Meteor.userId(),
         function(error, result) {
           if (! error) {
+            // if we got an access token then create a webhook
             Meteor.call('createRepositoryWebhook', Meteor.userId(),
               function(error, result) {
                 if (! error) {

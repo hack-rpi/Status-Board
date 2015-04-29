@@ -4,6 +4,8 @@ Restivus.configure({
 	prettyJson: true
 });
 
+// routes to /api/CommitMessages to handle interactions with the
+// CommitMessages collection
 Restivus.addRoute('CommitMessages', { authRequired: true}, {
 	get: function() {
 		return {
@@ -13,7 +15,11 @@ Restivus.addRoute('CommitMessages', { authRequired: true}, {
 	},
 	post: {
 		action: function() {
+			// expecting post requests from GitHub formatted appropriately
+			// all other requests will currently return a 500 error
 			try {
+				// GitHub will send a ping event whenever a webhook is created
+				// all we have to do ping it back
 				if (this.request.headers['x-github-event'] === 'ping') {
 					return {
 						statusCode: 200,
@@ -23,6 +29,20 @@ Restivus.addRoute('CommitMessages', { authRequired: true}, {
 						}
 					};
 				}
+				/*
+				* Incoming GitHub push event *
+				Note that if the payload contains multiple commits, we will add all
+					of them
+				Status Codes:
+						400 - No commits found in the payload
+						401 - No commits could be added, possible collection insertion
+										authorization failure or the commit message(s) have
+										already been added to the collection
+						206 - Partial Success: some of the commit messages were added
+										but not all
+						201 - Success: all of the commit messages in the payload were
+										successfully added to the collection
+				*/
 				else if (this.request.headers['x-github-event'] === 'push') {
 					var payload = JSON.parse(this.request.body.payload),
 					 		commits = payload.commits;
@@ -97,6 +117,7 @@ Restivus.addRoute('CommitMessages', { authRequired: true}, {
 					}
 				} // end push event
 			}
+			// unrecognized post request format
 			catch (e) {
 				return {
 					statusCode: 500,

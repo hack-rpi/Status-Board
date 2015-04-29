@@ -1,6 +1,13 @@
+/*
+Server methods for making calls to the GitHub API
+*/
+
+// keeps track of the state variables sent with OAuth requests
+// user_states[USER_ID] = STATE
 var user_states = {};
 
 Meteor.methods({
+	// returns a URL to direct the user to GitHub to yeild an access token
 	getGitHubRedirect: function(userId) {
 		var state = Random.secret();
 		if (! Meteor.users.find({ '_id': userId }))
@@ -13,6 +20,9 @@ Meteor.methods({
 				+ '&state=' + state;
 	},
 
+	// takes the CODE and STATE returned from GitHub and retrieves an access
+	// token. stores the token, scope, and token type in the services.Gitub
+	// field in the user's document
 	getGitHubAccessToken: function(code, state, userId) {
 		var url = 'https://github.com/login/oauth/access_token?'
 			+ 'client_id=' + Meteor.settings.github_clientId
@@ -45,6 +55,8 @@ Meteor.methods({
 		}
 	},
 
+	// creates a webhook on the repository that the given user is attached to
+	// and updates that repository's document after the webhook has been created
 	createRepositoryWebhook: function(userId) {
 		var user_doc = Meteor.users.findOne({ '_id': userId }),
 				repo_doc = RepositoryList.findOne({ '_id': user_doc.profile.repositoryId });
@@ -81,6 +93,7 @@ Meteor.methods({
 		}
 	},
 
+	// deletes the webhook given full repo's name and hookId
 	deleteRepositoryWebhook: function(userId, repo_full_name, hookId) {
 		var user_doc = Meteor.users.findOne({ '_id': userId });
 		try {
