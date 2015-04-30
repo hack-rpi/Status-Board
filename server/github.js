@@ -188,7 +188,10 @@ Meteor.methods({
 						description: raw_repo_data.description,
 						url: raw_repo_data.html_url,
 						homepage: raw_repo_data.homepage,
-						language: raw_repo_data.language
+						language: {
+							name: raw_repo_data.language,
+							color: languageColors[raw_repo_data.language]
+						}
 					};
 			// loop over all the commits that were found
 			// stop if we get to something we've already added
@@ -206,7 +209,7 @@ Meteor.methods({
 					CommitMessages.insert({
 						_id : commits[i].sha,
 						text : commits[i].commit.message,
-						url: commits[i],
+						url: commits[i].html_url,
 						date : v_date,
 						fdate :  Meteor.call('formatDateTime', v_date),
 						author: {

@@ -81,7 +81,10 @@ Restivus.addRoute('CommitMessages', { authRequired: true}, {
 								description: payload.repository.description,
 								url: payload.repository.html_url,
 								homepage: payload.repository.homepage,
-								language: payload.repository.language
+								language: {
+									name: payload.repository.language,
+									color: languageColors[payload.repository.language]
+								}
 							},
 							flags: [],
 							total_flags: 0
