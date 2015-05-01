@@ -24,7 +24,6 @@ var updateRepository = function(repo_obj) {
       'owner': repo_obj.owner_handle,
       'url': repo_obj.url,
       'contributors': [],
-      'userIds': [],
       'webhook': {
         'created': false,
         'createdBy': ''
@@ -32,31 +31,44 @@ var updateRepository = function(repo_obj) {
     });
     repo_doc = RepositoryList.findOne({ '_id': repo_id });
   }
-  // update the user's profile
-  if (Meteor.users.update({ "_id": Meteor.userId() }, {
+  Meteor.users.update({ "_id": Meteor.userId() }, {
       $set: {
         "profile.github_handle": repo_obj.handle,
         "profile.repository": repo_doc.name,
         "profile.repositoryId": repo_doc._id
       }
-  }) && RepositoryList.update({ "_id": repo_doc._id }, {
-      $addToSet: {
-        "contributors": repo_obj.handle,
-        "userIds": Meteor.userId()
-      }
-  })) {
-    // success
-    Session.set("displayMessage", {
-      title: "Success",
-      body: "You have been successfully added to the project."});
-  }
-  else {
-    // data failed to save
-    Session.set("displayMessage", {
-      title: "Error",
-      body: "Something went wrong saving the data! You may not have permission to perform this action."});
-  }
-  repo_obj = {};
+  }, function(error) {
+    if (! error) {
+      RepositoryList.update({ "_id": repo_doc._id }, {
+          $addToSet: {
+            contributors: {
+              id: Meteor.userId(),
+              handle: repo_obj.handle
+            }
+          }
+      }, function(error2) {
+        if (! error2) {
+          Session.set("displayMessage", {
+            title: "Success",
+            body: "You have been successfully added to the project."});
+        }
+        else {
+          Meteor.users.update({ "_id":Meteor.userId() }, {
+            $set: {
+              "profile.github_handle": "",
+              "profile.repository": "",
+              "profile.repositoryId": ""
+            }
+          });
+          // data failed to save
+          Session.set("displayMessage", {
+            title: "Error",
+            body: "Something went wrong saving the data! You may not have permission to perform this action."});
+        }
+        repo_obj = {};
+      });
+    }
+  });
 };
 
 Template.user_hacker.rendered = function() {
@@ -164,45 +176,36 @@ Template.user_hacker.events({
     Meteor.subscribe("RepositoryList");
     var repo_id = Meteor.user().profile.repositoryId;
     var handle = Meteor.user().profile.github_handle;
-    // delete the information from the user's profile
-    Meteor.users.update({ "_id":Meteor.userId() }, {
-      $set: {
-        "profile.github_handle": "",
-        "profile.repository": "",
-        "profile.repositoryId": ""
-      }
-    });
     // delete their information in the repository entry
     RepositoryList.update({ "_id":repo_id }, {
       $pull: {
-        "contributors": handle,
-        "userIds": Meteor.userId()
+        contributors: {
+          id: Meteor.userId(),
+          handle: handle
+        }
       }
-    });
-    // delete the repository if they were the last person on the project
-    var repo_doc = RepositoryList.findOne({ '_id': repo_id });
-    if (repo_doc.contributors.length == 0) {
-      // but first remove the webhook
-      if (repo_doc.webhook.created) {
-        Meteor.call('deleteRepositoryWebhook', Meteor.userId(),
-          repo_doc.full_name,
-          repo_doc.webhook.id,
-          function(error, result) {
-            if (error) {
-              Session.set('displayMessage', {
-                title: error.error,
-                body: error.reason
-              });
-            }
-            else {
-              RepositoryList.remove({ "_id": repo_id });
-            }
-          });
+    }, function(error, nUpdated) {
+      if (!error) {
+        // delete the information from the user's profile
+        Meteor.users.update({ "_id":Meteor.userId() }, {
+          $set: {
+            "profile.github_handle": "",
+            "profile.repository": "",
+            "profile.repositoryId": ""
+          }
+        });
+        var repo_doc = RepositoryList.findOne({ '_id': repo_id }),
+            repo_name = repo_doc.full_name,
+            webhookId = repo_doc.webhook.id;
+        // delete the repository if they were the last person on the project
+        RepositoryList.remove({ '_id': repo_id }, function(error) {
+          if (! error && webhookId)
+            Meteor.call('deleteRepositoryWebhook', Meteor.userId(),
+              repo_name, webhookId);
+        });
+        }
       }
-      else {
-        RepositoryList.remove({ "_id": repo_id });
-      }
-    }
+    );
   },
   'click #user-challengePost-save': function() {
     challengePost_link = $("#challengePost-input").val();
