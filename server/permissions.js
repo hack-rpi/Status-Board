@@ -83,13 +83,8 @@ RepositoryList.allow({
 	},
 	remove: function(userId, doc) {
 		var user_doc = Meteor.users.findOne({ '_id': userId });
-		// a user can only remove a repo that s/he is attached to AND no one else
-		// is currently attached to it
-		if (user_doc.profile.repositoryId === doc._id
-				&& _.contains(doc.contributors,
-					{ id: userId, handle: user_doc.profile.github_handle })
-				&& _.difference(doc.contributors,
-					{ id: userId, handle: user_doc.profile.github_handle }).length === 0)
+		// a user can only remove a repo that no one is attached to
+		if (doc.contributors.length === 0)
 			return true;
 		else
 			return false;

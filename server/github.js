@@ -74,7 +74,8 @@ Meteor.methods({
 						'events': ['push'],
 						'config': {
 							'url': Meteor.settings.root_url + '/api/CommitMessages',
-							'content-type': 'json'
+							'content_type': 'json',
+							'secret': Meteor.settings.secret_key
 						}
 					}
 				}, function(error, result) {
@@ -94,16 +95,29 @@ Meteor.methods({
 	},
 
 	// deletes the webhook given full repo's name and hookId
-	deleteRepositoryWebhook: function(userId, repo_full_name, hookId) {
+	deleteRepositoryWebhook: function(userId, repoDoc) {
 		var user_doc = Meteor.users.findOne({ '_id': userId });
 		try {
 			return Meteor.http.del(
-				'https://api.github.com/repos/' + repo_full_name + '/hooks/'
-					+ hookId
+				'https://api.github.com/repos/' + repoDoc.full_name + '/hooks/'
+					+ repoDoc.webhook.id
 					+ '?access_token=' + user_doc.services.Github.access_token,
 				{
 					headers: {
 						'User-Agent': 'Meteor/1.1'
+					}
+				}, function(error, result) {
+					if (error)
+						throw error;
+					else {
+						RepositoryList.update({ '_id': repoDoc._id }, {
+							$set: {
+								'webhook.created': false,
+								'webhook.createdBy': '',
+								'webhook.id': '',
+								'webhook.events': []
+							}
+						});
 					}
 				});
 		}

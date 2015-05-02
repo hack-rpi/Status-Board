@@ -4,6 +4,14 @@ Restivus.configure({
 	prettyJson: true
 });
 
+crypto = Npm.require('crypto');
+
+var signPayload = function(payload) {
+	return 'sha1=' + crypto.createHmac('sha1', Meteor.settings.secret_key)
+		.update(payload)
+		.digest('hex')
+};
+
 // routes to /api/CommitMessages to handle interactions with the
 // CommitMessages collection
 Restivus.addRoute('CommitMessages', { authRequired: true}, {
@@ -18,6 +26,16 @@ Restivus.addRoute('CommitMessages', { authRequired: true}, {
 			// expecting post requests from GitHub formatted appropriately
 			// all other requests will currently return a 500 error
 			try {
+				if (this.request.headers['x-hub-signature'] !==
+						signPayload(JSON.stringify(this.request.body))) {
+					return {
+						statusCode: 401,
+						body: {
+							status: 'Unauthorized',
+							message: 'Authorization failure.'
+						}
+					};
+				}
 				// GitHub will send a ping event whenever a webhook is created
 				// all we have to do ping it back
 				if (this.request.headers['x-github-event'] === 'ping') {
@@ -44,7 +62,7 @@ Restivus.addRoute('CommitMessages', { authRequired: true}, {
 										successfully added to the collection
 				*/
 				else if (this.request.headers['x-github-event'] === 'push') {
-					var payload = JSON.parse(this.request.body.payload),
+					var payload = this.request.body,
 					 		commits = payload.commits;
 					if (commits.length === 0) {
 						return {
@@ -94,10 +112,10 @@ Restivus.addRoute('CommitMessages', { authRequired: true}, {
 					}
 					if (success_count == 0) {
 						return {
-							statusCode: 401,
+							statusCode: 409,
 							body: {
-								status: 'Fail',
-								message: 'You are not authorized to add commit messages.'
+								status: 'Conflict',
+								message: 'No commit messages could be added.'
 							}
 						};
 					}
@@ -124,6 +142,7 @@ Restivus.addRoute('CommitMessages', { authRequired: true}, {
 			}
 			// unrecognized post request format
 			catch (e) {
+				console.log(e);
 				return {
 					statusCode: 500,
 					body: {

@@ -194,15 +194,11 @@ Template.user_hacker.events({
             "profile.repositoryId": ""
           }
         });
-        var repo_doc = RepositoryList.findOne({ '_id': repo_id }),
-            repo_name = repo_doc.full_name,
-            webhookId = repo_doc.webhook.id;
+        var repo_doc = RepositoryList.findOne({ '_id': repo_id });
+        if (Meteor.userId() === repo_doc.webhook.createdBy)
+          Meteor.call('deleteRepositoryWebhook', Meteor.userId(), repo_doc);
         // delete the repository if they were the last person on the project
-        RepositoryList.remove({ '_id': repo_id }, function(error) {
-          if (! error && webhookId)
-            Meteor.call('deleteRepositoryWebhook', Meteor.userId(),
-              repo_name, webhookId);
-        });
+        RepositoryList.remove({ '_id': repo_id });
         }
       }
     );
