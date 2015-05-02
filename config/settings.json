@@ -19,6 +19,8 @@
 
 	"twilio_SID": "",
 	"twilio_token": "",
-	"twilio_from_num": ""
+	"twilio_from_num": "",
+
+	"secret_key": ""
 
 }
