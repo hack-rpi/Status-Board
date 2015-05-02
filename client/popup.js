@@ -1,3 +1,7 @@
+var popupTitle = '',
+		popupBody = '',
+		popupDep = new Tracker.Dependency;
+
 // This function is automatically called whenever the displayMessage Session
 //  variable is updated
 Tracker.autorun(function() {
@@ -17,10 +21,6 @@ Tracker.autorun(function() {
 		Session.set("displayMessage", null);
 	}
 });
-
-var popupTitle = "";
-var popupBody = "";
-var popupDep = new Tracker.Dependency;
 
 Template.popup.helpers({
 	title: function() {

@@ -12,6 +12,10 @@ accounts-password
 alanning:roles
 iron:router
 tsega:bootstrap3-datetimepicker
-ajduke:bootstrap-tokenfield
 accounts-base
 fortawesome:fontawesome
+nimble:restivus
+accounts-github
+service-configuration
+random
+underscore

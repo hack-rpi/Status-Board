@@ -1,7 +1,52 @@
 Template.user.rendered = function() {
-  Session.set("user-page", "user-profile-btn");
   $(".user-sidebar-btn").removeClass("active");
   $("#user-profile-btn").addClass("active");
+  // get to see if we have an incoming code from GitHub
+  if (window.location.search) {
+    params = window.location.search.split('&').map(function(d) { return d.split('='); });
+    if (params.length > 1 && params[0][0] === '?code' && params[1][0] === 'state') {
+      // grab access token
+      Meteor.call('getGitHubAccessToken', params[0][1], params[1][1], Meteor.userId(),
+        function(error, result) {
+          if (! error) {
+            // if we got an access token then create a webhook
+            Meteor.call('createRepositoryWebhook', Meteor.userId(),
+              function(error, result) {
+                if (! error) {
+                  Session.set('displayMessage', {
+                    title: 'Success',
+                    body: 'Github was connected successfully and a webhook was '
+                      + 'created. Happy hacking!'
+                  });
+                }
+                else {
+                  Session.set('displayMessage', {
+                    title: error.error,
+                    body: error.reason
+                  });
+                }
+              });
+            // then grab any (at most 30) commits that we may have missed
+            Meteor.call('addCommits', Meteor.userId(),
+              function(error, result) {
+                if (error) {
+                  Session.set('displayMessage', {
+                    title: error.error,
+                    body: error.reason
+                  });
+                }
+              }
+            );
+          }
+          else {
+            Session.set('displayMessage', {
+              title: error.error,
+              body: error.reason
+            });
+          }
+      });
+    }
+  }
 };
 
 Template.user.helpers({

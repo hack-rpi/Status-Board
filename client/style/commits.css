@@ -4,6 +4,8 @@
   padding: 20px;
   margin-bottom: 20px;
   color: #000000;
+  float: left;
+  width: 98%;
 }
 
 .commit-repo {
@@ -24,7 +26,17 @@
   padding-right: 2px;
 }
 
+.commit-flag-count i.fa-thumbs-up {
+  cursor: pointer;
+}
+
 .commit-date {
   color: #cdcdcd;
   float: right;
+}
+
+.commit-bookmark {
+  margin-top: -2px;
+  margin-left: -20px;
+  color: #FFD700;
 }

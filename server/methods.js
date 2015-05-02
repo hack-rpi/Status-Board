@@ -1,103 +1,17 @@
 Meteor.methods({
-	getCommit: function(username, repo) {
-		var token = Meteor.settings.github_API_token;
-		var url = "https://api.github.com/repos/" + username + "/" + repo + "/commits";
+	// checks to see if the given url is valid or not with a simple get request
+	// returns an error if invalid or the request responce if valid
+	isValidUrl: function(url) {
 		try {
 			return Meteor.http.get(url, {
 				headers: {
-					"User-Agent": "Meteor/1.0"
-				},
-				params: {
-					access_token: token
+					'User-Agent': 'Meteor/1.1'
 				}
 			});
 		}
-		catch(err) {
-			return false;
+		catch (e) {
+			throw new Meteor.Error('Invalid Url', 'Input URL is not valid.');
 		}
-	},
-
-	addCommits: function(username, repo) {
-		// make a synchronous call (blocking)
-		var result = Meteor.call('getCommit', username, repo);
-		if (result.statusCode != 200) {
-			console.log("ERROR connecting to Github API");
-		}
-		else {
-			var data = JSON.parse(result.content);
-			// loop over all the commits that were found
-			// STOP if we get to something we've already added
-			for (var i=0; i<data.length; i++) {
-				// get sha and check if it's already in the database
-				var commit_sha = data[i]['sha'];
-				// check if this commit is already added to the db
-				if ( CommitMessages.find({ sha: commit_sha }).fetch().length != 0 ) {
-					// all of the rest will not be new either so stop here
-					break;
-				}
-				// if this sha doesn't already exist in the database then it is new
-				else {
-					// capture and store all of the data
-					// sometimes the 'committer' field is null... not sure why
-					//  but we have to check everytime if it is
-					var v_date = Meteor.call('validateDate', data[i]['commit']['committer']['date']);
-					CommitMessages.insert({
-						sha : commit_sha,
-						text : data[i]['commit']['message'],
-						date : v_date,
-						fdate :  Meteor.call('formatDateTime', v_date),
-						repo: repo,
-						committer_handle : data[i]['committer'] ? data[i]['committer']['login'] : data[i]['commit']['committer']['name'],
-						committer_avatar : data[i]['committer'] ? data[i]['committer']['avatar_url']: null,
-						committer_real : data[i]['commit']['committer']['name'],
-						committer_url : data[i]['author']['html_url'],
-						repo_url : "https://github.com/" + username + '/' + repo,
-						// probably not a good a idea to store emails?
-						// (do I have access to all of them?)
-						committer_email : data[i]['commit']['committer']['email'],
-						flags: [],
-						total_flags: 0
-					});
-				}
-			}
-		}
-	},
-
-	refreshCommitsAllRepos: function() {
-		// loop over all the repos in the database and check for new commit messages
-		var stored_repos = RepositoryList.find().fetch();
-		for (var i=0; i<stored_repos.length; i++) {
-			var owner = stored_repos[i]["owner"];
-			var name = stored_repos[i]["name"];
-			Meteor.call("addCommits", owner, name);
-		}
-	},
-
-	validateDate: function(dt) {
-		// if a commit has a date in the future compared to the server time, then
-		//  assign it the server time
-		var now = new Date();
-		now.setHours( now.getHours() + 5 ); // UTC
-		if (dt > now) {
-			dt = now;
-		}
-		return dt;
-	},
-
-	formatDateTime: function(dt) {
-		var year  = parseInt(dt.substr(0,4),10);
-		var month = parseInt(dt.substr(5,2),10);
-		var day   = parseInt(dt.substr(8,2),10);
-		var hour  = parseInt(dt.substr(11,2),10);
-		var min   = parseInt(dt.substr(14,2),10);
-		var sec   = parseInt(dt.substr(17,2),10);
-		month--; // JS months start at 0
-		hour -= 5; // timezone difference
-
-		var d = new Date(year,month,day,hour,min,sec);
-		d = d.toLocaleString(0,24);
-
-		return d.substr(0,24);
 	},
 
 	showAnnouncements: function() {
@@ -282,73 +196,65 @@ Meteor.methods({
 		} // end for
 	},
 
-	giveUpVote: function(commit_id, user_id) {
-		var msg = CommitMessages.find({ _id:commit_id }).fetch()[0];
-		var record = CommitMessages.find({ _id:commit_id, "flags.id":user_id }).fetch();
-		// check if this user has flagged this commit before
-		if (record.length != 0) {
-			// # of votes must be less than 5
-			var votes = 0;
-			for (var i=0; i<record[0]["flags"].length; i++) {
-				if (record[0]["flags"][i]["id"] == user_id) {
-					votes = record[0]["flags"][i]["num"];
-					break;
-				}
-			}
-			if (votes < 5) {
-				CommitMessages.update({ _id:commit_id }, {
-					$inc: {total_flags: 1},
-				});
-				CommitMessages.update({ _id:commit_id, "flags.id":user_id }, {
-					$inc: {"flags.$.num": 1}
-				});
-			} // otherwise no more votes are allowed
+	upVoteCommit: function(commit_id, user_id) {
+		if (! user_id) {
+			throw new Meteor.Error('Invalid Vote',
+				'You must login before you can vote.');
 		}
-		// if this is the first vote then we must initialize a few things
-		else {
-			CommitMessages.update({ _id:commit_id }, {
-				$inc: {total_flags: 1},
-				$push: {flags: {
-					id:user_id,
-					num: 1
+		var record = CommitMessages.findOne({ '_id': commit_id,
+			'flags': { $elemMatch: { 'id': user_id } } });
+		// check if this user has flagged this commit before
+		// can only vote once
+		if (! record) {
+			CommitMessages.update({ '_id': commit_id }, {
+				$inc: {
+					total_flags: 1
+				},
+				$addToSet: {
+					flags: {
+						id: user_id
 					}
 				}
 			});
+			Meteor.users.update({ '_id': user_id }, {
+				$addToSet: {
+					'profile.flags': commit_id
+				}
+			});
+		}
+		else {
+			throw new Meteor.Error('Invalid Vote',
+				'Only one vote per commit message.');
 		}
 	},
 
-	giveDownVote: function(commit_id, user_id) {
-		var msg = CommitMessages.find({ _id:commit_id }).fetch()[0];
-		var record = CommitMessages.find({ _id:commit_id, "flags.id":user_id }).fetch();
-		// check if this user has flagged this commit before
-		if (record.length != 0) {
-			// # of votes must be less than 5
-			var votes = 0;
-			for (var i=0; i<record[0]["flags"].length; i++) {
-				if (record[0]["flags"][i]["id"] == user_id) {
-					votes = record[0]["flags"][i]["num"];
-					break;
-				}
-			}
-			if (votes > -5) {
-				CommitMessages.update({ _id:commit_id }, {
-					$inc: {total_flags: -1},
-				});
-				CommitMessages.update({ _id:commit_id, "flags.id":user_id }, {
-					$inc: {"flags.$.num": -1}
-				});
-			} // otherwise no more votes are allowed
+	removeVoteCommit: function(commit_id, user_id) {
+		if (! user_id) {
+			throw new Meteor.Error('Invalid Vote',
+				'You must login before you can vote.');
 		}
-		// if this is the first vote then we must initialize a few things
-		else {
-			CommitMessages.update({ _id:commit_id }, {
-				$inc: {total_flags: -1},
-				$push: {flags: {
-					id:user_id,
-					num: -1
+		var record = CommitMessages.findOne({ '_id': commit_id,
+			'flags': { $elemMatch: { 'id': user_id } } });
+		// check if this user has flagged this commit before
+		if (record) {
+			CommitMessages.update({ '_id': commit_id }, {
+				$inc: {
+					total_flags: -1
+				},
+				$pull: {
+					flags: {
+						id: user_id
 					}
 				}
 			});
+			Meteor.users.update({ '_id': user_id }, {
+				$pull: {
+					'profile.flags': commit_id
+				}
+			});
+		}
+		else {
+			throw new Meteor.Error('Invalid Vote', 'Cannot remove null vote.');
 		}
 	},
 

@@ -8,11 +8,12 @@ Meteor.startup(function() {
 	Meteor.users._ensureIndex( {"username" : 1} );
 	Meteor.users._ensureIndex( {"role" : 1} );
 	RepositoryList._ensureIndex( {"name": 1} );
+	RepositoryList._ensureIndex( {"full_name": 1} );
 	MentorQueue._ensureIndex( {"completed": 1} );
 
 	// Server Variables ========================================================
-	var admin_doc = Meteor.users.findOne({ "username":Meteor.settings.default_admin_username });
-	var admin_id = "";
+	admin_doc = Meteor.users.findOne({ "username":Meteor.settings.default_admin_username });
+	admin_id = "";
 	if (admin_doc)
 		admin_id = admin_doc._id;
 	// =========================================================================
@@ -36,13 +37,16 @@ Meteor.startup(function() {
 		Roles.addUsersToRoles(adminUser, ["super","admin","flagger","announcer","manager"]);
 	}
 
+	// Prevent non-authorized users from creating new users:
+	Accounts.validateNewUser(function (user) {
+		if (Meteor.users.findOne({ "_id":admin_id }).profile.settings.allow_account_creation) {
+			return true;
+		}
+		throw new Meteor.Error(403, "Not authorized to create new users");
+	});
+
 
 	// Repeating Server Actions ==================================================
-
-	// refresh the commit database every 30 seconds
-	Meteor.setInterval(function() {
-		Meteor.call("refreshCommitsAllRepos");
-	}, 60*1000);
 
 	// show check for new announcements to show every 30 seconds
 	Meteor.setInterval(function() {
