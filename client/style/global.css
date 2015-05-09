@@ -31,3 +31,8 @@ body {
 .datetimepicker {
   color: #343434;
 }
+
+.FourOhFour-box {
+  text-align: center;
+  font-size: 26px;
+}
