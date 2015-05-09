@@ -117,10 +117,11 @@ Meteor.methods({
 	},
 
 	sendText: function(toNum, msg) {
-		var SID = Meteor.settings.twilio_SID;
-		var token = Meteor.settings.twilio_token;
-		var url = "https://api.twilio.com/2010-04-01/Accounts/" + Meteor.settings.twilio_SID + "/SMS/Messages.json"
-		var fromNum = Meteor.settings.twilio_from_num;
+		var SID = Meteor.settings.twilio_SID,
+				token = Meteor.settings.twilio_token,
+				url = "https://api.twilio.com/2010-04-01/Accounts/" +
+					Meteor.settings.twilio_SID + "/SMS/Messages.json",
+				fromNum = Meteor.settings.twilio_from_num;
 		toNum = toNum.replace("-","");
 
 		try {

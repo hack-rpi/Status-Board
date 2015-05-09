@@ -12,6 +12,49 @@ var signPayload = function(payload) {
 		.digest('hex')
 };
 
+var signPayloadTwilio = function(payload) {
+	var url = Meteor.settings.root_url + '/api/Mentor';
+	_.each(
+		_.sortBy(
+			Object.keys(payload), function(x) { return x; }
+		), function(k) { url += k + payload[k]}
+	);
+	return crypto.createHmac('sha1', Meteor.settings.twilio_token)
+		.update(url)
+		.digest('base64');
+};
+
+var formTwilioResponse = function(code, message) {
+	if (message) {
+		// return {
+		// 	statusCode: code,
+		// 	headers: {
+		// 		'Content-Type': 'text/xml'
+		// 	},
+		// 	body: '<?xml version="1.0" encoding="UTF-8"?>' +
+		// 		'<Response>' +
+		// 			'<Sms>' + message + '</Sms>' +
+		// 		'</Response>'
+		// };
+		return {
+			statusCode: code,
+			headers: {
+				'Content-Type': 'text/plain'
+			},
+			body: message
+		};
+	}
+	else {
+		return {
+			statusCode: code,
+			headers: {
+				'Content-Type': 'text/xml'
+			},
+			body: '<?xml version="1.0" encoding="UTF-8"?><Response></Response>'
+		};
+	}
+}
+
 // routes to /api/CommitMessages to handle interactions with the
 // CommitMessages collection
 Restivus.addRoute('CommitMessages', { authRequired: true}, {
@@ -153,4 +196,149 @@ Restivus.addRoute('CommitMessages', { authRequired: true}, {
 			}
 		} // end action function
 	} // end post
+});
+
+
+// routes to /api/Mentor to handle interactions with twilio and mentors
+Restivus.addRoute('Mentor', {authRequired: false} , {
+	get: function() {
+		return {
+			status: 'success',
+			data: []
+		};
+	},
+	post: {
+		action: function() {
+			try {
+				// incoming requests are only authorized to come from Twilio
+				// all other will receive a 401 error
+				if (this.request.headers['x-twilio-signature'] !==
+						signPayloadTwilio(this.request.body)) {
+					return {
+						statusCode: 401,
+						body: {
+							status: 'Unauthorized',
+							message: 'Authorization failure.'
+						}
+					};
+				}
+				/*
+				* Incoming Twilio POST *
+				Note that Twilio will
+				Status Codes:
+						200 - something happened. If twilio receives a 4-- error then
+										messages are not sent to the client
+				*/
+				var fromNum = this.request.body.From.substring(2),
+						msg = this.request.body.Body.toUpperCase()
+							.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+						mentor_doc = Meteor.users.findOne({ 'profile.phone': fromNum });
+				if (! mentor_doc || ! Roles.userIsInRole(mentor_doc._id, 'mentor')) {
+					return formTwilioResponse(404, '');
+				}
+
+				if (msg === 'DONE') {
+					if (! mentor_doc.profile.mentee_id) {
+						return formTwilioResponse(200, 'You currently do not have a task.');
+					}
+					else {
+						var mentee_doc = MentorQueue.findOne({
+							'_id': mentor_doc.profile.mentee_id });
+						Meteor.users.update({ '_id': mentor_doc._id }, {
+				      $set: {
+				        'profile.available': true,
+				        'profile.mentee_id': null
+				      },
+				      $push: {
+				        'profile.history': {
+				          'name': mentee_doc.name,
+				          '_id': mentee_doc._id,
+				          'tag': mentee_doc.tag,
+				          'loc': mentee_doc.loc,
+				          'time': (new Date()).toLocaleString()
+				        }
+				      }
+				    });
+						return formTwilioResponse(200, 'Task Completed. Nice work!');
+					}
+				}
+				else if (msg === 'WAIVE') {
+					if (! mentor_doc.profile.mentee_id) {
+						return formTwilioResponse(200, 'You currently do not have a task.');
+					}
+					else {
+						var mentee_doc = MentorQueue.findOne({'_id': mentor_doc.profile.mentee_id });
+				    MentorQueue.update({ '_id': mentee_doc._id }, {
+				      $set: { 'completed': false }
+				    }, function(error, result) {
+				      if (mentee_doc.phone) {
+				        Meteor.call('sendText', mentee_doc.phone, mentor_doc.profile.name +
+				          ' was called away. You have been added back into the queue.');
+				      }
+				    });
+						Meteor.users.update({ '_id': mentor_doc._id }, {
+							$set: {
+								'profile.available': true,
+								'profile.active': false,
+								'profile.mentee_id': null,
+							}
+				    });
+						return formTwilioResponse(200,
+							'Your assignment has been waived and you are no longer active.');
+					}
+				}
+				else if (msg === 'SUSPEND') {
+					if (mentor_doc.profile.mentee_id) {
+						var mentee_doc = MentorQueue.findOne({'_id': mentor_doc.profile.mentee_id });
+				    MentorQueue.update({ '_id': mentee_doc._id }, {
+				      $set: { 'completed': false }
+				    }, function(error, result) {
+				      if (mentee_doc.phone) {
+				        Meteor.call('sendText', mentee_doc.phone, mentor_doc.profile.name +
+				          ' was called away. You have been added back into the queue.');
+				      }
+				    });
+						Meteor.users.update({ '_id': mentor_doc._id }, {
+							$set: {
+								'profile.available': true,
+								'profile.active': false,
+								'profile.mentee_id': null,
+							}
+				    });
+					}
+					Meteor.users.update({ '_id': mentor_doc._id }, {
+						$set: {
+							'profile.available': true,
+							'profile.active': false,
+							'profile.mentee_id': null,
+						}
+					});
+					return formTwilioResponse(200, 'You are no longer active.');
+				}
+				else if (msg === 'ACTIVATE') {
+					Meteor.users.update({ '_id': mentor_doc._id }, {
+						$set: {
+							'profile.available': true,
+							'profile.active': true,
+						}
+					});
+					return formTwilioResponse(200, 'You are now active.');
+				}
+				else {
+					return formTwilioResponse(200,
+						'Valid commands: done, waive, suspend, activate');
+				}
+			}
+			// internal server--return 500 error
+			catch (e) {
+				return {
+					statusCode: 500,
+					body: {
+						status: 'Failure',
+						data: [e]
+					}
+				};
+			}
+		}
+	}
 });

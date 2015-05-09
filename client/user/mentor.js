@@ -124,8 +124,8 @@ Template.user_mentor.events({
     // complete the mentor's current assignment
     var mentee_id = Meteor.user().profile.mentee_id;
     Meteor.subscribe("MentorQueue");
-    var mentee = MentorQueue.find({ "_id":mentee_id }).fetch()[0];
-    Meteor.users.update({ "_id":Meteor.userId() }, {
+    var mentee = MentorQueue.findOne({ "_id": mentee_id });
+    Meteor.users.update({ "_id": Meteor.userId() }, {
       $set: {
         "profile.available": true,
         "profile.mentee_id": null
@@ -145,17 +145,22 @@ Template.user_mentor.events({
   'click #user-mentor-waive-task-btn': function() {
     // return the current task back to the queue to be assigned to someone
     //   else (nothing preventing self re-assignment!)
-    var mentee_id = Meteor.user().profile.mentee_id;
     Meteor.subscribe("MentorQueue");
-    MentorQueue.update({ "_id":mentee_id }, {
-      $set: { "completed":false }
-    });
-    Meteor.users.update({ "_id": Meteor.userId() }, {
-      $set: {
-        "profile.available": true,
-        "profile.active": false,
-        "profile.mentee_id": null,
+    var mentee_doc = MentorQueue.findOne({'_id': Meteor.user().profile.mentee_id });
+    MentorQueue.update({ '_id': mentee_doc._id }, {
+      $set: { 'completed': false }
+    }, function(error, result) {
+      if (mentee_doc.phone) {
+        Meteor.call('sendText', mentee_doc.phone, Meteor.user().profile.name +
+          ' was called away. You have been added back into the queue.');
       }
-    })
+    });
+    Meteor.users.update({ '_id': Meteor.userId() }, {
+      $set: {
+        'profile.available': true,
+        'profile.active': false,
+        'profile.mentee_id': null,
+      }
+    });
   },
 });
