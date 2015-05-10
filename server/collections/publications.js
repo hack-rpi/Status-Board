@@ -20,3 +20,9 @@ Meteor.publish("allUserData", function() {
 Meteor.publish("userRoles", function  () {
 	return Roles.getAllRoles();
 });
+
+Meteor.publish('AnonReports', function() {
+	if (Roles.userIsInRole(this.userId, 'admin')) {
+		return AnonReports.find();
+	}
+});

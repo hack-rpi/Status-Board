@@ -10,11 +10,16 @@ body {
   color: #C03328;
 }
 
+.list-plain {
+  list-style-type: none;
+  margin-left: -40px;
+}
+
 .faded-text {
   color: #343434;
 }
 
-.modal {
+.modal, input {
   color: #000000;
 }
 

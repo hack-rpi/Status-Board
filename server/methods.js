@@ -299,4 +299,12 @@ Meteor.methods({
 		}
 	},
 
+	sendAlerts: function(alertMsg) {
+		var numbers = Meteor.users.findOne({ '_id': admin_id }).settings
+			.alert_numbers;
+		_.each(numbers, function(num) {
+			Meteor.call('sendText', num, alertMsg);
+		});
+	},
+
 });
