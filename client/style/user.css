@@ -34,3 +34,7 @@
 .alert-num-remove {
   cursor: pointer;
 }
+
+.db_page {
+  margin-top: 20px;
+}

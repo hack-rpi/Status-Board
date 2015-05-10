@@ -13,3 +13,36 @@ Template.user_database.events({
 		Session.set('db_page', $('#selectDatabase').val());
 	}
 });
+
+
+Template.db_anonReport.helpers({
+	reports: function() {
+		Meteor.subscribe('AnonReports');
+		return AnonReports.find();
+	}
+});
+
+Template.db_anonReport.events({
+	'change .selectAction': function() {
+		var action = $('.selectAction#' + this._id).val()
+		$('.selectAction#' + this._id).val('');
+		switch(action) {
+			case 'complete':
+				AnonReports.update({ '_id': this._id }, {
+					$set: { 'addressed': true }
+				});
+				break;
+			case 'incomplete':
+				AnonReports.update({ '_id': this._id }, {
+					$set: { 'addressed': false }
+				});
+				break;
+			case 'remove':
+				if (confirm('Are you sure you want to delete this entry?')) {
+					AnonReports.remove({ '_id': this._id });
+				}
+				break;
+			default: break;
+		}
+	}
+});

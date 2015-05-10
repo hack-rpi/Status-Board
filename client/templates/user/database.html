@@ -7,7 +7,9 @@
       <option value="db_anonReport">AnonReports</option>
     </select>
 
-    {{> Template.dynamic template=db_page}}
+    <div class="db_page">
+      {{> Template.dynamic template=db_page}}
+    </div>
 
   </div>
   {{else}}
@@ -18,7 +20,39 @@
 <template name="db_anonReport">
   {{#if isInRole 'admin'}}
 
-  AnonReports
+  <table class="table">
+    <thead>
+      <tr>
+        <td style="width:65%;">Description</td>
+        <td style="width:15%;">Status</td>
+        <td style="width:20%;">Action</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each reports}}
+      <tr>
+        <td>{{text}}</td>
+        {{#if addressed}}
+        <td>
+          <span class="text-success"><i class="fa fa-check-circle"
+            style="margin-right:4px;"></i>Addressed</span>
+        </td>
+        {{else}}
+        <td><span class="text-danger"><i class="fa fa-times-circle"
+          style="margin-right:4px;"></i>Needs Attention</span></td>
+        {{/if}}
+        <td>
+          <select class="form-control selectAction" id="{{_id}}">
+            <option selected value=''></option>
+            <option value="complete">Mark Complete</option>
+            <option value="incomplete">Mark Uncomplete</option>
+            <option value="remove">Remove</option>
+          </select>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
 
   {{else}}
   <h1>Unauthorized Access</h1>
