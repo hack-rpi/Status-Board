@@ -1,11 +1,17 @@
 Template.user_server_settings.helpers({
   allowAccountCreation: function() {
-    Meteor.subscribe("userData");
+    Meteor.subscribe('userData');
     return Meteor.user().profile.settings.allow_account_creation;
   },
   mentoringSystemStatus: function() {
-    Meteor.subscribe("userData")
+    Meteor.subscribe('userData');
     return Meteor.user().profile.settings.mentoring_system;
+  },
+  alertNumbers: function() {
+    Meteor.subscribe('userData');
+    if (Meteor.user().settings)
+      return Meteor.user().settings.alert_numbers;
+    else return [];
   }
 });
 
@@ -44,4 +50,22 @@ Template.user_server_settings.events({
       }
     });
   },
+  'click #add-alert-number-btn': function() {
+    var phone = $('#alertNum-input').val();
+    $('#alertNum-input').val('');
+    if (! phone) return;
+    phone = stripPhone(phone);
+    Meteor.users.update({ '_id': Meteor.userId() }, {
+      $push: {
+        'settings.alert_numbers': phone
+      }
+    });
+  },
+  'click .alert-num-remove': function() {
+    Meteor.users.update({ '_id': Meteor.userId() }, {
+      $pull: {
+        'settings.alert_numbers': this + ''
+      }
+    });
+  }
 });

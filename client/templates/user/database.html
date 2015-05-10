@@ -3,7 +3,23 @@
   <div id="user-database">
     <h1>Database Access</h1>
 
+    <select class="form-control" id="selectDatabase">
+      <option value="db_anonReport">AnonReports</option>
+    </select>
+
+    {{> Template.dynamic template=db_page}}
+
   </div>
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<template name="db_anonReport">
+  {{#if isInRole 'admin'}}
+
+  AnonReports
+
   {{else}}
   <h1>Unauthorized Access</h1>
   {{/if}}

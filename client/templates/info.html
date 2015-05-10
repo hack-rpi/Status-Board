@@ -40,12 +40,12 @@
           <li><a href="http://www.rpiambulance.com">RPI Ambulance</a></li>
         </ul>
 
-        <!-- <h3>Anonymous Reporting</h3>
-        <p>If you encounter anyone problems during the event that you would
+        <h3>Anonymous Reporting</h3>
+        <p>If you encounter any problems during the event that you would
           bring to our attention anonymously, please don't hesitate to do so.</p>
-        <a href="http://goo.gl/forms/M9jFbsI2fT">
-          <div class="btn btn-link">File Anonymous Report</div>
-        </a> -->
+        <div class="btn btn-default accent" data-toggle="modal" data-target="#anonReportForm">
+          File Anonymous Report
+        </div>
 
       </div>
     </div>
@@ -65,5 +65,7 @@
     </div>
 
   </div>
+
+  {{> anonReportForm }}
 
 </template>

@@ -1,0 +1,28 @@
+<template name='anonReportForm'>
+
+	<div class="modal fade" id="anonReportForm" tabindex="-1"
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          File Anonymous Report
+        </div>
+        <div class="modal-body">
+					<form>
+	          <div class="form-group">
+	            <label for="anon-input">Please Describe the Problem</label>
+              <textarea class="form-control" rows="3" cols="57" resize="false"
+                id="anon-input"></textarea>
+	          </div>
+	        </form>
+        </div>
+        <div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="anonReportBtn">
+						Submit</button>
+          <button type="button" class="btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>

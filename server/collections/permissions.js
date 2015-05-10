@@ -164,3 +164,15 @@ MentorQueue.allow({
 			return false;
 	}
 });
+
+AnonReports.allow({
+	insert: function(userId, doc) {
+		return true;
+	},
+	remove: function(userId, doc) {
+		return Roles.userIsInRole(userId, 'admin');
+	},
+	update: function(userId, doc) {
+		return Roles.userIsInRole(userId, 'admin');
+	}
+})

@@ -30,3 +30,7 @@
   font-size: 14px;
   float: right;
 }
+
+.alert-num-remove {
+  cursor: pointer;
+}

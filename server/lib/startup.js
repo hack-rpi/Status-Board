@@ -30,6 +30,9 @@ Meteor.startup(function() {
 					"allow_account_creation": false,
 					"mentoring_system": false
 				}
+			},
+			'settings': {
+				'alert_numbers': []
 			}
 		});
 		// give the admin admin rights
