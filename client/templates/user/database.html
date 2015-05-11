@@ -5,10 +5,23 @@
 
     <select class="form-control" id="selectDatabase">
       <option value="db_anonReport">AnonReports</option>
+      <option value="db_mentorQueue">MentorQueue</option>
     </select>
 
-    <div class="db_page">
+    <div class="row db_page">
       {{> Template.dynamic template=db_page}}
+    </div>
+
+    <div class="row">
+      <div class="col-xs-5">
+        <div class="btn btn-sm btn-default prev-btn pull-right">Previous</div>
+      </div>
+      <div class="col-xs-2" style="text-align:center;">
+        Page {{page_num}} of {{page_max}}
+      </div>
+      <div class="col-xs-5">
+        <div class="btn btn-sm btn-default next-btn">Next</div>
+      </div>
     </div>
 
   </div>
@@ -17,13 +30,15 @@
   {{/if}}
 </template>
 
+<!-- ANON REPORTS ===========================================================-->
 <template name="db_anonReport">
   {{#if isInRole 'admin'}}
 
   <table class="table">
     <thead>
       <tr>
-        <td style="width:65%;">Description</td>
+        <td style="width:45%;">Description</td>
+        <td style="width:20%;">Timestamp</td>
         <td style="width:15%;">Status</td>
         <td style="width:20%;">Action</td>
       </tr>
@@ -32,6 +47,7 @@
       {{#each reports}}
       <tr>
         <td>{{text}}</td>
+        <td>{{ftime}}</td>
         {{#if addressed}}
         <td>
           <span class="text-success"><i class="fa fa-check-circle"
@@ -45,8 +61,55 @@
           <select class="form-control selectAction" id="{{_id}}">
             <option selected value=''></option>
             <option value="complete">Mark Complete</option>
-            <option value="incomplete">Mark Uncomplete</option>
+            <option value="incomplete">Mark Incomplete</option>
             <option value="remove">Remove</option>
+          </select>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<!-- MENTOR QUEUE ========================================================== -->
+<template name="db_mentorQueue">
+  {{#if isInRole 'admin'}}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <td style="width:20%">Name</td>
+        <td style="width:15%">Tag</td>
+        <td style="width:15%">Location</td>
+        <td style="width:20%">Timestamp</td>
+        <td style="width:10%">Completed</td>
+        <td style="width:20%">Action</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each queue}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{tag}}</td>
+        <td>{{loc}}</td>
+        <td>{{ftime}}</td>
+        <td>
+        {{#if completed}}
+        <i class="fa fa-check-circle text-success"></i>
+        {{else}}
+        <i class="fa fa-times-circle text-warning"></i>
+        {{/if}}
+        </td>
+        <td>
+          <select class="form-control selectAction" id="{{_id}}">
+            <option selected value=''></option>
+            <option value='complete'>Mark Complete</option>
+            <option value='incomplete'>Mark Incomplete</option>
+            <option value='remove'>Remove</option>
           </select>
         </td>
       </tr>

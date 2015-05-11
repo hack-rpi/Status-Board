@@ -6,6 +6,8 @@ Template.anonReportForm.events({
 		if (! descrip) return;
 		AnonReports.insert({
 			text: descrip,
+			timestamp: new Date(),
+			ftime: (new Date()).toLocaleString(),
 			addressed: false
 		});
 		Session.set('displayMessage', {

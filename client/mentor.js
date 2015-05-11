@@ -50,6 +50,7 @@ Template.mentor.events({
 					phone: phone,
 					tag: tag,
 					timestamp: now,
+					ftime: now.toLocaleString(),
 					completed: false,
 				})) {
 					$("<div>", {

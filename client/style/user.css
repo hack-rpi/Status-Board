@@ -38,3 +38,7 @@
 .db_page {
   margin-top: 20px;
 }
+
+.next-btn, .prev-btn {
+  width: 100px;
+}
