@@ -10,3 +10,10 @@ Accounts.onCreateUser(function(options, user) {
 		user.roles = ["volunteer"];
 	return user;
 });
+
+Accounts.validateNewUser(function(user) {
+	if (_.contains(user.roles, 'admin') || _.contains(user.roles, 'announcer'))
+		return false;
+	else
+		return true;
+});

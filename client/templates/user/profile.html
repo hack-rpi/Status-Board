@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="col-xs-11">
-        <span class="section-header-span">{{ userName }}</span>
+        <span class="section-header-span">{{ email }}</span>
       </div>
     </div>
     {{#if editActive}}
@@ -25,9 +25,9 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="UPedit-projectname" class="col-md-3 control-label">Project Name</label>
+          <label for="UPedit-projectname" class="col-md-3 control-label">Phone Number</label>
           <div class="col-md-5">
-            <input type="text" class="form-control" id="UPedit-projectname" value="{{ projectName }}">
+            <input type="text" class="form-control" id="UPedit-phone" value="{{ phone }}">
           </div>
         </div>
         <div class="form-group">
@@ -58,8 +58,8 @@
           <div class="col-xs-8">{{ affiliation }}</div>
         </div>
         <div class="row">
-          <div class="col-xs-4 user-information-label">Project Name</div>
-          <div class="col-xs-8">{{ projectName }}</div>
+          <div class="col-xs-4 user-information-label">Phone Number</div>
+          <div class="col-xs-8">{{ phone }}</div>
         </div>
         <div class="row">
           <div class="col-xs-4 user-information-label">Location</div>

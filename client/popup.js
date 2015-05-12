@@ -1,5 +1,6 @@
 var popupTitle = '',
 		popupBody = '',
+		popupPre = '',
 		popupDep = new Tracker.Dependency;
 
 // This function is automatically called whenever the displayMessage Session
@@ -7,10 +8,11 @@ var popupTitle = '',
 Tracker.autorun(function() {
 	var message = Session.get("displayMessage");
 	if (message) {
-		if (message.title && message.body) {
+		if (message.title && (message.body || message.pre)) {
 			$(".overlayMessage").remove();
 			popupTitle = message.title;
 			popupBody = message.body;
+			popupPre = message.pre;
 		}
 		else {
 			popupTitle = "Internal Error";
@@ -31,4 +33,8 @@ Template.popup.helpers({
 		popupDep.depend();
 		return popupBody;
 	},
+	pre: function() {
+		popupDep.depend();
+		return popupPre;
+	}
 });

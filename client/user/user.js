@@ -73,6 +73,9 @@ Template.user.helpers({
       return "user_profile";
     }
   },
+  hasAnnouncerAccess: function() {
+    return Roles.userIsInRole(Meteor.userId(), ['admin', 'announcer']);
+  }
 });
 
 Template.user.events({

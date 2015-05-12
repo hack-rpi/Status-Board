@@ -16,19 +16,13 @@ Meteor.methods({
 
 	showAnnouncements: function() {
 		// use this to update which announcements should be visible
-		var msgs = Announcements.find().fetch();
+		var msgs = Announcements.find({ 'visible': false }).fetch(),
+				d = new Date(); // current time
 		for (var i=0; i<msgs.length; i++) {
-			var d = new Date(); // current time
-			if (msgs[i].visible) {
-				// check if the time is up on this announcement
-				if (d > msgs[i].endTime)
-					Announcements.remove({_id:msgs[i]._id});
-			}
-			else {
-				// check if it's time to show this announcement
-				if (d > msgs[i].startTime)
-					Announcements.update({_id:msgs[i]._id},
-						{$set: {visible:true}});
+			// check if it's time to show this announcement
+			if (d > msgs[i].startTime) {
+				Announcements.update({_id:msgs[i]._id},
+					{$set: {visible:true}});
 			}
 		}
 	},
@@ -41,7 +35,7 @@ Meteor.methods({
 		var Q = reqs.sort(function(a,b) { return a.timestamp < b.timestamp; } );
 
 		var mentors = Meteor.users.find({ $and: [
-			{ "profile.role": "mentor" },
+			{ "roles": "mentor" },
 			{ "profile.active": true },
 			{ "profile.available": true }
 		] }).fetch();
@@ -144,59 +138,6 @@ Meteor.methods({
 		}
 	},
 
-	retrieveMessages: function() {
-		var SID = Meteor.settings.twilio_SID;
-		var token = Meteor.settings.twilio_token;
-		var url = "https://api.twilio.com/2010-04-01/Accounts/" + Meteor.settings.twilio_SID + "/SMS/Messages.json"
-		var fromNum = Meteor.settings.twilio_from_num;
-
-		try {
-			return Meteor.http.get(url, {
-				headers: {
-					'content-type': 'application/x-www-form-urlencoded'
-				},
-				auth: SID + ":" + token
-			});
-		}
-		catch(err) {
-			console.log('Twilio API Error!');
-			console.log(err);
-			return false;
-		}
-	},
-
-	checkMentorResponses: function() {
-		var msgs = Meteor.call("retrieveMessages");
-		if (!msgs)
-			return;
-
-		var texts = msgs.data.sms_messages;
-		var now = new Date();
-		var past = new Date(now.getTime() - 60000); // Date object 60 seconds in the past
-
-		for (var t=0; t<texts.length; t++) {
-			// since this function is called every 60 seconds, only look at the messages
-			// from the last 60 seconds
-			var t_date = new Date(texts[t].date_sent.substring(0,26));
-			t_date = new Date(t_date.getTime() - 5*60*60000); // timezone offset
-
-			if (past > t_date)
-				break;
-
-			if (texts[t].direction == "inbound") {
-				var m = texts[t].body.toUpperCase();
-				var p = texts[t].from;
-				p = p.substring(2,5) + "-" + p.substring(5,8) + "-" + p.substring(8);
-				if (m == "DONE") {
-					Meteor.users.update({ 'profile.phone':p }, {
-						$set: { 'profile.available':true }
-					});
-				}
-			}
-
-		} // end for
-	},
-
 	upVoteCommit: function(commit_id, user_id) {
 		if (! user_id) {
 			throw new Meteor.Error('Invalid Vote',
@@ -256,46 +197,6 @@ Meteor.methods({
 		}
 		else {
 			throw new Meteor.Error('Invalid Vote', 'Cannot remove null vote.');
-		}
-	},
-
-	createNewUser: function(username, email, roles, pass, real) {
-		Accounts.createUser({
-			'username': username,
-			'email': email,
-			'password': pass,
-			'profile': {
-				'name': real
-			}
-		});
-
-		var newUser = Meteor.users.find( {username: username} ).fetch()[0];
-		Roles.addUsersToRoles(newUser, roles);
-		return true;
-	},
-
-	updateMentorStatus: function() {
-		// loop over all the mentors and check if their statuses should be changed
-		var mentors = Mentors.find().fetch();
-		var now = new Date();
-		for (var i=0; i<mentors.length; i++) {
-			// if the mentor is currently active, check if her/his time is up
-			if (mentors[i].active == true && now > mentors[i].endTime)
-				Mentors.update({ _id:mentors[i]._id }, {
-					$set: {active:false}
-				});
-			// if the mentor is currently not active check if s/he should be
-			else if (mentors[i].active == false && now > mentors[i].startTime)
-				Mentors.update({ _id:mentors[i]._id }, {
-					$set: {active:true}
-				});
-			// update status
-			var state = ( (mentors[i].available) &&
-										(mentors[i].active || mentors[i].override) &&
-										(!mentors[i].suspended || mentors[i].override) );
-			Mentors.update({ _id:mentors[i]._id }, {
-				$set: {status:state}
-			});
 		}
 	},
 

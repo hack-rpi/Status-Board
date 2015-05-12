@@ -8,11 +8,7 @@
       <!-- Sidebar -->
       <div class="col-xs-2 user-sidebar">
         <div class="list-group">
-          <!-- Public View -->
           <a href="#" class="list-group-item user-sidebar-btn" id="user-profile-btn">Profile</a>
-
-          <!-- Private View -->
-          <a href="#" class="list-group-item user-sidebar-btn" id="user-settings-btn">Settings</a>
 
           {{#if isInRole 'hacker'}}
           <a href="#" class="list-group-item user-sidebar-btn" id="user-hacker-btn">Hacker</a>
@@ -26,7 +22,7 @@
           <a href="#" class="list-group-item user-sidebar-btn" id="user-volunteer-btn">Volunteer</a>
           {{/if}}
 
-          {{#if isInRole 'announcer'}}
+          {{#if hasAnnouncerAccess}}
           <a href="#" class="list-group-item user-sidebar-btn" id="user-announcements-btn">Announcements</a>
           {{/if}}
 
