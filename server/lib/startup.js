@@ -3,13 +3,23 @@ Meteor.startup(function() {
 	// create the necessary indexes here
 	// NOTE: The underscore before ensureIndex indicates that the function is
 	//  undocumented by the Meteor Dev Group
-	CommitMessages._ensureIndex( {"date" : -1} );
-	CommitMessages._ensureIndex( {"sha" : 1} );
-	Meteor.users._ensureIndex( {"username" : 1} );
-	Meteor.users._ensureIndex( {"role" : 1} );
-	RepositoryList._ensureIndex( {"name": 1} );
-	RepositoryList._ensureIndex( {"full_name": 1} );
-	MentorQueue._ensureIndex( {"completed": 1} );
+	CommitMessages._ensureIndex({ 'date': 1 });
+	CommitMessages._ensureIndex({ 'total_flags': 1 });
+
+	Meteor.users._ensureIndex({ 'roles': 1 });
+	Meteor.users._ensureIndex({ 'profile.name': 1 });
+	Meteor.users._ensureIndex({ 'profile.affiliation': 1 });
+	Meteor.users._ensureIndex({ 'profile.phone': 1 });
+	Meteor.users._ensureIndex({ 'roles': 1, 'profile.active': 1,
+		'profile.available': 1 });
+
+	RepositoryList._ensureIndex({ 'name': 1 });
+	RepositoryList._ensureIndex({ 'full_name': 1 });
+
+	Announcements._ensureIndex({ 'visible': 1 });
+
+	MentorQueue._ensureIndex({ 'completed': 1 });
+
 
 	// Server Variables ========================================================
 	admin_doc = Meteor.users.findOne({ "username":Meteor.settings.default_admin_username });
@@ -37,7 +47,7 @@ Meteor.startup(function() {
 		});
 		// give the admin admin rights
 		var adminUser = Meteor.users.findOne({ "_id":admin_id });
-		Roles.addUsersToRoles(adminUser, ["super","admin","flagger","announcer","manager"]);
+		Roles.addUsersToRoles(adminUser, 'admin');
 	}
 
 	// Prevent non-authorized users from creating new users:
@@ -60,16 +70,6 @@ Meteor.startup(function() {
 	Meteor.setInterval(function() {
 		Meteor.call("assignMentors");
 	}, 10*1000);
-
-	// check for responses from mentors to clear their statuses
-	// Meteor.setInterval(function() {
-	//   Meteor.call("checkMentorResponses");
-	// }, 60*1000);
-
-	// update the mentor status (active/suspended every minute)
-	// Meteor.setInterval(function() {
-	// 	Meteor.call("updateMentorStatus");
-	// }, 10*1000);
 
 	// ===========================================================================
 });

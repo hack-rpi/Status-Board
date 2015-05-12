@@ -7,18 +7,13 @@ Meteor.publish("MentorQueue", function() {    return MentorQueue.find(); });
 // users can view all of their own data but only the profiles and usernames
 //  of other users
 Meteor.publish("userData", function() {
+	if (Roles.userIsInRole(this.userId, 'admin')){
+		return Meteor.users.find({});
+	}
+	else {
 		return Meteor.users.find({ "_id": this.userId });
-});
-Meteor.publish("allUserData", function() {
-	return Meteor.users.find({}, {
-		fields: {
-				username: 1,
-				profile: 1,
-			}
-		});
-});
-Meteor.publish("userRoles", function  () {
-	return Roles.getAllRoles();
+	}
+	// return Meteor.users.find({});
 });
 
 Meteor.publish('AnonReports', function() {

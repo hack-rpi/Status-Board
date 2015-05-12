@@ -42,3 +42,7 @@
 .next-btn, .prev-btn {
   width: 100px;
 }
+
+.table-sort {
+  cursor: pointer;
+}

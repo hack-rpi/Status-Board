@@ -35,7 +35,9 @@
           <div class="row">
             <div class="col-xs-4 user-information-label">Team Members</div>
             <div class="col-xs-8">
-              {{ teamMembers }}
+              {{#each teamMembers }}
+                {{ handle }}
+              {{/each}}
             </div>
           </div>
           {{#if hasWebhook}}

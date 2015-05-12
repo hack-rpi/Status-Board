@@ -2,6 +2,7 @@
 // been sent to the client and the divs are created before we can call this
 // function to mark the favorites
 var markFavorites = function() {
+	if (! Meteor.user()) return;
 	$('.commit-box').each(function() {
 		if ($.inArray($(this).attr('commitId'),
 				Meteor.user().profile.flags) != -1) {
@@ -27,10 +28,6 @@ Template.commits.helpers({
 Template.commits.events({
 	'click .commit-flag-count i[data-action="up-vote"]': function() {
 		var commitId = this._id;
-		$('.commit-flag-count.' + commitId + ' i[data-action="up-vote"]')
-			.attr('data-action', 'remove-vote');
-		$('<i class="fa fa-bookmark fa-2x commit-bookmark">')
-			.appendTo($('.commit-box[commitId="' + commitId + '"]').parent());
 		Meteor.call('upVoteCommit', commitId, Meteor.userId(),
 			function(error, result) {
 				if (error) {
@@ -38,6 +35,12 @@ Template.commits.events({
 						title: error.error,
 						body: error.reason
 					});
+				}
+				else {
+					$('.commit-flag-count.' + commitId + ' i[data-action="up-vote"]')
+						.attr('data-action', 'remove-vote');
+					$('<i class="fa fa-bookmark fa-2x commit-bookmark">')
+						.appendTo($('.commit-box[commitId="' + commitId + '"]').parent());
 				}
 			}
 		);

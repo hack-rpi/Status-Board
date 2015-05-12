@@ -3,9 +3,8 @@ Template.user_announcements.rendered = function() {
 }
 
 Template.user_announcements.helpers({
-  announcements: function() {
-    Meteor.subscribe("Announcements");
-    return Announcements.find();
+  hasAccess: function() {
+    return Roles.userIsInRole(Meteor.userId(), ['admin', 'announcer']);
   }
 });
 
@@ -37,13 +36,5 @@ Template.user_announcements.events({
   			body: 'Announcement could not be added.'
   		});
     }
-  },
-
-  'click .removeAnnouncement': function() {
-    Meteor.subscribe("Announcements");
-    if (confirm("Permanently delete this announcement?")) {
-      Announcements.remove({ _id:this._id })
-    }
   }
-
 });

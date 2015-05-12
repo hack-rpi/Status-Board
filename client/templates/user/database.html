@@ -4,8 +4,12 @@
     <h1>Database Access</h1>
 
     <select class="form-control" id="selectDatabase">
+      <option value="db_announcements">Announcements</option>
       <option value="db_anonReport">AnonReports</option>
+      <option value="db_commitMessages">CommitMessages</option>
       <option value="db_mentorQueue">MentorQueue</option>
+      <option value="db_repositoryList">RepositoryList</option>
+      <option value="db_users">Users</option>
     </select>
 
     <div class="row db_page">
@@ -30,17 +34,53 @@
   {{/if}}
 </template>
 
-<!-- ANON REPORTS ===========================================================-->
+<!-- ANNOUNCEMENTS ========================================================= -->
+<template name="db_announcements">
+  {{#if isInRole 'admin'}}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:15%;">Header</th>
+        <th style="width:50%;">Body</th>
+        <th style="width:20%;">Start Time</th>
+        <th style="width:15%;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each announcements}}
+      <tr>
+        <td>{{header}}</td>
+        <td>{{text}}</td>
+        <td>{{fStartTime}}</td>
+        <td>
+          <select class="form-control selectAction" id="{{_id}}">
+            <option selected value=""></option>
+            <option value="view">View</option>
+            <option value="remove">Remove</option>
+          </select>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<!-- ANON REPORTS ========================================================== -->
 <template name="db_anonReport">
   {{#if isInRole 'admin'}}
 
   <table class="table">
     <thead>
       <tr>
-        <td style="width:45%;">Description</td>
-        <td style="width:20%;">Timestamp</td>
-        <td style="width:15%;">Status</td>
-        <td style="width:20%;">Action</td>
+        <th style="width:45%;">Description</th>
+        <th style="width:20%;">Timestamp</th>
+        <th style="width:15%;">Status</th>
+        <th style="width:20%;">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -59,9 +99,49 @@
         {{/if}}
         <td>
           <select class="form-control selectAction" id="{{_id}}">
-            <option selected value=''></option>
+            <option selected value=""></option>
             <option value="complete">Mark Complete</option>
             <option value="incomplete">Mark Incomplete</option>
+            <option value="remove">Remove</option>
+          </select>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<!-- COMMIT MESSAGES ======================================================= -->
+<template name="db_commitMessages">
+  {{#if isInRole 'admin'}}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:35%;">Commit Text</th>
+        <th style="width:20%;">Repository</th>
+        <th style="width:20%;" class="table-sort" sort="date">Timestamp
+          <span class="sort-symbol"></span></th>
+        <th style="width:10%;" class="table-sort" sort="total_flags">Flags
+          <span class="sort-symbol"></span></th>
+        <th style="width:15%;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each commits}}
+      <tr>
+        <td>{{text}}</td>
+        <td>{{repo.full_name}}</td>
+        <td>{{fdate}}</td>
+        <td>{{total_flags}}</td>
+        <td>
+          <select class="form-control selectAction" id="{{_id}}">
+            <option selected value=""></option>
+            <option value="view">View</option>
             <option value="remove">Remove</option>
           </select>
         </td>
@@ -82,12 +162,12 @@
   <table class="table">
     <thead>
       <tr>
-        <td style="width:20%">Name</td>
-        <td style="width:15%">Tag</td>
-        <td style="width:15%">Location</td>
-        <td style="width:20%">Timestamp</td>
-        <td style="width:10%">Completed</td>
-        <td style="width:20%">Action</td>
+        <th style="width:20%">Name</th>
+        <th style="width:15%">Tag</th>
+        <th style="width:15%">Location</th>
+        <th style="width:20%">Timestamp</th>
+        <th style="width:10%">Completed</th>
+        <th style="width:20%">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -98,18 +178,105 @@
         <td>{{loc}}</td>
         <td>{{ftime}}</td>
         <td>
-        {{#if completed}}
-        <i class="fa fa-check-circle text-success"></i>
-        {{else}}
-        <i class="fa fa-times-circle text-warning"></i>
-        {{/if}}
+          {{#if completed}}
+          <i class="fa fa-check-circle text-success"></i>
+          {{else}}
+          <i class="fa fa-times-circle text-warning"></i>
+          {{/if}}
         </td>
         <td>
           <select class="form-control selectAction" id="{{_id}}">
-            <option selected value=''></option>
-            <option value='complete'>Mark Complete</option>
-            <option value='incomplete'>Mark Incomplete</option>
-            <option value='remove'>Remove</option>
+            <option selected value=""></option>
+            <option value="complete">Mark Complete</option>
+            <option value="incomplete">Mark Incomplete</option>
+            <option value="view">View</option>
+            <option value="remove">Remove</option>
+          </select>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<!-- REPOSITORYLIST ======================================================== -->
+<template name="db_repositoryList">
+  {{#if isInRole 'admin'}}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:65%;">Full Name</th>
+        <th style="width:15%;">Webhook</th>
+        <th style="width:20%;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each repositories}}
+      <tr>
+        <td>{{full_name}}</td>
+        <td>
+          {{#if completed}}
+          <i class="fa fa-check-circle text-success"></i>
+          {{else}}
+          <i class="fa fa-times-circle text-warning"></i>
+          {{/if}}
+        </td>
+        <td>
+          <select class="form-control selectAction" id="{{_id}}">
+            <option selected value=""></option>
+            <option value="view">View</option>
+            <option value="remove">Remove</option>
+          </select>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  {{else}}
+  <h1>Unauthorized Access</h1>
+  {{/if}}
+</template>
+
+<!-- USERS ================================================================= -->
+<template name="db_users">
+  {{#if isInRole 'admin'}}
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:15%;" class="table-sort" sort="profile.name">Name
+          <span class="sort-symbol"></span></th>
+        <th style="width:15%;" class="table-sort" sort="username">Username
+          <span class="sort-symbol"></span></th>
+        <th style="width:20%;" class="table-sort" sort="profile.affiliation">
+          Affiliation<span class="sort-symbol"></span></th>
+        <th style="width:10%;" class="table-sort" sort="roles">Roles
+          <span class="sort-symbol"></span></th>
+        <th style="width:15%;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+      <tr>
+        <td>{{profile.name}}</td>
+        <td>{{username}}</td>
+        <td>{{profile.affiliation}}</td>
+        <td>{{roles}}</td>
+        <td>
+          <select class="form-control selectAction" id="{{_id}}">
+            <option value=""></option>
+            <option value="role_admin">Make Admin</option>
+            <option value="role_hacker">Make Hacker</option>
+            <option value="role_mentor">Make Mentor</option>
+            <option value="role_announcer">Make Announcer</option>
+            <option value="view">View</option>
+            <option value="remove">Remove</option>
           </select>
         </td>
       </tr>

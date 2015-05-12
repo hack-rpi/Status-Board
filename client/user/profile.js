@@ -1,8 +1,8 @@
 
 Template.user_profile.helpers({
-  userName: function() {
+  email: function() {
     if (Meteor.userId())
-      return Meteor.user().username;
+      return Meteor.user().emails[0].address;
     else return "";
   },
   name: function() {
@@ -15,9 +15,9 @@ Template.user_profile.helpers({
       return Meteor.user().profile.affiliation;
     else return "";
   },
-  projectName: function() {
+  phone: function() {
     if (Meteor.userId())
-      return Meteor.user().profile.project_name;
+      return Meteor.user().profile.phone;
     else return "";
   },
   location: function() {
@@ -48,14 +48,14 @@ Template.user_profile.events({
 
     var new_name = t.find("#UPedit-name").value;
     var new_affiliation = t.find("#UPedit-affiliation").value;
-    var new_projectname = t.find("#UPedit-projectname").value;
+    var new_phone = t.find("#UPedit-phone").value;
     var new_location = t.find("#UPedit-location").value;
 
     if (Meteor.users.update({ "_id": Meteor.userId() }, {
         $set: {
           "profile.name": new_name,
           "profile.affiliation": new_affiliation,
-          "profile.project_name": new_projectname,
+          "profile.phone": new_phone,
           "profile.location": new_location
         }
     })) {

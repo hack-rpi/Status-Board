@@ -5,14 +5,18 @@ Meteor.users.allow({
 		return false;
 	},
 	remove: function(userId, doc) {
-		if (Roles.userIsInRole(userId, 'admin'))
+		if (doc._id === admin_id)
+			return false;
+		else if (Roles.userIsInRole(userId, 'admin'))
 			return true;
 		else
 			return false;
 	},
 	update: function(userId, doc, fieldNames, modifier) {
+		if (doc._id == admin_id && _.contains(fieldNames, 'roles'))
+			return false;
 		// users can only edit their own data
-		if (doc._id == userId || Roles.userIsInRole(userId, 'admin'))
+		else if (doc._id == userId || Roles.userIsInRole(userId, 'admin'))
 			return true;
 		else
 			return false;
