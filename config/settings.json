@@ -21,6 +21,9 @@
 	"twilio_token": "",
 	"twilio_from_num": "",
 
+	"kadira_id": "",
+	"kadira_secret": "",
+
 	"secret_key": ""
 
 }
