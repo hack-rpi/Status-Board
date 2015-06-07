@@ -1,106 +1,192 @@
 <template name="user_hacker">
   {{#if isInRole 'hacker'}}
   <div id="user-hacker">
-    <h1>Hacker Dashboard</h1>
-    <div class="row">
-      <i>Connect with your team.</i> If no one on your team has added your
-      repository yet, then you should go ahead and do that now! Otherwise,
-      you can join an existing project.*
+    <div class="user-section-title">
+      <h3>Hacker Dashboard</h3>
     </div>
+
+    <p>
+      <i>Leave your mark with the HackRPI Community. </i>
+      By adding your repository and joining with your team on the
+      Status Board, you will be engaging in the principal aspect
+      of the Status Board. By creating a webhook on your repository,
+      your commits will be featured on the Status Board.
+    </p>
+    <p>
+      The Status Board is currently only compatible with GitHub
+      repositories. If for some reason, your team has elected to
+      not use GitHub, then you will be unable to participate in
+      this aspect of the Status Board.
+    </p>
+
     {{#if repository}}
+      <!-- Project Details -->
       <div class="row">
-        <div class="col-xs-1 col-xs-offset-4">
-          <div class="btn btn-danger" id="user-hacker-leave-repo">Leave Project</div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="user-settings-table">
-          <div class="row">
-            <div class="col-xs-4 user-information-label">GitHub Handle</div>
-            <div class="col-xs-8">{{ handle }}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-4 user-information-label">GitHub Repository</div>
-            <div class="col-xs-8">{{ repository }}</div>
-          </div>
-          <div class="row">
-            <div class="col-xs-4 user-information-label">ChallengePost Link</div>
-            <div class="col-xs-8">
-              {{#if challengePost }}
-                <a href="{{ challengePost }}">Link</a>
-              {{/if}}
-              <div class="btn btn-link" id="user-challengePost-edit" data-toggle="modal" data-target="#edit-ChallengePost-modal">Edit</div>
+
+          <div class="row repo-details-header-row">
+            <div class="col-xs-offset-1">
+              <i class="fa fa-group fa-2x"></i>
+              <span class="repo-details-header">{{ repository_full }}</span>
             </div>
           </div>
-          <div class="row">
-            <div class="col-xs-4 user-information-label">Team Members</div>
-            <div class="col-xs-8">
-              {{#each teamMembers }}
-                {{ handle }}
-              {{/each}}
-            </div>
-          </div>
-          {{#if hasWebhook}}
+
+        <div class="row">
+
+          <div class="col-md-offset-1 col-md-5 repo-details-box">
             <div class="row">
-              <div class="">
-                <p>
-                  This repository has not yet established a webhook. If you are the
-                  owner of this repository or an admin of the organization to which
-                  this repository, please sign in with GitHub below!
-                </p>
-                <div class="btn btn-primary" data-toggle="modal"
-                  data-target="#webhook-modal">
-                  Add Webhook
+              <a href="{{ repository_url }}" target="_blank">
+                <div class="btn btn-default">
+                  <i class="fa fa-github fa-2x"></i>
+                  <span class="repo-details">
+                    Github Repository
+                  </span>
                 </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-md-5 repo-details-box">
+            <div class="row">
+              <div class="btn btn-default">
+                <i class="fa fa-street-view fa-2x"></i>
+                <span class="repo-details">
+                  Contributors
+                </span>
               </div>
             </div>
-          {{/if}}
+            <p class="repo-details-subtext">
+              {{#each teamMembers}}
+              <span class="contributor">
+                <a href="https://github.com/{{ this.handle }}" target="_blank">
+                  {{ this.handle }}</a></span>
+              {{/each}}
+            </p>
+          </div>
+
         </div>
+
+        <div class="row">
+
+          <div class="col-xs-offset-1 col-md-5 repo-details-box">
+            <div class="row">
+              <div class="btn {{ warnChallengePost }}" data-toggle="modal"
+                data-target="#edit-ChallengePost-modal">
+                <i class="fa fa-pied-piper-alt fa-2x"></i>
+                <span class="repo-details">
+                  ChallengePost
+                </span>
+              </div>
+            </div>
+            {{#if challengePost}}
+            <p class="repo-details-subtext">
+              Your ChallengePost has been linked.
+            </p>
+            {{else}}
+              <p class="repo-details-subtext">
+                Your team has not yet linked the ChallengePost page for
+                your project. You should put your project on
+                <a href="https://hackrpi.challengepost.com" target="_blank">
+                  hackrpi.challengepost.com</a>
+                 as soon as possible.
+              </p>
+            {{/if}}
+          </div>
+
+          <div class="col-md-5 repo-details-box">
+            <div class="row">
+              {{#if hasWebhook}}
+                <div class="btn btn-default">
+                  <i class="fa fa-anchor fa-2x"></i>
+                  <span class="repo-details">
+                    Webhook
+                  </span>
+                </div>
+              {{else}}
+                <div class="btn btn-warning" data-toggle="modal"
+                  data-target="#webhook-modal">
+                  <i class="fa fa-anchor fa-2x"></i>
+                  <span class="repo-details">
+                    Webhook
+                  </span>
+                </div>
+              {{/if}}
+            </div>
+            {{#if hasWebhook}}
+            <p class="repo-details-subtext">
+              A webhook has been created.
+            </p>
+            {{else}}
+              <p class="repo-details-subtext">
+                Your team has not yet setup a webhook for your project. The
+                owner of the repository should do that as soon as possible.
+              </p>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-2 col-xs-offset-5">
+            <div class="btn btn-danger" id="user-hacker-leave-repo">
+              Leave Project</div>
+          </div>
+        </div>
+
       </div>
+      <!-- End Project Details -->
+
     {{else}}
+      <!-- Join Project -->
       <div class="row">
         <form>
-          <div class="form-group">
-            <label for="github-handle-input">GitHub Handle</label>
-            <input type="text" class="form-control" id="github-handle-input">
+          <div class="row form-group">
+            <label class="col-xs-offset-3 col-xs-6" for="github-handle-input">
+              GitHub Handle</label>
+            <div class="col-xs-offset-3 col-xs-6">
+              <input type="text" class="form-control" id="github-handle-input">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="github-repo-input">GitHub Repository URL</label>
-            <input type="text" class="form-control" id="github-repo-input">
+          <div class="row form-group">
+            <label class="col-xs-offset-3 col-xs-6" for="github-repo-input">
+              GitHub Repository URL</label>
+            <div class="col-xs-offset-3 col-xs-6">
+              <input type="text" class="form-control" id="github-repo-input">
+            </div>
           </div>
           <div id="user-hacker-alertbox"></div>
         </form>
-        <div class="col-xs-1 col-xs-offset-5">
-          <div class="btn btn-primary" id="user-hacker-join-repo">Join Project</div>
+        <div class="col-xs-offset-5 col-xs-2">
+          <div class="btn btn-primary" id="user-hacker-join-repo">
+            Join Project</div>
         </div>
       </div>
+      <!-- End Join Project -->
     {{/if}}
 
-    <div class="row">
-      *Status Board is currently only compatible with GitHub repositories. If
-      for some reason, your team has elected to not use GitHub, then you will be
-       unable to participate in this aspect of the Status Board.
-    </div>
   </div>
 
-  <div class="modal fade" id="edit-ChallengePost-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade" id="edit-ChallengePost-modal" tabindex="-1"
+    role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal"
+            aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel">Edit ChallengePost Link</h4>
         </div>
         <div class="modal-body">
           <form>
             <div class="form-group">
-              <label for="challengePost-input">Enter a link to your project on ChallengePost! (Set it up now *hint, hint*)</label>
-              <input type="text" class="form-control" id="challengePost-input">
+              <label for="challengePost-input">Enter the URL of your project
+                on ChallengePost.</label>
+              <input type="text" class="form-control" id="challengePost-input"
+                value="{{ challengePost }}">
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="user-challengePost-save">Save</button>
+          <button type="button" class="btn btn-primary"
+            id="user-challengePost-save">Save</button>
         </div>
       </div>
     </div>
@@ -122,8 +208,8 @@
             the owner of the repository can setup a webhook.
           </p>
           <p>
-            Are you the owner of this repository or the admin of the organization
-            that owns this repository?
+            Are you the owner of this repository or the admin of the
+            organization that owns this repository?
           </p>
           <button class="btn btn-success" id="github-signin">
             Yes, Sign In With GitHub

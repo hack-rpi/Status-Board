@@ -1,23 +1,102 @@
+/* Sidebar ------------------------------------------------------------------ */
 .user-sidebar {
 
 }
 
+.user-nav-list {
+  list-style-type: none;
+}
+
+.user-sidebar-btn {
+  cursor: pointer;
+  font-size: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: -20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.user-sidebar-btn:hover {
+  color: #d3d3d3;
+}
+
+
+/* Content ------------------------------------------------------------------ */
 .user-content {
 
 }
 
-.section-header-span {
-  font-size: 32px;
+.user-section-title {
+  border-bottom: 3px solid #FFFFFF;
+  margin-bottom: 30px;
+  margin-top: -20px;
 }
 
-.user-information-label {
-  text-align: right;
+.user-table {
+  margin-bottom: 20px;
+}
+
+.user-table-row {
+  margin-top: 10px;
+}
+
+.user-table-label {
   font-weight: bold;
-  margin-top: 5px;
+}
+
+/* Hacker Dashboard --------------------------------------------------------- */
+
+#user-hacker-leave-repo {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.repo-details-header {
+  font-size: 24px;
+  margin-left: 5px;
+}
+
+.repo-details-header-row {
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.repo-details-box {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.repo-details-box .btn {
+  width: 80%;
+}
+
+.repo-details {
+  font-size: 24px;
+}
+
+.repo-details-subtext {
+  margin-top: 10px;
+}
+
+.contributor {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+#user-hacker-leave-repo, #user-hacker-leave-repo {
+  width: 100%;
+}
+
+/* -------------------------------------------------------------------------- */
+
+#selectDatabase {
+  width: 300px;
 }
 
 #user-profile-edit-btn {
   margin-bottom: -20px;
+  float: right;
 }
 
 .user-settings-table {

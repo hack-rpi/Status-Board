@@ -1,7 +1,9 @@
 <template name="user_database">
   {{#if isInRole 'admin'}}
   <div id="user-database">
-    <h1>Database Access</h1>
+    <div class="user-section-title">
+      <h3>Database Access</h3>
+    </div>
 
     <select class="form-control" id="selectDatabase">
       <option value="db_announcements">Announcements</option>

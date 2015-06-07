@@ -1,13 +1,9 @@
 <template name="user_profile">
   <div id="user-profile">
-    <div class="row">
-      <div class="col-xs-1">
-        <div class="btn btn-primary btn-sm" id="user-profile-edit-btn" title="Edit">
-          <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-        </div>
-      </div>
-      <div class="col-xs-11">
-        <span class="section-header-span">{{ email }}</span>
+    <div class="user-section-title">
+      <h3>{{ email }}</h3>
+      <div class="btn btn-lg" id="user-profile-edit-btn" title="Edit">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
       </div>
     </div>
     {{#if editActive}}
@@ -48,22 +44,22 @@
       </form>
 
     {{else}}
-      <div class="user-settings-table">
-        <div class="row">
-          <div class="col-xs-4 user-information-label">Name</div>
-          <div class="col-xs-8">{{ name }}</div>
+      <div class="user-table">
+        <div class="row user-table-row">
+          <div class="col-xs-offset-3 col-xs-2 user-table-label">Name</div>
+          <div class="col-xs-7">{{ name }}</div>
         </div>
-        <div class="row">
-          <div class="col-xs-4 user-information-label">Affiliation</div>
-          <div class="col-xs-8">{{ affiliation }}</div>
+        <div class="row user-table-row">
+          <div class="col-xs-offset-3 col-xs-2 user-table-label">Affiliation</div>
+          <div class="col-xs-7">{{ affiliation }}</div>
         </div>
-        <div class="row">
-          <div class="col-xs-4 user-information-label">Phone Number</div>
-          <div class="col-xs-8">{{ phone }}</div>
+        <div class="row user-table-row">
+          <div class="col-xs-offset-3 col-xs-2 user-table-label">Phone Number</div>
+          <div class="col-xs-7">{{ phone }}</div>
         </div>
-        <div class="row">
-          <div class="col-xs-4 user-information-label">Location</div>
-          <div class="col-xs-8">{{ location }}</div>
+        <div class="row user-table-row">
+          <div class="col-xs-offset-3 col-xs-2 user-table-label">Location</div>
+          <div class="col-xs-7">{{ location }}</div>
         </div>
       </div>
     {{/if}}

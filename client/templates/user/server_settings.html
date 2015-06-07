@@ -1,12 +1,14 @@
 <template name="user_server_settings">
   {{#if isInRole 'admin'}}
   <div id="user-server-settings">
-    <h1>Server Settings</h1>
-    <div class="user-settings-table">
+    <div class="user-section-title">
+      <h3>Server Settings</h3>
+    </div>
+    <div class="user-table">
 
-      <div class="row">
-        <div class="col-xs-4 user-settings-label">Allow Account Creation</div>
-        <div class="col-xs-8">
+      <div class="row user-table-row">
+        <div class="col-xs-3 col-xs-offset-2 user-table-label">Allow Account Creation</div>
+        <div class="col-xs-6">
           {{#if allowAccountCreation}}
           <i class="fa fa-toggle-on fa-lg" id="admin-allow-account-creation-off-btn"></i>
           {{else}}
@@ -15,9 +17,9 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-xs-4 user-settings-label">Activate Mentoring System</div>
-        <div class="col-xs-8">
+      <div class="row user-table-row">
+        <div class="col-xs-3 col-xs-offset-2 user-table-label">Activate Mentoring System</div>
+        <div class="col-xs-6">
           {{#if mentoringSystemStatus}}
           <i class="fa fa-toggle-on fa-lg" id="admin-mentoring-off-btn"></i>
           {{else}}
@@ -26,9 +28,9 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-xs-4 user-settings-label">Alert Numbers</div>
-        <div class="col-xs-8">
+      <div class="row user-table-row">
+        <div class="col-xs-3 col-xs-offset-2 user-table-label">Alert Numbers</div>
+        <div class="col-xs-6">
           <ul class="list-plain">
             {{#each alertNumbers}}
               <li>{{this}}<span class="alert-num-remove" value="{{this}}">
