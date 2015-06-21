@@ -1,61 +1,65 @@
 <template name="user_mentor">
   {{#if isInRole 'mentor'}}
   <div id="user-mentor">
-    <div class="user-settings-table">
+
+    <div class="">
 
       <div class="row">
-        <div class="col-xs-4 user-settings-label">Mentor Status</div>
-        <div class="col-xs-8">
+        <div class="col-xs-offset-1">
+          <h3>Mentoring Status</h3>
           {{#if active}}
-          <div class="btn btn-lg btn-danger" id="suspend-mentor-btn">Suspend</div>
-          {{else}}
-          <div class="btn btn-lg btn-success" id="active-mentor-btn">Activate</div>
-          {{/if}}
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-4 user-settings-label">Current Assignment</div>
-        <div class="col-xs-8">
-          {{#if assignment}}
-            <div class="row">
-              {{#each assignment}}
-                <div class="col-xs-3">{{name}}</div>
-                <div class="col-xs-2">{{tag}}</div>
-                <div class="col-xs-3">{{loc}}</div>
-                <div class="col-xs-4">
-                  <div class="btn btn-success" id="user-mentor-complete-task-btn"
-                    title="Mark the current assignment as complete">
-                    Complete
-                  </div>
-                  <div class="btn btn-warning" id="user-mentor-waive-task-btn"
-                    title="Give the current assignment to someone else">
-                    Waive
-                  </div>
-                </div>
-              {{/each}}
+            <div class="btn btn-danger user-mentor-btn" value="suspend">
+              Suspend
             </div>
           {{else}}
-          None
+            <div class="btn btn-success user-mentor-btn" value="activate">
+              Activate
+            </div>
           {{/if}}
         </div>
       </div>
 
       <div class="row">
-        <div class="col-xs-4 user-settings-label">
-          Skills
-          <span class="btn btn-link btn-sm" id="user-mentor-edit-skills-btn">edit</span>
+        <div class="col-xs-offset-1">
+          <h3>Current Assignment</h3>
+          {{#if assignment}}
+            <dl class="dl-horizontal">
+              {{#with assignment}}
+                <dt>Mentee</dt><dd>{{ name }}</dd>
+                <dt>Tag</dt><dd>{{ tag }}</dd>
+                <dt>Location</dt><dd>{{ loc }}</dd>
+              {{/with}}
+            </dl>
+            <div class="btn btn-success user-mentor-btn" value="complete-task"
+              title="Mark the current assignment as complete">
+              Complete
+            </div>
+            <div class="btn btn-warning user-mentor-btn" value="waive-task"
+              title="Give the current assignment to someone else">
+              Waive
+            </div>
+          {{else}}
+          <p>
+            You do not currently have an assignment.
+          </p>
+          {{/if}}
         </div>
-        <div class="col-xs-8">
+      </div>
+
+      <div class="row">
+        <div class="col-xs-offset-1">
+          <h3>Skills</h3>
           {{#if editSkills}}
             <div class="row">
               <div class="col-xs-4" id="user-mentor-checkbox-langs">
                 {{#each modifyLangs}}
                   <div class="checkbox">
                     {{#if checked}}
-                      <label><input type="checkbox" name="{{name}}" checked>{{name}}</label>
+                      <label><input type="checkbox" name="{{name}}"
+                        checked>{{name}}</label>
                     {{else}}
-                      <label><input type="checkbox" name="{{name}}">{{name}}</label>
+                      <label><input type="checkbox" name="{{name}}">{{name}}
+                        </label>
                     {{/if}}
                   </div>
                 {{/each}}
@@ -64,9 +68,11 @@
                 {{#each modifyFrames}}
                   <div class="checkbox">
                     {{#if checked}}
-                      <label><input type="checkbox" name="{{name}}" checked>{{name}}</label>
+                      <label><input type="checkbox" name="{{name}}"
+                          checked>{{name}}</label>
                     {{else}}
-                      <label><input type="checkbox" name="{{name}}">{{name}}</label>
+                      <label><input type="checkbox" name="{{name}}">{{name}}
+                        </label>
                     {{/if}}
                   </div>
                 {{/each}}
@@ -75,9 +81,11 @@
                 {{#each modifyApis}}
                   <div class="checkbox">
                     {{#if checked}}
-                      <label><input type="checkbox" name="{{name}}" checked>{{name}}</label>
+                      <label><input type="checkbox" name="{{name}}"
+                        checked>{{name}}</label>
                     {{else}}
-                      <label><input type="checkbox" name="{{name}}">{{name}}</label>
+                      <label><input type="checkbox" name="{{name}}">{{name}}
+                        </label>
                     {{/if}}
                   </div>
                 {{/each}}
@@ -85,21 +93,32 @@
             </div>
             <div class="row">
               <div class="col-xs-offset-4 col-xs-2">
-                <div class="btn btn-primary" id="user-mentor-save-skills-btn">Save Changes</div>
+                <div class="btn btn-primary user-mentor-btn"
+                  value="save-skills">
+                  Save Changes
+                </div>
               </div>
             </div>
           {{else}}
-            {{#each skills}}
-              {{this}}
-            {{/each}}
+            <div class="row mentor-tag-list">
+              <div class="col-xs-12">
+                {{#each skills}}
+                  <span class="btn btn-sm btn-default disabled skill-tag">
+                    {{ this }}</span>
+                {{/each}}
+              </div>
+            </div>
           {{/if}}
+          <div class="btn btn-primary user-mentor-btn"
+            value="edit-skills">
+            Edit Skills
+          </div>
         </div>
-
       </div>
 
       <div class="row">
-        <div class="col-xs-4 user-settings-label">History</div>
-        <div class="col-xs-8">
+        <div class="col-xs-offset-1">
+          <h3>History</h3>
           <table class="table">
             <tr>
               <th>Name</th>
@@ -123,7 +142,8 @@
 
     </div>
   </div>
+
   {{else}}
-  <h1>Unauthorized Access</h1>
+    <h1>Unauthorized Access</h1>
   {{/if}}
 </template>

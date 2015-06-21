@@ -1,7 +1,7 @@
 
 Template.user_profile.helpers({
   email: function() {
-    if (Meteor.userId())
+    if (Meteor.userId() && Meteor.user().emails)
       return Meteor.user().emails[0].address;
     else return "";
   },

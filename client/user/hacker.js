@@ -76,6 +76,19 @@ Template.user_hacker.rendered = function() {
   userData_sub = Meteor.subscribe("userData");
 }
 
+var generateGetRepoInfo = function(field, onFail) {
+  return function() {
+    project_dep.depend();
+    repo_sub = Meteor.subscribe('RepositoryList');
+    if (repo_sub.ready()) {
+      var repoDoc = RepositoryList.findOne({
+        '_id': Meteor.user().profile.repositoryId
+      });
+      return repoDoc && repoDoc[field] ? repoDoc[field] : onFail;
+    }
+  };
+};
+
 Template.user_hacker.helpers({
   handle: function() {
     project_dep.depend();
@@ -85,26 +98,23 @@ Template.user_hacker.helpers({
     project_dep.depend();
     return Meteor.user().profile.repository;
   },
-  challengePost: function() {
+  repository_full: generateGetRepoInfo('full_name', ''),
+  repository_url: generateGetRepoInfo('url', ''),
+  challengePost: generateGetRepoInfo('challengePost', ''),
+  teamMembers: generateGetRepoInfo('contributors', []),
+  warnChallengePost: function() {
     project_dep.depend();
-    repo_sub = Meteor.subscribe("RepositoryList");
-    if (repo_sub.ready() &&
-      RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId })) {
-      return RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId }).challengePost;
-    }
-    else {
-      return "";
-    }
-  },
-  teamMembers: function() {
-    project_dep.depend();
-    repo_sub = Meteor.subscribe("RepositoryList");
-    if (repo_sub.ready() &&
-      RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId })) {
-      return RepositoryList.findOne({"_id": Meteor.user().profile.repositoryId }).contributors;
-    }
-    else {
-      return [];
+    repo_sub = Meteor.subscribe('RepositoryList');
+    if (repo_sub.ready()) {
+      var repoDoc = RepositoryList.findOne({
+        '_id': Meteor.user().profile.repositoryId
+      });
+      if (repoDoc && repoDoc.challengePost) {
+        return 'btn-default';
+      }
+      else {
+        return 'btn-warning';
+      }
     }
   },
   hasWebhook: function() {
@@ -112,12 +122,14 @@ Template.user_hacker.helpers({
     repo_sub = Meteor.subscribe("RepositoryList");
     if (repo_sub.ready() &&
       RepositoryList.findOne({ '_id': Meteor.user().profile.repositoryId })) {
-        return ! RepositoryList.findOne({ '_id': Meteor.user().profile.repositoryId }).webhook.created;
+        return RepositoryList.findOne({
+            '_id': Meteor.user().profile.repositoryId
+          }).webhook.created;
       }
     else {
-      return true;
+      return false;
     }
-  }
+  },
 });
 
 Template.user_hacker.events({

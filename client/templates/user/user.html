@@ -7,32 +7,52 @@
     {{#if currentUser}}
       <!-- Sidebar -->
       <div class="col-xs-2 user-sidebar">
-        <div class="list-group">
-          <a href="#" class="list-group-item user-sidebar-btn" id="user-profile-btn">Profile</a>
+        <ul class="user-nav-list">
+          <li class="user-sidebar-btn" value="profile">
+            <i class="fa fa-user"></i>
+            Profile
+          </li>
 
           {{#if isInRole 'hacker'}}
-          <a href="#" class="list-group-item user-sidebar-btn" id="user-hacker-btn">Hacker</a>
+          <li class="user-sidebar-btn" value="hacker">
+            <i class="fa fa-code"></i>
+            Hacker
+          </li>
           {{/if}}
 
           {{#if isInRole 'mentor'}}
-          <a href="#" class="list-group-item user-sidebar-btn" id="user-mentor-btn">Mentor</a>
+          <li class="user-sidebar-btn" value="mentor">
+            <i class="fa fa-university"></i>
+            Mentor
+          </li>
           {{/if}}
 
           {{#if isInRole 'volunteer'}}
-          <a href="#" class="list-group-item user-sidebar-btn" id="user-volunteer-btn">Volunteer</a>
+          <li class="user-sidebar-btn" value="volunteer">
+            <i class="fa fa-users"></i>
+            Volunteer
+          </li>
           {{/if}}
 
           {{#if hasAnnouncerAccess}}
-          <a href="#" class="list-group-item user-sidebar-btn" id="user-announcements-btn">Announcements</a>
+          <li class="user-sidebar-btn" value="announcements">
+            <i class="fa fa-bullhorn"></i>
+            Announcements
+          </li>
           {{/if}}
 
           {{#if isInRole 'admin'}}
-          <a href="#" class="list-group-item user-sidebar-btn" id="user-database-btn">Database Access</a>
-          <a href="#" class="list-group-item user-sidebar-btn" id="user-server-settings-btn">Server Settings</a>
+          <li class="user-sidebar-btn" value="database">
+            <i class="fa fa-database"></i>
+            Databases
+          </li>
+          <li class="user-sidebar-btn" value="server-settings">
+            <i class="fa fa-cogs"></i>
+            Server Settings
+          </li>
           {{/if}}
+        </ul>
 
-
-        </div>
       </div>
 
       <!-- Content -->

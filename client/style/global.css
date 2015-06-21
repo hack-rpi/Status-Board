@@ -8,6 +8,7 @@ body {
 
 .accent, a, a:hover, .btn-link, .btn-link:hover {
   color: #C03328;
+  /*color: #e60000;*/
 }
 
 .list-plain {
