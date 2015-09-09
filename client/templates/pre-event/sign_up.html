@@ -1,0 +1,112 @@
+<template name="sign_up">
+
+	<div class="splash-container">
+
+		<div class="splash">
+			<img src="./img/downtown.jpg" alt="Sage Labs" />
+			<div class="splash-text">
+				<div class="splash-header">
+					HackRPI 2015 Status Board
+				</div>
+				<div class="splash-content">
+					<div class="btn btn-default goto-register-btn">
+						Register
+					</div>
+					<ul class="splash-nav">
+						{{ #if currentUser }}
+							<li class="splash-nav-btn" data-target="profile">
+								Profile
+							</li>
+						{{ else }}
+							<li class="splash-nav-btn" data-target="login">
+								Login
+							</li>
+						{{ /if }}
+						<li class="splash-nav-btn" data-target="hackrpi">
+							HackRPI
+						</li>
+						<li class="splash-nav-btn" data-target="status-what">
+							Status What?
+						</li>
+					</ul>
+				</div>
+				<div class="splash-login">
+					<div class="_form-group">
+						<label for="Email">Email</label><br>
+						<input type="text" name="Email" placeholder="Email">
+					</div>
+					<div class="_form-group">
+						<label for="Password">Password</label><br>
+						<input type="password" name="Password" placeholder="Password">
+					</div>
+					<div class="_form-group">
+						<div class="btn btn-default login-btn register-btn">
+							Login
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<div class="register-container">
+
+		{{> register }}
+
+	</div>
+
+
+	<div class="status-what-container">
+
+		<div class="status-what">
+			<div class="row">
+				<div class="col-md-8">
+					<h3>View Commits from Everyone at HackRPI</h3>
+					<p>
+						By allowing participants to add their Github projects to the
+						Status Board, everyone at the event can watch all the other
+						projects as they are developed, creating a stronger hackathon
+						community through data and statistics.
+					</p>
+				</div>
+				<div class="col-md-4 sw-icon">
+					<i class="fa fa-5x fa-github"></i>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 sw-icon">
+					<i class="fa fa-5x fa-university"></i>
+				</div>
+				<div class="col-md-8">
+					<h3>Match with Mentors</h3>
+					<p>
+						For when you inevitably get stuck on your project, we have mentors
+						ready to assist you! The Status Board makes it really simple to
+						request a mentor to your location. Mentors are alerted via text
+						message of their assignment and can communicate with the
+						Status Board using just text messages.
+					</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<h3>Get Event Updates and Announcements</h3>
+					<p>
+						Stay updated with event announcements! The Status Board will
+						be the primary method of broadcasting updates to everyone
+						at the event.
+					</p>
+				</div>
+				<div class="col-md-4 sw-icon">
+					<i class="fa fa-5x fa-bullhorn"></i>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	{{ > footer }}
+
+</template>

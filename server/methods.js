@@ -208,4 +208,8 @@ Meteor.methods({
 		});
 	},
 
+	getEventState: function() {
+		return Meteor.users.findOne({ _id: admin_id }).settings.event_stage;
+	},
+
 });
