@@ -21,14 +21,18 @@ Forms = (function() {
   };
 
   api.highlightError = function($input, $error_box) {
-    $error_box.velocity('transition.bounceIn', 200);
+    if ($error_box) {
+      $error_box.velocity('transition.bounceIn', 200);
+    }
     $input
       .addClass('has-form-error')
       .velocity('callout.shake', 500)
       .one('click', function() {
         $input.removeClass('has-form-error');
-        $error_box
-          .velocity('transition.bounceOut', 500);
+        if ($error_box) {
+          $error_box
+            .velocity('transition.bounceOut', 500);
+        }
       });
     return;
   };

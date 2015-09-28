@@ -111,7 +111,7 @@ Template.register.events({
             break;
         }
         $(target)
-          .delay(400)
+          .delay(1000)
           .velocity('transition.slideUpBigIn', 1000);
         break;
       case 'back':
@@ -123,21 +123,21 @@ Template.register.events({
             $('.register-mentor-2').velocity('transition.slideDownBigOut',
               1000);
             $(target)
-              .delay(400)
+              .delay(1000)
               .velocity('transition.slideDownBigIn');
             break;
           case '.register-mentor-2':
             $('.register-mentor-3').velocity('transition.slideDownBigOut',
               1000);
             $(target)
-              .delay(400)
+              .delay(1000)
               .velocity('transition.slideDownBigIn');
             break;
           case '.register-mentor-3':
             $('.register-mentor-4').velocity('transition.slideDownBigOut',
               1000);
             $(target)
-              .delay(400)
+              .delay(1000)
               .velocity('transition.slideDownBigIn');
             break;
         }
