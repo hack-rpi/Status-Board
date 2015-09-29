@@ -22,14 +22,17 @@ Meteor.startup(function() {
 
 
 	// Server Variables ========================================================
-	admin_doc = Meteor.users.findOne({ "username":Meteor.settings.default_admin_username });
+	admin_doc = Meteor.users.findOne({
+		'username': Meteor.settings.default_admin_username
+	});
 	admin_id = "";
 	if (admin_doc)
 		admin_id = admin_doc._id;
 	// =========================================================================
 
 	// create the admin account with a default password
-	if (Meteor.users.find( {username: Meteor.settings.default_admin_username} ).fetch().length == 0) {
+	if ( Meteor.users.find({ username: Meteor.settings.default_admin_username })
+			.fetch().length === 0) {
 		console.log(">> admin account created");
 		admin_id = Accounts.createUser({
 			"username": Meteor.settings.default_admin_username,
@@ -42,7 +45,8 @@ Meteor.startup(function() {
 				}
 			},
 			'settings': {
-				'alert_numbers': []
+				'alert_numbers': [],
+				'event_stage': 'registration'
 			}
 		});
 		// give the admin admin rights

@@ -1,0 +1,63 @@
+@import "global";
+
+.checkin-panel {
+	height: 100%;
+	margin: 10% auto;
+	text-align: center;
+}
+
+.checkin-container, checkin-success-container {
+	display: none;
+}
+
+.checkin-container .validate, .checkin-container .confirm-checkin {
+	text-align: center;
+	margin: 10% auto;
+}
+
+.checkin-container input {
+	height: 100px;
+	width: 200px;
+	font-size: 48px;
+	text-align: center;
+	margin: 5% auto;
+	display: block;
+}
+
+.checkin-container .confirm-checkin input {
+	width: 550px;
+}
+
+.checkin-btn {
+	background-color: @accent;
+	color: #FFFFFF;
+	padding: 10px;
+	font-size: 18px;
+}
+
+.checkin-container .checkin-btn:hover {
+	background-color: @dark-accent;
+}
+
+.checkin-panel .checkin-return-btn {
+	margin-top: 100px;
+}
+
+.checkin-container .checkin-btn[data-action="register"] {
+	margin-top: 100px;
+}
+
+.checkin-container .confirm-checkin .form-error {
+	width: 600px;
+	margin: 0 auto;
+	display: none;
+}
+
+.checkin-success-container {
+	text-align: center;
+	margin: 10% auto;
+}
+
+.checkin-success-container p {
+	margin-bottom: 50px;
+}

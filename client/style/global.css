@@ -3,7 +3,8 @@ body {
   background: #424242;
   width: 100%;
   color: #FFFFFF;
-  padding-bottom: 100px;
+  /*padding-bottom: 100px;*/
+  font-family: 'Open Sans', sans-serif;
 }
 
 .accent, a, a:hover, .btn-link, .btn-link:hover {

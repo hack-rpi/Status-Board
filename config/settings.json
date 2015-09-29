@@ -24,6 +24,8 @@
 	"kadira_id": "",
 	"kadira_secret": "",
 
-	"secret_key": ""
+	"secret_key": "",
+	
+	"checkin_code": ""
 
 }

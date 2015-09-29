@@ -1,25 +1,36 @@
 <template name="register">
 
-	<div class="container">
+	<div class="register">
 
-		{{> Template.dynamic template=register_page}}
+		{{> Template.dynamic template=register_page }}
 
 	</div>
 
 </template>
 
 
-<template name="register_welcome">
+<template name="register_landing">
 
-	<div class="register-panel">
-		<div class="row">
-			<button id="register_participant_btn" class="btn btn-default register-btn-start">Register as a Participant</button>
-		</div>
-		<div class="row">
-			<button id="register_mentor_btn" class="btn btn-default register-btn-start">Register as a Mentor</button>
+	<div class="register-landing">
+		<p>
+			I wanna be...
+		</p>
+		<div class="btn btn-default register-btn" data-action="init"
+				data-target="hacker">
+			a hacker.
+		</div><br>
+		<div class="btn btn-default register-btn" data-action="init"
+				data-target="mentor">
+			a mentor.
+		</div><br>
+		<div class="btn btn-default register-btn" data-action="init"
+				data-target="theverybest" data-index="0">
+			the very best.
 		</div>
 		<!-- <div class="row">
-			<button id="register_volunteer_btn" class="btn btn-default register-btn-start">Register as a Volunteer</button>
+			<button id="register_volunteer_btn"
+				class="btn btn-default register-btn-start">Register as a Volunteer
+			</button>
 		</div> -->
 		<div class="row">
 			<div class="btn btn-link">Privacy Policy</div>
@@ -29,37 +40,33 @@
 </template>
 
 
-<template name="register_participant">
+<template name="register_hacker">
 
-	<div class='register-panel-title'>
-		<h2>Participant</h2>
-	</div>
-
-	<div class="register-panel">
-
-		<form id="register_form_participant" class="form-horizontal" role="form">
-			<div class="form-group">
-				<label for="reg-participant-email" class="col-sm-4 control-label">Email</label>
-				<div class="col-sm-8">
-					<input type="email" class="form-control" id="reg-participant-email">
-				</div>
+	<div class="register-hacker">
+		Hacker Registration
+		<div class="alert alert-danger form-error" role="alert"></div>
+		<div class="_form-group">
+			<label for="Email">Email</label><br>
+			<input type="text" name="Email" placeholder="Email">
+		</div>
+		<div class="_form-group">
+			<label for="Password">Password</label><br>
+			<input type="password" name="Password" placeholder="Password">
+		</div>
+		<div class="_form-group">
+			<label for="Confirm Password">Confirm Password</label><br>
+			<input type="password" name="Confirm Password"
+				placeholder="Confirm Password">
+		</div>
+		<div class="_form-group">
+			<div class="btn btn-default register-btn" data-action="register">
+				Register
 			</div>
-			<div class="form-group">
-				<label for="reg-participant-pass1" class="col-sm-4 control-label">Password</label>
-				<div class="col-sm-8">
-					<input type="password" class="form-control" id="reg-participant-pass1">
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="reg-participant-pass2" class="col-sm-4 control-label">Retype Password</label>
-				<div class="col-sm-8">
-					<input type="password" class="form-control" id="reg-participant-pass2">
-				</div>
-			</div>
-			<div class="form-group">
-				<button type="submit" class="btn btn-default">Submit</button>
-			</div>
-		</form>
+		</div>
+		<div class="btn register-btn" data-action="back"
+		 		data-target=".register-landing">
+			back
+		</div>
 	</div>
 
 </template>
@@ -67,110 +74,112 @@
 
 <template name="register_mentor">
 
-	<div class="register-panel-title">
-		<h2>Mentor</h2>
-	</div>
+	<div class="register-mentor">
 
-	<div class="register-panel">
-		<form id="register-form-mentor" class="form-horizontal" role="form">
-			<div id="reg-mentor-page1">
-				<div class="form-group">
-					<label for="reg-mentor-name" class="col-sm-4 control-label">Name</label>
-					<div class="col-sm-6">
-						<input type="text" class="form-control" id="reg-mentor-name">
+		<div class="register-mentor-1">
+			Mentor Registration
+			<div class="row">
+				<div class="col-md-offset-1 col-md-5">
+					<div class="_form-group">
+						<label for="Email">Email</label><br>
+						<input type="text" name="Email" placeholder="Email">
+					</div>
+					<div class="_form-group">
+						<label for="Password">Password</label><br>
+						<input type="password" name="Password" placeholder="Password">
+					</div>
+					<div class="_form-group">
+						<label for="Confirm Password">Confirm Password</label><br>
+						<input type="password" name="Confirm Password"
+							placeholder="Confirm Password">
 					</div>
 				</div>
-				<div class="form-group">
-					<label for="reg-mentor-affiliation" class="col-sm-4 control-label">Affiliation</label>
-					<div class="col-sm-6">
-						<input type="text" class="form-control" id="reg-mentor-affiliation" placeholder="i.e. Company Name or RPI Student">
+				<div class="col-md-5">
+					<div class="_form-group">
+						<label for="Full Name">Full Name</label><br>
+						<input type="text" name="Full Name" placeholder="Full Name">
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="reg-mentor-phone" class="col-sm-4 control-label">Phone Number</label>
-					<div class="col-sm-6">
-						<input type="text" class="form-control" id="reg-mentor-phone">
+					<div class="_form-group">
+						<label for="Affiliation">Affiliation</label><br>
+						<input type="text" name="Affiliation" placeholder="Affiliation">
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="reg-mentor-email" class="col-sm-4 control-label">Email</label>
-					<div class="col-sm-6">
-						<input type="email" class="form-control" id="reg-mentor-email">
+					<div class="_form-group">
+						<label for="Phone Number">Phone Number</label><br>
+						<input type="text" name="Phone Number" placeholder="Phone Number">
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="reg-mentor-pass1" class="col-sm-4 control-label">Password</label>
-					<div class="col-sm-6">
-						<input type="password" class="form-control" id="reg-mentor-pass1">
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="reg-mentor-pass2" class="col-sm-4 control-label">Retype Password</label>
-					<div class="col-sm-6">
-						<input type="password" class="form-control" id="reg-mentor-pass2">
-					</div>
-				</div>
-				<div>1 of 4</div>
-				<button type="button" class="btn btn-default" id="reg-mentor-page1-next">Next</button>
-			</div>
-
-			<div class="reg-page-hidden" id="reg-mentor-page2">
-				<div class="col-sm-4">
-					<label>Select your languages</label>
-				</div>
-				<div id="reg-mentor-languages" class="form-group checkbox-list">
-					<div class="col-sm-4">
-						{{#each languages}}
-							<div class="checkbox">
-								<label><input name="{{this}}" type="checkbox">{{this}}</label>
-							</div>
-						{{/each}}
-					</div>
-				</div>
-				<div>2 of 4</div>
-				<button type="button" class="btn btn-default" id="reg-mentor-page2-prev">Prev</button>
-				<button type="button" class="btn btn-default" id="reg-mentor-page2-next">Next</button>
-			</div>
-
-			<div class="reg-page-hidden" id="reg-mentor-page3">
-				<div class="col-sm-4">
-					<label>Select your frameworks</label>
-				</div>
-				<div id="reg-mentor-frameworks" class="form-group checkbox-list">
-					<div class="col-sm-4">
-						{{#each frameworks}}
-							<div class="checkbox">
-								<label><input name="{{this}}" type="checkbox">{{this}}</label>
-							</div>
-						{{/each}}
-					</div>
-				</div>
-				<div>3 of 4</div>
-				<button type="button" class="btn btn-default" id="reg-mentor-page3-prev">Prev</button>
-				<button type="button" class="btn btn-default" id="reg-mentor-page3-next">Next</button>
-			</div>
-
-			<div class="reg-page-hidden" id="reg-mentor-page4">
-				<div class="col-sm-4">
-					<label>Select your APIs</label>
-				</div>
-				<div id="reg-mentor-apis" class="form-group checkbox-list">
-					<div class="col-sm-4">
-						{{#each apis}}
-							<div class="checkbox">
-								<label><input name="{{this}}" type="checkbox">{{this}}</label>
-							</div>
-						{{/each}}
-					</div>
-				</div>
-				<div>4 of 4</div>
-				<button type="button" class="btn btn-default" id="reg-mentor-page4-prev">Prev</button>
-				<div id="reg-mentor-submit">
-					<button type="button" class="btn btn-default">Submit</button>
 				</div>
 			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
+					data-target=".register-mentor-2">
+					Next
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-landing">
+				back
+			</div>
+		</div>
 
-		</form>
+		<div class="register-mentor-2">
+			Mentor Registration - Languages
+			<div class="language-selection">
+				{{#each languages}}
+					<label class="_checkbox"><input name="{{this}}" type="checkbox">
+						{{ this }}</label><br>
+				{{/each}}
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
+					data-target=".register-mentor-3">
+					Next
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-mentor-1">
+				back
+			</div>
+		</div>
+
+		<div class="register-mentor-3">
+			Mentor Registration - Frameworks and Libraries
+			<div class="framework-selection">
+				{{#each frameworks}}
+					<label class="_checkbox"><input name="{{this}}" type="checkbox">
+						{{ this }}</label><br>
+				{{/each}}
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
+					data-target=".register-mentor-4">
+					Next
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-mentor-2">
+				back
+			</div>
+		</div>
+
+		<div class="register-mentor-4">
+			Mentor Registration - APIs
+			<div class="api-selection">
+				{{#each apis}}
+					<label class="_checkbox"><input name="{{this}}" type="checkbox">
+						{{ this }}</label><br>
+				{{/each}}
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn">
+					Register
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-mentor-3">
+				back
+			</div>
+		</div>
+
 	</div>
 
 </template>
@@ -241,4 +250,19 @@
 		</form>
 	</div>
 
+</template>
+
+
+<template name="register_complete">
+	<div class="register-complete">
+		<h3>Registration Successful!</h3>
+		<p>
+			You have successfully registered with the Status Board for
+			HackRPI 2015. You're all set for the event!
+		</p>
+		<div class="btn btn-default register-btn" data-action="link"
+			data-target="/user">
+			Profile
+		</div>
+	</div>
 </template>

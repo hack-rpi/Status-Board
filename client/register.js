@@ -1,65 +1,213 @@
 Template.register.helpers({
   register_page: function() {
-    var page = Session.get('register_page');
-    if (page == 'register_participant_btn')
-      return 'register_participant';
-    else if (page == 'register_mentor_btn') {
-      $("#reg-mentor-page1").removeClass("reg-page-hidden");
+    if (Session.equals('register_page', 'hacker')) {
+      Meteor.setTimeout(function() {
+        $('.register-hacker')
+          .velocity('transition.slideRightBigIn', 1000);
+      }, 100);
+      return 'register_hacker';
+    }
+    else if (Session.equals('register_page', 'mentor')) {
+      Meteor.setTimeout(function() {
+        $('.register-mentor-1')
+          .velocity('transition.slideRightBigIn', 1000);
+      }, 100);
       return 'register_mentor';
     }
-    else if (page == 'register_volunteer_btn')
+    else if (Session.equals('register_page', 'volunteer')) {
       return 'register_volunteer';
-    else
-      return 'register_welcome';
+    }
+    else if (Session.equals('register_page', 'complete')) {
+      Meteor.setTimeout(function() {
+        $('.register-complete')
+          .velocity('transition.slideRightBigIn', 1000);
+      }, 100);
+      return 'register_complete';
+    }
+    else {
+      Meteor.setTimeout(function() {
+        $('.register-landing').velocity('transition.slideLeftBigIn', 1000);
+      }, 100);
+      return 'register_landing';
+    }
   }
 });
 
 Template.register.rendered = function() {
-  Session.set('register_page', 'register_welcome');
+  Session.set('register_page', 'register_landing');
 };
 
+Template.register_landing.events({
+  'click .register-btn': function(e) {
+    Session.set('register_page', $(e.target).attr('data-action'));
+  }
+});
+
 Template.register.events({
-  'click .register-btn-start': function(e) {
-    Session.set('register_page', e.currentTarget.id);
-  },
-  // -------------------------------------------------------------------------
-  'submit #register_form_participant': function(e, t) {
-    e.preventDefault();
-    var email = t.find("#reg-participant-email").value,
-        pass1 = t.find("#reg-participant-pass1").value,
-        pass2 = t.find("#reg-participant-pass2").value;
+  'focus ._form-group input': function(e) {
+		$(e.target)
+			.attr('placeholder', '')
+		.parent('._form-group').find('label')
+			.velocity({'opacity': 1}, 200);
+	},
+	'blur ._form-group input': function(e) {
+		$(e.target)
+			.attr('placeholder', $(e.target).attr('name'))
+		.parent('._form-group').find('label')
+			.velocity({'opacity': 0}, 200);
+	},
+  'click .register-btn': function(e) {
+    var action = $(e.target).attr('data-action'),
+        target = $(e.target).attr('data-target');
+    switch (action) {
+      case 'init':
+        if (target === 'theverybest') {
+          var x = [
+              'the very best,',
+              'like no one ever was.',
+              'To catch them is my real test;',
+              'to train them is my cause.',
 
-    if (!isValidEmail(email)) {
-      Session.set("displayMessage", {title: "Error", body: "Invalid email address"});
-      return false;
-    }
-    if (!isValidPassword(pass1)) {
-      Session.set("displayMessage", {title: "Error", body: "Password length must be at least 6 characters"});
-      return false;
-    }
-    if (pass1 != pass2) {
-      Session.set("displayMessage", {title: "Error", body: "Passwords do not match"});
-      return false;
-    }
+              'I will travel across the land,',
+              'searching far and wide.',
+              'Each Pokemon to understand',
+              'the power that\'s inside',
 
-    var profile = {
-      "role": "hacker"
-    }
+              'Pokemon, (gotta catch them all) it\'s you and me',
+              'I know it\'s my destiny',
+              'Pokemon, oh, you\'re my best friend',
+              'In a world we must defend',
 
-    Accounts.createUser({email: email, password: pass1, profile: profile}, function(err) {
-      if (err) {
-        if (err.error == 403) {
-          Session.set("displayMessage", {title: "Access Denied", body: "Account creation may be currently disabled"});
+              'Pokemon, (gotta catch them all) a heart so true',
+              'Our courage will pull us through',
+              'You teach me and I\'ll teach you',
+              '(Po-ke-mon) Gotta catch \'em all'
+            ],
+            i = +$(e.target).attr('data-index'),
+            next = i > x.length-1 ? 0 : i+1;
+          $(e.target).css('width', 'auto');
+          $(e.target).text(x[next]);
+          $(e.target).attr('data-index', next);
         }
         else {
-          Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
+          Session.set('register_page', target);
+        }
+        break;
+      case 'next':
+        switch (target) {
+          case '.register-mentor-2':
+            $('.register-mentor-1')
+              .velocity('transition.slideUpBigOut', 1000);
+            break;
+          case '.register-mentor-3':
+            $('.register-mentor-2')
+              .velocity('transition.slideUpBigOut', 1000);
+            break;
+          case '.register-mentor-4':
+            $('.register-mentor-3')
+              .velocity('transition.slideUpBigOut', 1000);
+            break;
+          default:
+            break;
+        }
+        $(target)
+          .delay(1000)
+          .velocity('transition.slideUpBigIn', 1000);
+        break;
+      case 'back':
+        switch(target) {
+          case '.register-landing':
+            Session.set('register_page', 'register-landing');
+            break;
+          case '.register-mentor-1':
+            $('.register-mentor-2').velocity('transition.slideDownBigOut',
+              1000);
+            $(target)
+              .delay(1000)
+              .velocity('transition.slideDownBigIn');
+            break;
+          case '.register-mentor-2':
+            $('.register-mentor-3').velocity('transition.slideDownBigOut',
+              1000);
+            $(target)
+              .delay(1000)
+              .velocity('transition.slideDownBigIn');
+            break;
+          case '.register-mentor-3':
+            $('.register-mentor-4').velocity('transition.slideDownBigOut',
+              1000);
+            $(target)
+              .delay(1000)
+              .velocity('transition.slideDownBigIn');
+            break;
+        }
+        break;
+      case 'link':
+        Router.go(target);
+        break;
+      default:
+        break;
+    }
+  },
+  'click .register-hacker .register-btn[data-action="register"]': function(e) {
+    var $form = $('.register-hacker'),
+        $error_box = $('.register-hacker .form-error'),
+        $email = $form.find('input[name="Email"]'),
+        email = $email.val() || '',
+        $pass1 = $form.find('input[name="Password"]'),
+        pass1 = $pass1.val() || '',
+        $pass2 = $form.find('input[name="Confirm Password"]'),
+        pass2 = $pass2.val() || '';
+
+    if (! Forms.isValidEmail(email)) {
+      $error_box.html('<b>Form Error!</b> Invalid Email.');
+      Forms.highlightError($email, $error_box);
+      return false;
+    }
+    if (! Forms.isValidPassword(pass1)) {
+      $error_box.html('<b>Form Error!</b> Password must be at least 6 characters.');
+      Forms.highlightError($pass1, $error_box);
+      return false;
+    }
+    if (pass1 !== pass2) {
+      $error_box.html('<b>Form Error!</b> Passwords do not match.');
+      Forms.highlightError($pass2, $error_box);
+      return false;
+    }
+
+    var profile = { role: 'hacker' };
+
+    Accounts.createUser(
+      {
+        email: email,
+        password: pass1,
+        profile: profile
+      },
+      function(err) {
+        if (err) {
+          if (err.error == 403) {
+            Session.set("displayMessage",
+              {
+                title: "Account Creation Failed",
+                body: "Account creation failed. Please try again later."
+              }
+            );
+          }
+          else {
+            Session.set("displayMessage",
+              {
+                title: "Error",
+                body: "Something happened. Please try again later."
+              }
+            );
+          }
+        }
+        else {
+          // success
+          Session.set('register_page', 'complete');
         }
       }
-      else {
-        // success
-        Router.go("/");
-      }
-    });
+    );
 
     return false;
   },
@@ -234,7 +382,7 @@ Template.register.events({
       blocks.push({start:new Date(block_start), end:block_end});
     }
 
-    if (blocks.length == 0) {
+    if (blocks.length === 0) {
       Session.set("displayMessage", {title: "Field Required", body: "Please select the hours you are available"});
       return false;
     }
@@ -295,7 +443,7 @@ Template.register_volunteer.rendered = function() {
       text: s.getHours() + ':00',
     }).appendTo("#volunteer-time-grid");
     s.setHours(s.getHours()+1);
-    if (s.getHours() == 0) {
+    if (s.getHours() === 0) {
       $("<div>", {
         "class": "time-grid-date row",
         text: s.toLocaleDateString(),
