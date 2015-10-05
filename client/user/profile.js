@@ -6,8 +6,10 @@ Template.user_profile.helpers({
     else return "";
   },
   name: function() {
-    if (Meteor.userId())
+    if (Meteor.userId()) {
+      console.log(Meteor.user().profile.name);
       return Meteor.user().profile.name;
+    }
     else return "";
   },
   affiliation: function() {

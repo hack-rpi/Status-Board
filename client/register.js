@@ -152,6 +152,8 @@ Template.register.events({
   'click .register-hacker .register-btn[data-action="register"]': function(e) {
     var $form = $('.register-hacker'),
         $error_box = $('.register-hacker .form-error'),
+        $name = $form.find('input[name="Name"]'),
+        name = $name.val() || '',
         $email = $form.find('input[name="Email"]'),
         email = $email.val() || '',
         $pass1 = $form.find('input[name="Password"]'),
@@ -159,6 +161,11 @@ Template.register.events({
         $pass2 = $form.find('input[name="Confirm Password"]'),
         pass2 = $pass2.val() || '';
 
+    if (name == '') {
+      $error_box.html('<b>Form Error!</b> Please enter your name.');
+      Forms.highlightError($name, $error_box);
+      return false;
+    } 
     if (! Forms.isValidEmail(email)) {
       $error_box.html('<b>Form Error!</b> Invalid Email.');
       Forms.highlightError($email, $error_box);
@@ -175,7 +182,10 @@ Template.register.events({
       return false;
     }
 
-    var profile = { role: 'hacker' };
+    var profile = { 
+      role: 'hacker',
+      name: name,
+    };
 
     Accounts.createUser(
       {
