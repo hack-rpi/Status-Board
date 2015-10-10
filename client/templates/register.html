@@ -42,10 +42,10 @@
 
 <template name="register_hacker">
 
-	<div class="register-hacker-form">
+	<div class="register-hacker">
 		<div class="alert alert-danger form-error" role="alert"></div>
 
-		<div class="register-hacker-1 reg-page-hidden">
+		<div class="register-hacker-1">
 			<h3>Hacker Registration</h3>
 			<div class="_form-group">
 				<label for="Full Name">Full Name</label><br>
@@ -56,6 +56,10 @@
 				<input type="text" name="Email" placeholder="Email">
 			</div>
 			<div class="_form-group">
+				<label for="School">School</label><br>
+				<input type="text" name="School" placeholder="School"/>
+			</div>
+			<div class="_form-group">
 				<label for="Password">Password</label><br>
 				<input type="password" name="Password" placeholder="Password">
 			</div>
@@ -64,9 +68,16 @@
 				<input type="password" name="Confirm Password"
 					placeholder="Confirm Password">
 			</div>
-			<div class="btn btn-defualt register-btn" data-action="next"
+			<div class="_form-group">
+				<input name="conduct" type="checkbox"/>
+					I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf" 
+						target="_blank">MLH Code of Conduct.</a><br/>
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
 					data-target=".register-hacker-2">
-				Next
+					Next
+				</div>
 			</div>
 			<div class="btn register-btn" data-action="back"
 			 		data-target=".register-landing">
@@ -74,31 +85,29 @@
 			</div>
 		</div>
 
-		<div class="register-hacker-2 reg-page-hidden">
+		<div class="register-hacker-2">
 			<h3>Hacker Registration</h3>
 			<h5>Additional Information</h5>
-			<div class="_form-group">
-				<label for="School">School</label><br>
-				<input type="text" name="School" placeholder="School"/>
+			<div id="diet-selection">
+				<label class="_checkbox" for="diet">Dietary Restrictions</label><br/>
+				{{#each diet}}
+					<label><input name="{{this}}" type="checkbox">
+						{{ this }}</label><br>					
+				{{/each}}
 			</div>
-			<div class="_form-group">
-				<input name="bus" type="checkbox"/>
-					I prefer to take a bus provided by HackRPI.<br/>
+			<div id="bus-selection">
+				<label for="bus">Preferred Bus Route (Optional)</label><br/>
+				The following bus routes are not yet set in stone.<br/><br/>
+				{{#each buses}}
+					<label><input name="{{this}}" type="radio">
+						{{ this }}</label><br>					
+				{{/each}}
 			</div>	
 			<div class="_form-group">
-				<label for="Dietary Restrictions">Dietary Restrictions</label><br/>
-				<input type="text" name="Dietary Restrictions" 
-					placeholder="Dietary Restrictions"/>
-			</div>
-			<!-- Resume uploading goes here -->
-			<div>
-				<input name="conduct" type="checkbox"/>
-					I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf" 
-						target="_blank">MLH Code of Conduct.</a><br/>
-			</div>
-			<div class="btn btn-default register-btn" data-action="next"
+				<div class="btn btn-default register-btn" data-action="next"
 					data-target=".register-hacker-3">
-				Next
+					Next
+				</div>
 			</div>
 			<div class="btn register-btn" data-action="back"
 			 		data-target=".register-hacker-1">
@@ -106,14 +115,14 @@
 			</div>
 		</div>
 
-		<div class="register-hacker-3 reg-page-hidden">
+		<div class="register-hacker-3">
 			<h3>Hacker Registration</h3>
 			<h5>OPTIONAL Information</h5>		
 			<div class="gender-selection">
 				<label for="gender">Gender</label><br/>
-				<input type="radio" name="gender" value="male"/> Male
-				<input type="radio" name="gender" value="female"/> Female
-				<input type="radio" name="gender" value="other"/> Other
+				<input type="radio" name="gender" value="male"/> Male<br/>
+				<input type="radio" name="gender" value="female"/> Female<br/>
+				<input type="radio" name="gender" value="other"/> Other<br/>
 			</div>
 			<div class="race-selection">
 				<label for="race">Race</label><br/>

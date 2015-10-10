@@ -170,8 +170,8 @@ Template.register.events({
     }
   },
   'click .register-hacker-3 .register-btn[data-action="register"]': function(e) {
-    var $form = $('.register-hacker-form'),
-        $error_box = $('.register-hacker-form .form-error'),
+    var $form = $('.register-hacker'),
+        $error_box = $('.register-hacker .form-error'),
         $name = $form.find('input[name="Full Name"]'),
         name = $name.val() || '',
         $email = $form.find('input[name="Email"]'),
@@ -182,49 +182,43 @@ Template.register.events({
         pass2 = $pass2.val() || '',
         $school = $form.find('input[name="School"]'),
         school = $school.val() || '',
-        $diet = $form.find('input[name="Dietary Restrictions"]'),
-        diet = $diet.val() || '',
         $conduct = $form.find('input[name="conduct"]');
-        conduct = $conduct.val();
 
     $error_box.empty();
+    $error_box.hide();
     var form_errors = [],       // form errors to be displayed
-        first_error = 1;        // first section to contain an error
+        first_error = 0;        // first section to contain an error
 
+    // All the form validation
     if (name == '') {
       form_errors.push('Please enter your name.');
-      if(first_error > 1) 
-        first_error = 1;
+      if(!first_error) first_error = 1;
       Forms.highlightError($name, $error_box);
     } 
     if (! Forms.isValidEmail(email)) {
       form_errors.push("Invalid email.");
-      if(first_error > 1)
-        first_error = 1;
+      if(!first_error) first_error = 1;
       Forms.highlightError($email, $error_box);
     }
     if (! Forms.isValidPassword(pass1)) {
       form_errors.push('Password must be at least 6 characters.');
-      if(first_error > 1)
-        first_error = 1;
+      if(!first_error) first_error = 1;
       Forms.highlightError($pass1, $error_box);
     }
     if (pass1 !== pass2) {
-      form_errors.push('Passwords do not match.');
-      if(first_error > 1)
-        first_error = 1;
+      form_errors.push('Passwords must match.');
+      if(!first_error) first_error = 1;
       Forms.highlightError($pass2, $error_box);
     }
     if (school == '') {
       form_errors.push('Please enter your school.');
-      if(first_error > 2)
-        first_error = 2;
+      if(!first_error) first_error = 1;
       Forms.highlightError($school, $error_box);
     }
-    if(!conduct) {
-      form_errors.push('You must agree to the MLH code of conduct');
-      if(first_error > 2)
-        first_error = 2;
+    if(!$conduct.is(':checked')) {
+      form_errors.push('You must agree to the MLH code of conduct.');
+      if(!first_error) first_error = 1;
+      Forms.highlightError($conduct, $error_box);
     }
 
 
@@ -240,7 +234,10 @@ Template.register.events({
         $error_box.append(listNode);
       }
 
+      $error_box.velocity('transition.bounceIn', 200);
+
       // Bring user back to the form section that has the first error
+      console.log(first_error);
       $('.register-hacker-3')
         .velocity('transition.slideUpBigOut', 300);
       $('.register-hacker-' + first_error)
@@ -249,10 +246,19 @@ Template.register.events({
       return false;
     }
 
+    var diet = [];
+    $('#diet-selection input:checked').each(function() {
+      diet.push(this.name);
+    });
+
+    var bus = $('#bus-selection input:checked').attr('name') || '';
+
     var profile = { 
       role: 'hacker',
       name: name,
-      diet: diet
+      school: school,
+      diet: diet,
+      bus: bus
     };
 
     Accounts.createUser(
@@ -502,6 +508,12 @@ Template.register_hacker.helpers({
       'Native American',
       'White'
     ];
+  },
+  'buses': function() {
+    return Meteor.settings.public.buses;
+  },
+  'diet': function() {
+    return Meteor.settings.public.diet;
   }
 });
 

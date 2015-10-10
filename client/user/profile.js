@@ -7,7 +7,6 @@ Template.user_profile.helpers({
   },
   name: function() {
     if (Meteor.userId()) {
-      console.log(Meteor.user().profile.name);
       return Meteor.user().profile.name;
     }
     else return "";
@@ -22,10 +21,20 @@ Template.user_profile.helpers({
       return Meteor.user().profile.phone;
     else return "";
   },
-  location: function() {
+  school: function() {
     if (Meteor.userId())
-      return Meteor.user().profile.location;
+      return Meteor.user().profile.school;
     else return "";
+  },
+  bus: function() {
+    if (Meteor.userId())
+      return Meteor.user().profile.bus;
+    else return "";
+  },
+  diet: function() {
+    if (Meteor.userId())
+      return Meteor.user().profile.diet;
+    else return [];
   },
   editActive: function() {
     user_profile_edit_dep.depend();
@@ -58,7 +67,7 @@ Template.user_profile.events({
           "profile.name": new_name,
           "profile.affiliation": new_affiliation,
           "profile.phone": new_phone,
-          "profile.location": new_location
+          "profile.school": new_location
         }
     })) {
       // data save successfully
