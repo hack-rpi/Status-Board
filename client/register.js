@@ -90,6 +90,13 @@ Template.register.events({
           $(e.target).css('width', 'auto');
           $(e.target).text(x[next]);
           $(e.target).attr('data-index', next);
+          if (i == x.length-1) {
+            $('.register-landing .music iframe')
+              .attr('src', 'https://www.youtube.com/embed/JuYeHPFR3f0?autoplay=1&rel=0&amp;controls=0&amp;showinfo=0');
+          }
+          else {
+             $('.register-landing .music iframe').attr('src', '');
+          }
         }
         else {
           Session.set('register_page', target);
