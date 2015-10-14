@@ -1,7 +1,7 @@
 <template name="user_profile">
   <div id="user-profile">
     <div class="user-section-title">
-      <h3>{{ email }}</h3>
+      <h3>{{ name }} ({{ email }})</h3>
       <div class="btn btn-lg" id="user-profile-edit-btn" title="Edit">
         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
       </div>
@@ -58,9 +58,9 @@
           <div class="col-xs-7">{{ phone }}</div>
         </div>
         <div class="row user-table-row">
-          <div class="col-xs-offset-3 col-xs-2 user-table-label">Location</div>
-          <div class="col-xs-7">{{ location }}</div>
-        </div>
+          <div class="col-xs-offset-3 col-xs-2 user-table-label">School</div>
+          <div class="col-xs-7">{{ school }}</div>
+        </div>       
       </div>
     {{/if}}
   </div>

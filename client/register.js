@@ -2,7 +2,7 @@ Template.register.helpers({
   register_page: function() {
     if (Session.equals('register_page', 'hacker')) {
       Meteor.setTimeout(function() {
-        $('.register-hacker')
+        $('.register-hacker-1')
           .velocity('transition.slideRightBigIn', 1000);
       }, 100);
       return 'register_hacker';
@@ -107,6 +107,17 @@ Template.register.events({
             $('.register-mentor-3')
               .velocity('transition.slideUpBigOut', 1000);
             break;
+          case '.register-hacker-2':
+            $('.register-hacker-1')
+              .velocity('transition.slideUpBigOut', 1000);
+            break;
+          case '.register-hacker-3':
+            $('.register-hacker-2')
+              .velocity('transition.slideUpBigOut', 1000);
+            break;
+          case '.register-hacker-4':
+            $('.register-hacker-3')
+              .velocity('transition.slideUpBigOut', 1000);
           default:
             break;
         }
@@ -140,6 +151,27 @@ Template.register.events({
               .delay(1000)
               .velocity('transition.slideDownBigIn');
             break;
+          case '.register-hacker-3':
+             $('.register-hacker-4').velocity('transition.slideDownBigOut',
+              1000);
+            $(target)
+              .delay(1000)
+              .velocity('transition.slideDownBigIn');
+            break; 
+          case '.register-hacker-2':
+             $('.register-hacker-3').velocity('transition.slideDownBigOut',
+              1000);
+            $(target)
+              .delay(1000)
+              .velocity('transition.slideDownBigIn');
+            break; 
+          case '.register-hacker-1':
+             $('.register-hacker-2').velocity('transition.slideDownBigOut',
+              1000);
+            $(target)
+              .delay(1000)
+              .velocity('transition.slideDownBigIn');
+            break;              
         }
         break;
       case 'link':
@@ -149,66 +181,166 @@ Template.register.events({
         break;
     }
   },
-  'click .register-hacker .register-btn[data-action="register"]': function(e) {
+  'click .register-hacker-4 .register-btn[data-action="register"]': function(e) {
     var $form = $('.register-hacker'),
         $error_box = $('.register-hacker .form-error'),
+        $name = $form.find('input[name="Full Name"]'),
+        name = $name.val() || '',
         $email = $form.find('input[name="Email"]'),
         email = $email.val() || '',
         $pass1 = $form.find('input[name="Password"]'),
         pass1 = $pass1.val() || '',
         $pass2 = $form.find('input[name="Confirm Password"]'),
-        pass2 = $pass2.val() || '';
+        pass2 = $pass2.val() || '',
+        $school = $form.find('input[name="School"]'),
+        school = $school.val() || '',
+        $conduct = $form.find('input[name="conduct"]'),
+        conduct = $conduct.is(':checked');
+        $resume = $form.find('input[name="resume"]'),
 
+    $error_box.empty();
+    $error_box.hide();
+    var form_errors = [],       // form errors to be displayed
+        first_error = 0;        // first section to contain an error
+
+    // All the form validation
+    if (name == '') {
+      form_errors.push('Please enter your name.');
+      if(!first_error) first_error = 1;
+      Forms.highlightError($name, $error_box);
+    } 
     if (! Forms.isValidEmail(email)) {
-      $error_box.html('<b>Form Error!</b> Invalid Email.');
+      form_errors.push("Invalid email.");
+      if(!first_error) first_error = 1;
       Forms.highlightError($email, $error_box);
-      return false;
     }
     if (! Forms.isValidPassword(pass1)) {
-      $error_box.html('<b>Form Error!</b> Password must be at least 6 characters.');
+      form_errors.push('Password must be at least 6 characters.');
+      if(!first_error) first_error = 1;
       Forms.highlightError($pass1, $error_box);
-      return false;
     }
     if (pass1 !== pass2) {
-      $error_box.html('<b>Form Error!</b> Passwords do not match.');
+      form_errors.push('Passwords must match.');
+      if(!first_error) first_error = 1;
       Forms.highlightError($pass2, $error_box);
+    }
+    if (school == '') {
+      form_errors.push('Please enter your school.');
+      if(!first_error) first_error = 1;
+      Forms.highlightError($school, $error_box);
+    }
+    if(!conduct) {
+      form_errors.push('You must agree to the MLH code of conduct.');
+      if(!first_error) first_error = 1;
+      Forms.highlightError($conduct, $error_box);
+    }
+    if($resume[0].files.length == 0) {
+      form_errors.push('Please upload your resume.');
+      if(!first_error) first_error = 2;
+      Forms.highlightError($resume, $error_box);
+    } else if($resume[0].files[0].type != 'application/pdf') {
+      form_errors.push("Resume upload must be a PDF.");
+      if(!first_error) first_error = 2;
+      Forms.highlightError($resume, $error_box);
+    } else if($resume[0].files[0].size / 1024 > 1024) {
+      form_errors.push("Maximum file size is 1MB");
+      if(!first_error) first_error = 2;
+      Forms.highlightError($resume, $error_box);
+    }
+
+    if(form_errors.length > 0) {
+      // Load error messages into error box
+      var error_header = document.createElement('strong');
+      error_header.appendChild(document.createTextNode('Please fix the following errors:'))
+      $error_box.append(error_header);
+
+      for(var i = 0; i < form_errors.length; i++) {
+        var listNode = document.createElement('li');
+        listNode.appendChild(document.createTextNode(form_errors[i]));
+        $error_box.append(listNode);
+      }
+
+      $error_box.velocity('transition.bounceIn', 200);
+
+      // Bring user back to the form section that has the first error
+      console.log(first_error);
+      $('.register-hacker-4')
+        .velocity('transition.slideUpBigOut', 300);
+      $('.register-hacker-' + first_error)
+        .velocity('transition.slideUpBigIn', 300);
+
       return false;
     }
 
-    var profile = { role: 'hacker' };
+    var races = [];
+    $('#race-selection input:checked').each(function() {
+      races.push(this.name);
+    });
+    var provided_race = races.length > 0;
 
-    Accounts.createUser(
-      {
-        email: email,
-        password: pass1,
-        profile: profile
-      },
-      function(err) {
-        if (err) {
-          if (err.error == 403) {
-            Session.set("displayMessage",
-              {
-                title: "Account Creation Failed",
-                body: "Account creation failed. Please try again later."
-              }
-            );
+    var gender = $('#gender-selection input:checked').attr('value') || '';
+    var provided_gender = !(gender == '');
+
+    var diet = [];
+    $('#diet-selection input:checked').each(function() {
+      diet.push(this.name);
+    });
+
+    var bus = $('#bus-selection input:checked').attr('name') || '';
+
+    var resume_file = $resume[0].files[0];
+    var reader = new FileReader();
+
+    // Create user when the resume binary data is done reading.
+    reader.onload = function(event) {
+      var binary_data = new Uint8Array(reader.result);
+
+      var profile = { 
+        role: 'hacker',
+        name: name,
+        school: school,
+        diet: diet,
+        bus: bus,
+        conduct: conduct,
+        provided_race: provided_race,
+        provided_gender: provided_gender,
+        resume: binary_data
+      };
+
+      Accounts.createUser(
+        {
+          email: email,
+          password: pass1,
+          profile: profile,
+        },
+        function(err) {
+          if (err) {
+            if (err.error == 403) {
+              Session.set("displayMessage",
+                {
+                  title: "Account Creation Failed",
+                  body: "Account creation failed. Please try again later."
+                }
+              );
+            }
+            else {
+              Session.set("displayMessage",
+                {
+                  title: "Error",
+                  body: "Something happened. Please try again later."
+                }
+              );
+            }
           }
           else {
-            Session.set("displayMessage",
-              {
-                title: "Error",
-                body: "Something happened. Please try again later."
-              }
-            );
+            // success
+            Session.set('register_page', 'complete');
           }
         }
-        else {
-          // success
-          Session.set('register_page', 'complete');
-        }
-      }
-    );
+      );
+    }; // reader.onload()
 
+    reader.readAsArrayBuffer(resume_file);
     return false;
   },
   // -------------------------------------------------------------------------
@@ -412,6 +544,25 @@ Template.register.events({
 
     return false;
   },
+});
+
+Template.register_hacker.helpers({
+  'races': function() {
+    return [
+      'Asian / Pacific Islander',
+      'Black / African American', 
+      'Hispanic / Latino',
+      'Middle Eastern',
+      'Native American',
+      'White'
+    ];
+  },
+  'buses': function() {
+    return Meteor.settings.public.buses;
+  },
+  'diet': function() {
+    return Meteor.settings.public.diet;
+  }
 });
 
 Template.register_mentor.helpers({
