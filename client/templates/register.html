@@ -47,36 +47,42 @@
 
 		<div class="register-hacker-1">
 			<h3>Hacker Registration</h3>
-			<div class="_form-group">
-				<label for="Full Name">Full Name</label><br>
-				<input type="text" name="Full Name" placeholder="Full Name">
+			<div class="row">
+				<div class="col-md-offset-1 col-md-5">
+					<div class="_form-group">
+						<label for="Email">Email</label><br>
+						<input type="text" name="Email" placeholder="Email">
+					</div>
+					<div class="_form-group">
+						<label for="Password">Password</label><br>
+						<input type="password" name="Password" placeholder="Password">
+					</div>
+					<div class="_form-group">
+						<label for="Confirm Password">Confirm Password</label><br>
+						<input type="password" name="Confirm Password"
+							placeholder="Confirm Password">
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="_form-group">
+						<label for="Full Name">Full Name</label><br>
+						<input type="text" name="Full Name" placeholder="Full Name">
+					</div>
+					<div class="_form-group">
+						<label for="School">School</label><br>
+						<input type="text" name="School" placeholder="School"/>
+					</div>
+					<div id="resume-upload" class="_form-group">
+						<br>
+						<p><strong>Upload Your Resume</strong></p>
+						<input name="resume" type="file"/>
+					</div>
+				</div>
 			</div>
-			<div class="_form-group">
-				<label for="School">School</label><br>
-				<input type="text" name="School" placeholder="School"/>
-			</div>
-			<div class="_form-group">
-				<label for="Email">Email</label><br>
-				<input type="text" name="Email" placeholder="Email">
-			</div>
-			<div class="_form-group">
-				<label for="School">School</label><br>
-				<input type="text" name="School" placeholder="School"/>
-			</div>
-			<div class="_form-group">
-				<label for="Password">Password</label><br>
-				<input type="password" name="Password" placeholder="Password">
-			</div>
-			<div class="_form-group">
-				<label for="Confirm Password">Confirm Password</label><br>
-				<input type="password" name="Confirm Password"
-					placeholder="Confirm Password">
-			</div>
-			<div class="_form-group">
-				<input name="conduct" type="checkbox"/>
-					I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf" 
-						target="_blank">MLH Code of Conduct.</a><br/>
-			</div>
+			<label class="_checkbox"><input name="conduct" type="checkbox"/>
+				I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf" 
+					target="_blank">MLH Code of Conduct.</a>
+			</label><br>
 			<div class="_form-group">
 				<div class="btn btn-default register-btn" data-action="next"
 					data-target=".register-hacker-2">
@@ -93,16 +99,19 @@
 			<h3>Hacker Registration</h3>
 			<h5>Additional Information</h5>
 			<div id="bus-selection">
-				<label for="bus">Preferred Bus Route (Optional)</label><br/>
-				The following bus routes are not yet set in stone.<br/><br/>
+				<h4>Preferred Bus Route (Optional)</h4>
+				Note that these are <b>tentative</b> bus routes.<br/>
 				{{#each buses}}
-					<label><input name="{{this}}" type="radio">
-						{{ this }}</label><br>					
+					<label><input name="bus" value="{{this}}" type="radio">
+						{{ this }}</label><br>
 				{{/each}}
 			</div>
-			<div id="resume-upload" class="_form-group">
-				<p><strong>Upload Your Resume</strong></p>
-				<input name="resume" type="file"/>
+			<div id="diet-selection">
+				<h4>Dietary Restrictions</h4>
+				{{#each diet}}
+					<label><input name="diet" value="{{this}}" type="checkbox">
+						{{ this }}</label><br>
+				{{/each}}
 			</div>
 			<div class="_form-group">
 				<div class="btn btn-default register-btn" data-action="next"
@@ -118,41 +127,19 @@
 
 		<div class="register-hacker-3">
 			<h3>Hacker Registration</h3>
-			<h5>Additional Information</h5>
-			<div id="diet-selection">
-				<label class="_checkbox" for="diet">Dietary Restrictions</label><br/>
-				{{#each diet}}
-					<label><input name="{{this}}" type="checkbox">
-						{{ this }}</label><br>					
-				{{/each}}
-			</div>
-			<div class="_form-group">
-				<div class="btn btn-default register-btn" data-action="next"
-					data-target=".register-hacker-4">
-					Next
-				</div>
-			</div>
-			<div class="btn register-btn" data-action="back"
-			 		data-target=".register-hacker-2">
-				Back
-			</div>
-		</div>
-
-		<div class="register-hacker-4">
-			<h3>Hacker Registration</h3>
-			<h5>OPTIONAL Information</h5>
-			This data will be anonymous<br/>		
+			<h5>OPTIONAL Anonymous Information</h5>
 			<div id="gender-selection">
-				<label for="gender">Gender</label><br/>
-				<input type="radio" name="gender" value="male"/> Male<br/>
-				<input type="radio" name="gender" value="female"/> Female<br/>
-				<input type="radio" name="gender" value="other"/> Other<br/>
-				<input type="radio" name="gender" value=""/> Prefer not to answer<br/>
+				<h4>Gender</h4>
+				<label><input type="radio" name="gender" value="male"/>Male</label><br>
+				<label><input type="radio" name="gender" value="female"/>Female</label><br>
+				<label><input type="radio" name="gender" value="other"/> Other</label><br>
+				<label><input type="radio" name="gender" value=""/> Prefer not to answer
+					</label>
 			</div>
 			<div id="race-selection">
-				<label for="race">Race</label><br/>
+				<h4>Race</h4>
 				{{#each races}}
-					<label class="_checkbox"><input name="{{this}}" type="checkbox">
+					<label class="_checkbox"><input value="{{this}}" type="checkbox">
 						{{ this }}</label><br>					
 				{{/each}}
 			</div>
@@ -162,7 +149,7 @@
 				</div>
 			</div>
 			<div class="btn register-btn" data-action="back"
-			 		data-target=".register-hacker-3">
+			 		data-target=".register-hacker-2">
 				Back
 			</div>
 		</div>
@@ -356,8 +343,8 @@
 	<div class="register-complete">
 		<h3>Registration Successful!</h3>
 		<p>
-			You have successfully registered with the Status Board for
-			HackRPI 2015. You're all set for the event!
+			You have successfully registered for HackRPI 2015. 
+			You're all set for the event! We'll be in touch soon.
 		</p>
 		<div class="btn btn-default register-btn" data-action="link"
 			data-target="/user">

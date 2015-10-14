@@ -34,6 +34,8 @@ Template.register.helpers({
 });
 
 Template.register.rendered = function() {
+  Meteor.subscribe('userData');
+  Meteor.subscribe('AnonUserData');
   Session.set('register_page', 'register_landing');
 };
 
@@ -181,7 +183,7 @@ Template.register.events({
         break;
     }
   },
-  'click .register-hacker-4 .register-btn[data-action="register"]': function(e) {
+  'click .register-hacker-3 .register-btn[data-action="register"]': function(e) {
     var $form = $('.register-hacker'),
         $error_box = $('.register-hacker .form-error'),
         $name = $form.find('input[name="Full Name"]'),
@@ -195,8 +197,9 @@ Template.register.events({
         $school = $form.find('input[name="School"]'),
         school = $school.val() || '',
         $conduct = $form.find('input[name="conduct"]'),
-        conduct = $conduct.is(':checked');
+        conduct = $conduct.is(':checked'),
         $resume = $form.find('input[name="resume"]'),
+        resume_file = $resume[0].files[0];
 
     $error_box.empty();
     $error_box.hide();
@@ -204,57 +207,59 @@ Template.register.events({
         first_error = 0;        // first section to contain an error
 
     // All the form validation
-    if (name == '') {
+    if (name === '') {
       form_errors.push('Please enter your name.');
-      if(!first_error) first_error = 1;
+      first_error = first_error || 1;
       Forms.highlightError($name, $error_box);
     } 
     if (! Forms.isValidEmail(email)) {
-      form_errors.push("Invalid email.");
-      if(!first_error) first_error = 1;
+      form_errors.push('Please enter a valid email.');
+      first_error = first_error || 1;
       Forms.highlightError($email, $error_box);
     }
     if (! Forms.isValidPassword(pass1)) {
       form_errors.push('Password must be at least 6 characters.');
-      if(!first_error) first_error = 1;
+      first_error = first_error || 1;
       Forms.highlightError($pass1, $error_box);
     }
     if (pass1 !== pass2) {
       form_errors.push('Passwords must match.');
-      if(!first_error) first_error = 1;
+      first_error = first_error || 1;
       Forms.highlightError($pass2, $error_box);
     }
-    if (school == '') {
+    if (school === '') {
       form_errors.push('Please enter your school.');
-      if(!first_error) first_error = 1;
+      first_error = first_error || 1;
       Forms.highlightError($school, $error_box);
     }
-    if(!conduct) {
-      form_errors.push('You must agree to the MLH code of conduct.');
-      if(!first_error) first_error = 1;
+    if (! conduct) {
+      form_errors.push('You must agree to the MLH Code of Conduct.');
+      first_error = first_error || 1;
       Forms.highlightError($conduct, $error_box);
     }
-    if($resume[0].files.length == 0) {
+    if ($resume[0].files.length === 0) {
       form_errors.push('Please upload your resume.');
-      if(!first_error) first_error = 2;
+      first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
-    } else if($resume[0].files[0].type != 'application/pdf') {
-      form_errors.push("Resume upload must be a PDF.");
-      if(!first_error) first_error = 2;
+    } 
+    else if (resume_file.type !== 'application/pdf') {
+      form_errors.push('Resume upload must be a PDF.');
+      first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
-    } else if($resume[0].files[0].size / 1024 > 1024) {
-      form_errors.push("Maximum file size is 1MB");
-      if(!first_error) first_error = 2;
+    } 
+    else if (resume_file.size / 1024 > 1024) {
+      form_errors.push('Maximum resume file size is 1MB.');
+      first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
     }
 
-    if(form_errors.length > 0) {
+    if (form_errors.length > 0) {
       // Load error messages into error box
       var error_header = document.createElement('strong');
-      error_header.appendChild(document.createTextNode('Please fix the following errors:'))
+      error_header.appendChild(document.createTextNode('Please fix the following errors:'));
       $error_box.append(error_header);
 
-      for(var i = 0; i < form_errors.length; i++) {
+      for (var i = 0; i < form_errors.length; i++) {
         var listNode = document.createElement('li');
         listNode.appendChild(document.createTextNode(form_errors[i]));
         $error_box.append(listNode);
@@ -263,8 +268,7 @@ Template.register.events({
       $error_box.velocity('transition.bounceIn', 200);
 
       // Bring user back to the form section that has the first error
-      console.log(first_error);
-      $('.register-hacker-4')
+      $('.register-hacker-3')
         .velocity('transition.slideUpBigOut', 300);
       $('.register-hacker-' + first_error)
         .velocity('transition.slideUpBigIn', 300);
@@ -274,21 +278,20 @@ Template.register.events({
 
     var races = [];
     $('#race-selection input:checked').each(function() {
-      races.push(this.name);
+      races.push(this.value);
     });
     var provided_race = races.length > 0;
 
-    var gender = $('#gender-selection input:checked').attr('value') || '';
-    var provided_gender = !(gender == '');
+    var gender = $('#gender-selection input:checked').attr('value') || '', 
+        provided_gender = gender !== '';
 
     var diet = [];
     $('#diet-selection input:checked').each(function() {
-      diet.push(this.name);
+      diet.push(this.value);
     });
 
-    var bus = $('#bus-selection input:checked').attr('name') || '';
+    var bus = $('#bus-selection input:checked').attr('value') || '';
 
-    var resume_file = $resume[0].files[0];
     var reader = new FileReader();
 
     // Create user when the resume binary data is done reading.
@@ -334,11 +337,16 @@ Template.register.events({
           }
           else {
             // success
+            // add the anonymous user data
+            AnonUserData.insert({
+              gender: gender,
+              race: races
+            });
             Session.set('register_page', 'complete');
           }
         }
       );
-    }; // reader.onload()
+    }; // end reader.onload()
 
     reader.readAsArrayBuffer(resume_file);
     return false;

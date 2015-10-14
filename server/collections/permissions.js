@@ -179,4 +179,16 @@ AnonReports.allow({
 	update: function(userId, doc) {
 		return Roles.userIsInRole(userId, 'admin');
 	}
-})
+});
+
+AnonUserData.allow({
+	insert: function(userId, doc) {
+		return true;
+	},
+	remove: function(userId, doc) {
+		return Roles.userIsInRole(userId, 'admin');
+	},
+	update: function(userId, doc, fieldNames, modifier) {
+		return Roles.userIsInRole(userId, 'admin');
+	}
+});
