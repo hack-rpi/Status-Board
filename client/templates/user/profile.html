@@ -27,9 +27,49 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="UPedit-location" class="col-md-3 control-label">Location</label>
+          <label for="UPedit-location" class="col-md-3 control-label">Room/Location</label>
           <div class="col-md-5">
             <input type="text" class="form-control" id="UPedit-location" value="{{ location }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-school" class="col-md-3 control-label">School</label>
+          <div class="col-md-5">
+            <input type="text" class="form-control" id="UPedit-school" value="{{ school }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-bus" class="col-md-3 control-label"><b>Tentative Buses</b></label>
+          <div class="col-md-5 bus-selection">
+            {{#each allBuses}}
+              {{#if this.selected}}
+                <label><input name="bus" value="{{this.route}}" type="radio" checked="checked">
+                {{ this.route }}</label><br>
+              {{else}}
+              <label><input name="bus" value="{{this.route}}" type="radio">
+                {{ this.route }}</label><br>
+              {{/if}}
+            {{/each}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-diet" class="col-md-3 control-label">Dietary Restrictions</label>
+          <div class="col-md-5 diet-selection">
+            {{#each allDiets}}
+              {{#if this.selected}}
+                <label><input name="diet" value="{{this.name}}" type="checkbox" checked="checked">
+                {{ this.name }}</label><br>
+              {{else}}
+              <label><input name="diet" value="{{this.name}}" type="checkbox">
+                {{ this.name }}</label><br>
+              {{/if}}
+            {{/each}}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="UPedit-resume" class="col-md-3 control-label">Upload New Resume</label>
+          <div class="col-md-5">
+            <input name="resume" type="file"/>
           </div>
         </div>
 
@@ -58,9 +98,31 @@
           <div class="col-xs-7">{{ phone }}</div>
         </div>
         <div class="row user-table-row">
+          <div class="col-xs-offset-3 col-xs-2 user-table-label">Room/Location</div>
+          <div class="col-xs-7">{{ location }}</div>
+        </div>
+        <div class="row user-table-row">
           <div class="col-xs-offset-3 col-xs-2 user-table-label">School</div>
           <div class="col-xs-7">{{ school }}</div>
-        </div>       
+        </div>
+        <div class="row user-table-row">
+          <div class="col-xs-offset-3 col-xs-2 user-table-label">Tentative Bus</div>
+          <div class="col-xs-7">{{ bus }}</div>
+        </div>
+        <div class="row user-table-row">
+          <div class="col-xs-offset-3 col-xs-2 user-table-label">Dietary Restrictions</div>
+          <div class="col-xs-7">{{ diet }}</div>
+        </div>
+        <div class="row user-table-row">
+          <div class="col-xs-offset-3 col-xs-2 user-table-label">Resume</div>
+          <div class="col-xs-7">
+            {{#if resume}}
+              <i class="fa fa-check"></i> Resume Uploaded
+            {{else}}
+              <i class="fa fa-remove"></i> No Resume Uploaded
+            {{/if}}
+          </div>
+        </div>
       </div>
     {{/if}}
   </div>

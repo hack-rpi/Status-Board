@@ -5,51 +5,39 @@
       <div class="col-md-12">
         <h4>Request a Mentor</h4>
         <p>Do you need help with your project? Just fill out this form and the
-          next available mentor will be with you as soon as possible! If you
-          need general information, but can't find a volunteer or organizer,
-          use the tag <code>Info</code> and someone will find you!</p>
+          next available mentor will be with you as soon as possible!</p>
         <p>The issue tags are a compiled list of all the skills of all the
           currently active mentors. If what you are looking for is not on the
-          list, try something similiar, or wait for a mentor to become active.</p>
+          list, try something similiar, or wait for a mentor to become active.
+          Otherwise, wonder by our sponsor tables and ask for help.</p>
       </div>
     </div>
 
-    <div class="row">
-      <form class="form-horizontal" role="form">
-        <div class="form-group">
-          <label for="inputFindMentorName" class="col-md-3 control-label">Name</label>
-          <div class="col-md-5">
-            <input type="text" class="form-control" id="inputFindMentorName" placeholder="Matt Smith">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputFindMentorLocation" class="col-md-3 control-label">Room Number</label>
-          <div class="col-md-5">
-            <input type="text" class="form-control" id="inputFindMentorLocation" placeholder="DCC 308">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputFindMentorPhone" class="col-md-3 control-label">Phone Number</label>
-          <div class="col-md-5">
-            <input type="text" class="form-control" id="inputFindMentorPhone" placeholder="603-867-5309">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputIssueTags" class="col-md-3 control-label">Issue Tags</label>
-          <div class="col-md-5">
-            <select id="inputIssueTags" class="form-control">
-              {{#each allTags}}
-                <option>{{this}}</option>
-              {{/each}}
-            </select>
-          </div>
-        </div>
-        <div id="findMentor" class="btn btn-success col-md-offset-3 col-md-2">Find Me a Mentor</div>
-      </form>
-    </div>
-
-    <div class="row">
-      <div id="findMentorAlertBox" class="col-md-12"></div>
+    <div class="mentor-request-form">
+      <div class="alert alert-danger form-error" role="alert"></div>
+      <div class="_form-group">
+        <label for="Name">Name</label><br>
+        <input type="text" name="Name" placeholder="Name">
+      </div>
+      <div class="_form-group">
+        <label for="Location">Location</label><br>
+        <input type="text" name="Location" placeholder="Room Number/Location">
+      </div>
+      <div class="_form-group">
+        <label for="Phone Number">Phone Number</label><br>
+        <input type="text" name="Phone Number" placeholder="Phone Number">
+      </div>
+      <div class="_form-group">
+        <label for="Issue Tag">Issue Tag</label><br>
+        <select name="tags">
+          {{#each allTags}}
+            <option>{{this}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div id="findMentor" class="btn btn-default">
+        Request Mentor
+      </div>
     </div>
 
   </div>

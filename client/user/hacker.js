@@ -90,6 +90,9 @@ var generateGetRepoInfo = function(field, onFail) {
 };
 
 Template.user_hacker.helpers({
+  pre_event: function() {
+    return Meteor.call('getEventState') !== 'main-event';
+  },
   handle: function() {
     project_dep.depend();
     return Meteor.user().profile.github_handle;

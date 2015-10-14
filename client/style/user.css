@@ -52,6 +52,13 @@
   margin-bottom: 10px;
 }
 
+#user-hacker .pre-event-warning {
+  font-size: 18px;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
 .repo-details-header {
   font-size: 24px;
   margin-left: 5px;
