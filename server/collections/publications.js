@@ -7,12 +7,11 @@ Meteor.publish("MentorQueue", function() {    return MentorQueue.find(); });
 //  of other users
 Meteor.publish("userData", function() {
 	if (Roles.userIsInRole(this.userId, 'admin')){
-		return Meteor.users.find({});
+		return Meteor.users.find();
 	}
 	else {
 		return Meteor.users.find({ "_id": this.userId });
 	}
-	// return Meteor.users.find({});
 });
 
 Meteor.publish('AnonReports', function() {
@@ -20,3 +19,9 @@ Meteor.publish('AnonReports', function() {
 		return AnonReports.find();
 	}
 });
+
+Meteor.publish('AnonUserData', function() {
+	if (Roles.userIsInRole(this.userId, 'admin')) {
+		return AnonUserData.find();
+	}
+})

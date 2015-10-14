@@ -43,29 +43,115 @@
 <template name="register_hacker">
 
 	<div class="register-hacker">
-		Hacker Registration
 		<div class="alert alert-danger form-error" role="alert"></div>
-		<div class="_form-group">
-			<label for="Email">Email</label><br>
-			<input type="text" name="Email" placeholder="Email">
-		</div>
-		<div class="_form-group">
-			<label for="Password">Password</label><br>
-			<input type="password" name="Password" placeholder="Password">
-		</div>
-		<div class="_form-group">
-			<label for="Confirm Password">Confirm Password</label><br>
-			<input type="password" name="Confirm Password"
-				placeholder="Confirm Password">
-		</div>
-		<div class="_form-group">
-			<div class="btn btn-default register-btn" data-action="register">
-				Register
+
+		<div class="register-hacker-1">
+			<h3>Hacker Registration</h3>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-5">
+					<div class="_form-group">
+						<label for="Email">Email</label><br>
+						<input type="text" name="Email" placeholder="Email">
+					</div>
+					<div class="_form-group">
+						<label for="Password">Password</label><br>
+						<input type="password" name="Password" placeholder="Password">
+					</div>
+					<div class="_form-group">
+						<label for="Confirm Password">Confirm Password</label><br>
+						<input type="password" name="Confirm Password"
+							placeholder="Confirm Password">
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="_form-group">
+						<label for="Full Name">Full Name</label><br>
+						<input type="text" name="Full Name" placeholder="Full Name">
+					</div>
+					<div class="_form-group">
+						<label for="School">School</label><br>
+						<input type="text" name="School" placeholder="School"/>
+					</div>
+					<div id="resume-upload" class="_form-group">
+						<br>
+						<p><strong>Upload Your Resume</strong></p>
+						<input name="resume" type="file"/>
+					</div>
+				</div>
+			</div>
+			<label class="_checkbox"><input name="conduct" type="checkbox"/>
+				I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf" 
+					target="_blank">MLH Code of Conduct.</a>
+			</label><br>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
+					data-target=".register-hacker-2">
+					Next
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-landing">
+				Back
 			</div>
 		</div>
-		<div class="btn register-btn" data-action="back"
-		 		data-target=".register-landing">
-			back
+
+		<div class="register-hacker-2">
+			<h3>Hacker Registration</h3>
+			<h5>Additional Information</h5>
+			<div id="bus-selection">
+				<h4>Preferred Bus Route (Optional)</h4>
+				Note that these are <b>tentative</b> bus routes.<br/>
+				{{#each buses}}
+					<label><input name="bus" value="{{this}}" type="radio">
+						{{ this }}</label><br>
+				{{/each}}
+			</div>
+			<div id="diet-selection">
+				<h4>Dietary Restrictions</h4>
+				{{#each diet}}
+					<label><input name="diet" value="{{this}}" type="checkbox">
+						{{ this }}</label><br>
+				{{/each}}
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
+					data-target=".register-hacker-3">
+					Next
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-hacker-1">
+				Back
+			</div>
+		</div>
+
+		<div class="register-hacker-3">
+			<h3>Hacker Registration</h3>
+			<h5>OPTIONAL Anonymous Information</h5>
+			<div id="gender-selection">
+				<h4>Gender</h4>
+				<label><input type="radio" name="gender" value="male"/>Male</label><br>
+				<label><input type="radio" name="gender" value="female"/>Female</label><br>
+				<label><input type="radio" name="gender" value="other"/> Other</label><br>
+				<label><input type="radio" name="gender" value=""/> Prefer not to answer
+					</label>
+			</div>
+			<div id="race-selection">
+				<h4>Race</h4>
+				{{#each races}}
+					<label class="_checkbox"><input value="{{this}}" type="checkbox">
+						{{ this }}</label><br>					
+				{{/each}}
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="register">
+					Register
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-hacker-2">
+				Back
+			</div>
 		</div>
 	</div>
 
@@ -77,7 +163,7 @@
 	<div class="register-mentor">
 
 		<div class="register-mentor-1">
-			Mentor Registration
+			<h3>Mentor Registration</h3>
 			<div class="row">
 				<div class="col-md-offset-1 col-md-5">
 					<div class="_form-group">
@@ -257,8 +343,8 @@
 	<div class="register-complete">
 		<h3>Registration Successful!</h3>
 		<p>
-			You have successfully registered with the Status Board for
-			HackRPI 2015. You're all set for the event!
+			You have successfully registered for HackRPI 2015. 
+			You're all set for the event! We'll be in touch soon.
 		</p>
 		<div class="btn btn-default register-btn" data-action="link"
 			data-target="/user">
