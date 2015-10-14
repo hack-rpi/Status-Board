@@ -75,8 +75,8 @@
 						<input type="text" name="Full Name" placeholder="Full Name">
 					</div>
 					<div class="_form-group">
-						<label for="School">School</label><br>
-						<input type="text" name="School" placeholder="School"/>
+						<label for="Zip Code">Zip Code</label><br>
+						<input type="text" name="Zip Code" placeholder="Zip Code"/>
 					</div>
 					<div id="resume-upload" class="_form-group">
 						<br>
@@ -85,6 +85,28 @@
 					</div>
 				</div>
 			</div>
+			<div id="school-level-selection">
+				<h4>Academic Level</h4>
+				<label><input type="radio" name="school-level" value="high school"/> 
+					High School</label><br>
+				<label><input type="radio" name="school-level" value="college-us"/> 
+					College (US)</label><br>
+				<label><input type="radio" name="school-level" value="college-ca"/> 
+					College (Canada)</label>
+				<label><input type="radio" name="school-level" value="college"/> 
+					College (International)</label><br>
+			</div>
+			<div class="_form-group school-selection">
+				<label for="School">School</label><br>
+				<input type="text" name="School" placeholder="School"/>
+			</div>
+			<div class="_form-group us-colleges">
+				<select class="school-selection"></select>
+			</div>
+			<div class="_form-group ca-colleges">
+				<select class="school-selection"></select>
+			</div>
+			<br>
 			<label class="_checkbox"><input name="conduct" type="checkbox"/>
 				I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf" 
 					target="_blank">MLH Code of Conduct.</a>

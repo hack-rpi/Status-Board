@@ -201,8 +201,12 @@ Template.register.events({
         pass1 = $pass1.val() || '',
         $pass2 = $form.find('input[name="Confirm Password"]'),
         pass2 = $pass2.val() || '',
-        $school = $form.find('input[name="School"]'),
-        school = $school.val() || '',
+        $zipcode = $form.find('input[name="Zip Code"]'),
+        zipcode = $zipcode.val() || '',
+        $school_level = $('#school-level-selection input:checked'),
+        school_level = $school_level.attr('value') || null,
+        $school = null,
+        school = '',
         $conduct = $form.find('input[name="conduct"]'),
         conduct = $conduct.is(':checked'),
         $resume = $form.find('input[name="resume"]'),
@@ -212,6 +216,25 @@ Template.register.events({
     $error_box.hide();
     var form_errors = [],       // form errors to be displayed
         first_error = 0;        // first section to contain an error
+    
+    if (! school_level) {
+      form_errors.push('Please indicate your level of schooling.');
+      first_error = first_error || 1;
+    }
+    else if (school_level === 'college-us') {
+      $school = $('.us-colleges select.school-selection');
+      school = $school.val();
+    }
+    else if (school_level === 'college-ca') {
+      $school = $('.ca-colleges select.school-selection');
+      school = $school.val();
+    }
+    else {
+      $school = $('.school-selection input');
+      school = $school.val();
+    }
+    
+    console.log(school);
 
     // All the form validation
     if (name === '') {
@@ -234,7 +257,12 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($pass2, $error_box);
     }
-    if (school === '') {
+    if (! zipcode) {
+      form_errors.push('Please provide your zip code.');
+      first_error = first_error || 1;
+      Forms.highlightError($zipcode, $error_box);
+    }
+    if (school_level && school === '') {
       form_errors.push('Please enter your school.');
       first_error = first_error || 1;
       Forms.highlightError($school, $error_box);
@@ -244,17 +272,12 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($conduct, $error_box);
     }
-    if ($resume[0].files.length === 0) {
-      form_errors.push('Please upload your resume.');
-      first_error = first_error || 1;
-      Forms.highlightError($resume, $error_box);
-    } 
-    else if (resume_file.type !== 'application/pdf') {
+    else if (resume_file && resume_file.type !== 'application/pdf') {
       form_errors.push('Resume upload must be a PDF.');
       first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
     } 
-    else if (resume_file.size / 1024 > 1024) {
+    else if (resume_file && resume_file.size / 1024 > 1024) {
       form_errors.push('Maximum resume file size is 1MB.');
       first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
@@ -298,19 +321,24 @@ Template.register.events({
     });
 
     var bus = $('#bus-selection input:checked').attr('value') || '';
-
-    var reader = new FileReader();
-
-    // Create user when the resume binary data is done reading.
-    reader.onload = function(event) {
-      var binary_data = new Uint8Array(reader.result);
+    
+    var createNewHacker = function(reader) {
+      var binary_data;
+      if (reader) {
+        binary_data = new Uint8Array(reader.result);
+      }
+      else {
+        binary_data = '';
+      }
 
       var profile = { 
         role: 'hacker',
         name: name,
+        school_level: school_level,
         school: school,
         diet: diet,
         bus: bus,
+        zipcode: zipcode,
         conduct: conduct,
         provided_race: provided_race,
         provided_gender: provided_gender,
@@ -353,10 +381,17 @@ Template.register.events({
           }
         }
       );
-    }; // end reader.onload()
-
-    reader.readAsArrayBuffer(resume_file);
-    return false;
+    }
+    
+    if (resume_file) {
+      var reader = new FileReader();
+      // Create user when the resume binary data is done reading.
+      reader.onload = function() { createNewHacker(reader); }
+      reader.readAsArrayBuffer(resume_file);
+    }
+    else {
+      createNewHacker(null);
+    }
   },
   // -------------------------------------------------------------------------
   'click #reg-mentor-page1-next': function(e) {
@@ -577,6 +612,50 @@ Template.register_hacker.helpers({
   },
   'diet': function() {
     return Meteor.settings.public.diet;
+  }
+});
+
+Template.register_hacker.events({
+  'change #school-level-selection input': function() {
+    var level = $('#school-level-selection input:checked').attr('value');
+    $('.us-colleges select.school-selection').hide();
+    $('.ca-colleges select.school-selection').hide();
+    $('div.school-selection').hide();
+    if (level === 'college-us') {
+      $('.us-colleges select.school-selection').show();
+      if ($('.us-colleges select.school-selection').children().length === 0) {
+         $.get('/assets/colleges-us.txt')
+          .done(function(colleges) {
+            colleges = colleges.split('\n');
+            var $college = $('.us-colleges select.school-selection')
+            for (var c=0; c<colleges.length; c++) {
+              $college.append('<option value="' + colleges[c] + '">' + colleges[c] + "</option>");
+            }
+          })
+          .fail(function(err) {
+            console.error('Failed to load list of US colleges.');
+          });
+      }
+    }
+    else if (level === 'college-ca') {
+      $('.ca-colleges select.school-selection').show();
+      if ($('.ca-colleges select.school-selection').children().length === 0) {
+         $.get('/assets/colleges-ca.txt')
+          .done(function(colleges) {
+            colleges = colleges.split('\n');
+            var $college = $('.ca-colleges select.school-selection')
+            for (var c=0; c<colleges.length; c++) {
+              $college.append('<option value="' + colleges[c] + '">' + colleges[c] + "</option>");
+            }
+          })
+          .fail(function(err) {
+            console.error('Failed to load list of CA colleges.');
+          });
+      }
+    }
+    else {
+      $('div.school-selection').show();
+    }
   }
 });
 
