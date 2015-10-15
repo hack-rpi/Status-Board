@@ -28,17 +28,17 @@ Template.user_profile.helpers({
   },
   school: function() {
     if (Meteor.userId())
-      return Meteor.user().profile.school;
+      return Meteor.user().profile.school.name;
     else return "";
   },
-  bus: function() {
+  travel_method: function() {
     if (Meteor.userId())
-      return Meteor.user().profile.bus;
+      return Meteor.user().profile.travel.method;
     else return "";
   },
   diet: function() {
     if (Meteor.userId())
-      return Meteor.user().profile.diet;
+      return Meteor.user().profile.diet.list;
     else return [];
   },
   resume: function() {
@@ -46,16 +46,46 @@ Template.user_profile.helpers({
       return Meteor.user().profile.resume;
     else return '';
   },
+  international: function() {
+    if (Meteor.userId())
+      return Meteor.user().profile.travel.international;
+    else return false;
+  },
+  city_country: function() {
+    if (Meteor.userId())
+      return Meteor.user().profile.travel.location;
+    else return '';
+  },
+  zipcode: function() {
+    if (Meteor.userId())
+      return Meteor.user().profile.travel.zipcode;
+    else return '';
+  },
+  github: function() {
+    if (Meteor.userId())
+      return Meteor.user().profile.websites.github;
+    else return '';
+  },
+  linkedIn: function() {
+    if (Meteor.userId())
+      return Meteor.user().profile.websites.linkedIn;
+    else return '';
+  },
+  website: function() {
+    if (Meteor.userId())
+      return Meteor.user().profile.websites.personal;
+    else return '';
+  },
   editActive: function() {
     user_profile_edit_dep.depend();
     return user_profile_edit;
   },
-  allBuses: function() {
+  allTravel: function() {
     if (Meteor.userId()) {
       return _.map(Meteor.settings.public.buses, function(route) {
         return {
           route: route,
-          selected: Meteor.user().profile.bus === route
+          selected: Meteor.user().profile.travel.method === route
         }
       });
     }
@@ -66,11 +96,16 @@ Template.user_profile.helpers({
       return _.map(Meteor.settings.public.diet, function(name) {
         return {
           name: name,
-          selected: _.contains(Meteor.user().profile.diet, name)
+          selected: _.contains(Meteor.user().profile.diet.list, name)
         }
       });
     }
     else return Meteor.settings.public.diet;
+  },
+  special_diet: function() {
+    if (Meteor.userId())
+      return Meteor.user().profile.diet.special;
+    else return '';
   }
 });
 
@@ -123,9 +158,22 @@ Template.user_profile.events({
         new_phone = t.find("#UPedit-phone").value,
         new_location = t.find("#UPedit-location").value,
         new_school = t.find('#UPedit-school').value,
-        new_bus = $('.bus-selection input:checked').attr('value') || '',
-        new_diet = [];
+        new_travel = $('.travel-selection input:checked').attr('value') || '',
+        new_diet = [],
+        new_special_diet = t.find('#UPedit-diet-special').value,
+        new_github = t.find('#UPedit-github').value,
+        new_linkedin = t.find('#UPedit-linkedIn').value,
+        new_website = t.find('#UPedit-website').value,
+        new_zipcode = null,
+        new_city_country =  null;
         
+    if (old_profile.travel.international) {
+      new_city_country = t.find('#UPedit-city-country').value;
+    }
+    else {
+      new_zipcode = t.find('#UPedit-zipcode').value;
+    }
+    
     $('.diet-selection input:checked').each(function() {
       new_diet.push(this.value);
     });
@@ -136,9 +184,15 @@ Template.user_profile.events({
           "profile.affiliation": new_affiliation,
           "profile.phone": new_phone,
           'profile.location': new_location,
-          "profile.school": new_school,
-          'profile.bus': new_bus,
-          'profile.diet': new_diet
+          "profile.school.name": new_school,
+          'profile.travel.method': new_travel,
+          'profile.travel.zipcode': new_zipcode,
+          'profile.travel.location': new_city_country,
+          'profile.diet.list': new_diet,
+          'profile.diet.special': new_special_diet,
+          'profile.websites.github': new_github,
+          'profile.websites.linkedIn': new_linkedin,
+          'profile.websites.personal': new_website
         }
     })) {
       // data save successfully

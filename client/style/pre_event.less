@@ -135,6 +135,10 @@
   	margin-bottom: 100px;
 }
 
+.register h4 {
+	margin-top: 20px;
+}
+
 .register-mentor-1, .register-mentor-2, .register-mentor-3, .register-mentor-4,
 .register-hacker-1, .register-hacker-2, .register-hacker-3, .register-hacker-4 {
 	display: none;
@@ -150,7 +154,7 @@
 	padding-left: 45%;
 }
 
-#race-selection, #gender-selection, #diet-selection, #bus-selection {
+#race-selection, #gender-selection {
 	text-align: left;
 	padding-top: 15px;
 	padding-left: 25%;	
@@ -161,14 +165,22 @@
 	margin-left: 10%;
 }
 
-#school-level-selection {
+#school-level-selection, #travel-origin-type, #diet-selection, #travel-selection {
 	width: 180px;
 	text-align: left;
 	margin: auto;
 }
 
-.school-selection {
+#travel-selection {
+	width: 250px !important;
+}
+
+.school-selection, .zip-code, .international-loc {
 	display: none;
+}
+
+.register-hacker input[name="Number of Previous Hackathons"] {
+	width: 250px;
 }
 
 ._form-group {
@@ -189,6 +201,7 @@
 }
 
 ._form-group input[type="text"],
+._form-group input[type="number"],
 ._form-group input[type="password"] {
   font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
   background-color: rgba(75 , 75, 75, 0.5);
@@ -201,6 +214,8 @@
 
 ._form-group input[type="text"]:focus,
 ._form-group input[type="text"].focus,
+._form-group input[type="number"]:focus,
+._form-group input[type="number"].focus,
 ._form-group input[type="password"]:focus,
 ._form-group input[type="password"].focus {
   border-bottom: 2px solid @dark-accent-2;

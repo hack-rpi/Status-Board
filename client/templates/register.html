@@ -68,15 +68,47 @@
 						<input type="password" name="Confirm Password"
 							placeholder="Confirm Password">
 					</div>
+					<div id="travel-origin-type">
+						<h4>Travel Origin</h4>
+						<label><input type="radio" name="travel-origin-type" value="United States"/> 
+							United States</label><br>
+						<label><input type="radio" name="travel-origin-type" value="International"/> 
+							International</label>
+					</div>
+					<div class="_form-group zip-code">
+						<label for="Zip Code">Zip Code</label><br>
+						<input type="text" name="Zip Code" placeholder="Zip Code"/>
+					</div>
+					<div class="_form-group international-loc">
+						<label for="City, Country">City, Country</label><br>
+						<input type="text" name="City, Country" placeholder="City, Country"/>
+					</div>
 				</div>
 				<div class="col-md-5">
 					<div class="_form-group">
 						<label for="Full Name">Full Name</label><br>
 						<input type="text" name="Full Name" placeholder="Full Name">
 					</div>
-					<div class="_form-group">
-						<label for="Zip Code">Zip Code</label><br>
-						<input type="text" name="Zip Code" placeholder="Zip Code"/>
+					<div id="school-level-selection">
+						<h4>Academic Level</h4>
+						<label><input type="radio" name="school-level" value="high school"/> 
+							High School</label><br>
+						<label><input type="radio" name="school-level" value="college-us"/> 
+							College (US)</label><br>
+						<label><input type="radio" name="school-level" value="college-ca"/> 
+							College (Canada)</label>
+						<label><input type="radio" name="school-level" value="college"/> 
+							College (Not Listed)</label><br>
+					</div>
+					<div class="_form-group school-selection">
+						<label for="School">School</label><br>
+						<input type="text" name="School" placeholder="School"/>
+					</div>
+					<div class="_form-group us-colleges">
+						<select class="school-selection"></select>
+					</div>
+					<div class="_form-group ca-colleges">
+						<select class="school-selection"></select>
 					</div>
 					<div id="resume-upload" class="_form-group">
 						<br>
@@ -85,27 +117,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="school-level-selection">
-				<h4>Academic Level</h4>
-				<label><input type="radio" name="school-level" value="high school"/> 
-					High School</label><br>
-				<label><input type="radio" name="school-level" value="college-us"/> 
-					College (US)</label><br>
-				<label><input type="radio" name="school-level" value="college-ca"/> 
-					College (Canada)</label>
-				<label><input type="radio" name="school-level" value="college"/> 
-					College (International)</label><br>
-			</div>
-			<div class="_form-group school-selection">
-				<label for="School">School</label><br>
-				<input type="text" name="School" placeholder="School"/>
-			</div>
-			<div class="_form-group us-colleges">
-				<select class="school-selection"></select>
-			</div>
-			<div class="_form-group ca-colleges">
-				<select class="school-selection"></select>
-			</div>
+			
 			<br>
 			<label class="_checkbox"><input name="conduct" type="checkbox"/>
 				I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf" 
@@ -126,20 +138,41 @@
 		<div class="register-hacker-2">
 			<h3>Hacker Registration</h3>
 			<h5>Additional Information</h5>
-			<div id="bus-selection">
-				<h4>Preferred Bus Route (Optional)</h4>
-				Note that these are <b>tentative</b> bus routes.<br/>
-				{{#each buses}}
-					<label><input name="bus" value="{{this}}" type="radio">
-						{{ this }}</label><br>
-				{{/each}}
-			</div>
-			<div id="diet-selection">
-				<h4>Dietary Restrictions</h4>
-				{{#each diet}}
-					<label><input name="diet" value="{{this}}" type="checkbox">
-						{{ this }}</label><br>
-				{{/each}}
+			<div class="row">
+				<div class="col-md-offset-1 col-md-5">
+					<div id="travel-selection">
+						<h4>Preferred Method of Travel</h4>
+						These are <b>tentative</b> bus routes. <br><br/>
+						{{#each transportation}}
+							<label><input name="bus" value="{{this}}" type="radio">
+								{{ this }}</label><br>
+						{{/each}}
+					</div>
+				</div>
+				<div class="col-md-5">
+					<h4>T-Shirt Size</h4>
+					<div class="_form-group tshirt-size">
+						<select name="tshirt-size">
+							<option value="" selected></option>
+							<option value="Small">Small</option>
+							<option value="Medium">Medium</option>
+							<option value="Large">Large</option>
+							<option value="XLarge">XLarge</option>
+							<option value="XXLarge">XXLarge</option>
+						</select>
+					</div>
+					<div id="diet-selection">
+						<h4>Dietary Restrictions</h4>
+						{{#each diet}}
+							<label><input name="diet" value="{{this}}" type="checkbox">
+								{{ this }}</label><br>
+						{{/each}}
+						<div class="_form-group">
+							<label for="Other">Other</label><br>
+							<input type="text" name="Other" placeholder="Other"/>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="_form-group">
 				<div class="btn btn-default register-btn" data-action="next"
@@ -152,32 +185,100 @@
 				Back
 			</div>
 		</div>
-
+		
 		<div class="register-hacker-3">
 			<h3>Hacker Registration</h3>
+			<h5>Experience and Interests</h5>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-5">
+					<div class="_form-group">
+						<label for="Github Username">Github Username</label><br>
+						<input type="text" name="Github Username" placeholder="Github Username">
+					</div>
+					<div class="_form-group">
+						<label for="LinkedIn Profile">LinkedIn Profile</label><br>
+						<input type="text" name="LinkedIn Profile" placeholder="LinkedIn Profile">
+					</div>
+					<div class="_form-group">
+						<label for="Personal Website">Personal Website</label><br>
+						<input type="text" name="Personal Website" placeholder="Personal Website">
+					</div>
+				</div>
+				<div class="col-md-5">
+					<h4>Interest Areas</h4>
+					<div class="_form-group interest-areas">
+						<select name="interest-areas" multiple>
+							<option value="Frontend">Frontend (UI/UX)</option>
+							<option value="Mobile">Mobile</option>
+							<option value="Hardware">Hardware</option>
+							<option value="Backend">Backend</option>
+							<option value="Data Science">Data Science</option>
+							<option value="Game Development">Game Development</option>
+						</select>
+					</div>
+					<h4>Why HackRPI?</h4>
+					<div class="_form-group why">
+						<select name="why">
+							<option value="" selected></option>
+							<option value="project">To make a cool project</option>
+							<option value="explore">To explore new technologies</option>
+							<option value="job">To find a job</option>
+							<option value="people">To meet new people</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			
+			<div class="_form-group">
+				<label for="Number of Previous Hackathons">Number of Previous Hackathons</label><br>
+				<input type="number" name="Number of Previous Hackathons" min=0
+					placeholder="Number of Previous Hackathons">
+			</div>
+			
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
+					data-target=".register-hacker-4">
+					Next
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 	data-target=".register-hacker-2">
+				Back
+			</div>
+		</div>
+
+		<div class="register-hacker-4">
+			<h3>Hacker Registration</h3>
 			<h5>OPTIONAL Anonymous Information</h5>
-			<div id="gender-selection">
-				<h4>Gender</h4>
-				<label><input type="radio" name="gender" value="male"/> Male</label><br>
-				<label><input type="radio" name="gender" value="female"/> Female</label><br>
-				<label><input type="radio" name="gender" value="other"/> Other</label><br>
-				<label><input type="radio" name="gender" value=""/> Prefer not to answer
-					</label>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-5">
+					<div id="gender-selection">
+						<h4>Gender</h4>
+						<label><input type="radio" name="gender" value="male"/> Male</label><br>
+						<label><input type="radio" name="gender" value="female"/> Female</label><br>
+						<label><input type="radio" name="gender" value="other"/> Other</label><br>
+						<label><input type="radio" name="gender" value=""/> Prefer not to answer
+							</label>
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div id="race-selection">
+						<h4>Race</h4>
+						{{#each races}}
+							<label class="_checkbox"><input value="{{this}}" type="checkbox">
+								{{ this }}</label><br>					
+						{{/each}}
+					</div>
+				</div>
 			</div>
-			<div id="race-selection">
-				<h4>Race</h4>
-				{{#each races}}
-					<label class="_checkbox"><input value="{{this}}" type="checkbox">
-						{{ this }}</label><br>					
-				{{/each}}
-			</div>
+			
 			<div class="_form-group">
 				<div class="btn btn-default register-btn" data-action="register">
 					Register
 				</div>
 			</div>
 			<div class="btn register-btn" data-action="back"
-			 		data-target=".register-hacker-2">
+			 		data-target=".register-hacker-3">
 				Back
 			</div>
 		</div>
