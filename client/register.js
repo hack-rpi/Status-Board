@@ -208,6 +208,8 @@ Template.register.events({
         // user info
         $name = $form.find('input[name="Full Name"]'),
         name = $name.val() || '',
+        $gyear = $form.find('input[name="Graduation Year"]'),
+        gyear = $gyear.val() || '',
         
         $travel_origin = $form.find('#travel-origin-type input:checked'),
         travel_origin_type = $travel_origin.attr('value') || '',
@@ -303,6 +305,11 @@ Template.register.events({
       form_errors.push('Passwords must match.');
       first_error = first_error || 1;
       Forms.highlightError($pass2, $error_box);
+    }
+    if (gyear === '') {
+      form_errors.push('Please provide your anticipated year of graduation.');
+      first_error = first_error || 1;
+      Forms.highlightError($gyear, $error_box);
     }
     
     if (travel_origin_type === '') {
@@ -409,6 +416,7 @@ Template.register.events({
         },
         resume: binary_data,
         tshirt: tshirt,
+        graduating: gyear,
         diet: {
           list: diet,
           special: diet_special
