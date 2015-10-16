@@ -7,7 +7,7 @@ Template.sign_up.rendered = function() {
 			padding: '50px 20px',
 			top: '200px'
 		}, 1500);
-	$('.splash-header, .splash-content')
+	$('.splash-header, .splash-content, .splash-subheader')
 		.delay(1500)
 		.velocity('fadeIn');
 };
