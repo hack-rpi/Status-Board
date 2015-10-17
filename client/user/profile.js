@@ -1,111 +1,165 @@
+Template.user_profile.rendered = function() {
+  Meteor.subscribe("UserData");
+}
 
 Template.user_profile.helpers({
   email: function() {
-    if (Meteor.userId() && Meteor.user().emails)
+    try {
       return Meteor.user().emails[0].address;
-    else return "";
+    }
+    catch (e) {
+      return '';
+    }
   },
   name: function() {
-    if (Meteor.userId()) {
+    try {
       return Meteor.user().profile.name;
     }
-    else return "";
+    catch (e) {
+      return '';
+    }
   },
   affiliation: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.affiliation;
-    else return "";
+    }
+    catch (e) {
+      return '';
+    }
   },
   phone: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.phone;
-    else return "";
+    }
+    catch (e) {
+      return '';
+    }
   },
   location: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.location;
-    else return '';
+    }
+    catch (e) {
+      return '';
+    }
   },
   school: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.school.name;
-    else return "";
+    }
+    catch (e) {
+      return '';
+    }
   },
   travel_method: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.travel.method;
-    else return "";
+    }
+    catch (e) {
+      return '';
+    }
   },
   diet: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.diet.list;
-    else return [];
+    }
+    catch (e) {
+      return [];
+    }
   },
   resume: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.resume;
-    else return '';
+    }
+    catch (e) {
+      return '';
+    }
   },
   international: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.travel.international;
-    else return false;
+    }
+    catch (e) {
+      return false;
+    }
   },
   city_country: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.travel.location;
-    else return '';
+    }
+    catch (e) {
+      return '';
+    }
   },
   zipcode: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.travel.zipcode;
-    else return '';
+    }
+    catch (e) {
+      return '';
+    }
   },
   github: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.websites.github;
-    else return '';
+    }
+    catch (e) {
+      return '';
+    }
   },
   linkedIn: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.websites.linkedIn;
-    else return '';
+    }
+    catch (e) {
+      return '';
+    }
   },
   website: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.websites.personal;
-    else return '';
+    }
+    catch (e) {
+      return '';
+    }
   },
   editActive: function() {
     user_profile_edit_dep.depend();
     return user_profile_edit;
   },
   allTravel: function() {
-    if (Meteor.userId()) {
+    try {
       return _.map(Meteor.settings.public.buses, function(route) {
         return {
           route: route,
           selected: Meteor.user().profile.travel.method === route
         }
       });
+    } 
+    catch (e) {
+      Meteor.settings.public.buses;
     }
-    else return Meteor.settings.public.buses;
   },
   allDiets: function() {
-    if (Meteor.userId()) {
+    try {
       return _.map(Meteor.settings.public.diet, function(name) {
         return {
           name: name,
           selected: _.contains(Meteor.user().profile.diet.list, name)
         }
       });
+    } 
+    catch (e) {
+      return Meteor.settings.public.diet;
     }
-    else return Meteor.settings.public.diet;
   },
   special_diet: function() {
-    if (Meteor.userId())
+    try {
       return Meteor.user().profile.diet.special;
-    else return '';
+    }
+    catch (e) {
+      return '';
+    }
   }
 });
 
@@ -150,7 +204,6 @@ Template.user_profile.events({
   'click #user-profile-save-btn': function(e, t) {
     // check edits and save to db
     e.preventDefault();
-    Meteor.subscribe("userData");
     var old_profile = Meteor.user().profile;
 
     var new_name = t.find("#UPedit-name").value,

@@ -19,7 +19,6 @@ Template.login.events({
 			}
       else {
         // The user has been logged in.
-        Session.set("selectedUserId", Meteor.userId());
 				Router.go("/user");
 			}
     });

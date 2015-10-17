@@ -61,7 +61,7 @@ Template.sign_up.events({
 	},
 	'click .login-btn': function(e) {
 		var email = $('.splash-login input[name="Email"]').val(),
-				password = $('.splash-login input[name="Password"]').val();
+			password = $('.splash-login input[name="Password"]').val();
 		Meteor.loginWithPassword(email, password, function(error) {
 			if (error) {
 				Session.set('displayMessage', {

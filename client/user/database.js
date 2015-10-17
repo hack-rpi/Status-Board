@@ -164,6 +164,8 @@ Template.db_anonReport.events({
 /* -----------------------------------------------------------------------------
 	COMMIT MESSAGES
 */
+
+/* DISABLED
 Template.db_commitMessages.rendered = function() {
 	Meteor.subscribe('CommitMessages');
 	Session.set('paginate-page', 0);
@@ -216,6 +218,8 @@ Template.db_commitMessages.events({
 	},
 
 });
+
+*/
 
 /* -----------------------------------------------------------------------------
 	MENTOR QUEUE
@@ -330,6 +334,8 @@ Template.db_repositoryList.events({
 /* -----------------------------------------------------------------------------
 	USERS
 */
+
+/* DISABLED 
 Template.db_users.rendered = function() {
 	Meteor.subscribe('userData');
 	Session.set('paginate-page', 0);
@@ -409,3 +415,5 @@ Template.db_users.events({
 		}
 	}
 });
+
+*/

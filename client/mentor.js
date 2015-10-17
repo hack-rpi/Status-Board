@@ -1,28 +1,60 @@
+Template.mentor.rendered = function() {
+	Meteor.subscribe('MentorData');
+	Meteor.subscribe('UserData');
+}
+
 Template.mentor.helpers({
-	allTags: function() {
-		// create and return a list of all the tags from the mentors
-		Meteor.subscribe('allUserData');
-		var mentors = Meteor.users.find({ 
+	name: function() {
+		try {
+			return Meteor.user().profile.name;
+		} catch (e) {
+			return '';
+		}
+	},
+	location: function() {
+		try {
+			return Meteor.user().profile.location;
+		} catch (e) {
+			return '';
+		}
+	},
+	phone: function() {
+		try {
+			return Meteor.user().profile.phone;
+		} catch (e) {
+			return '';
+		}
+	},
+	mentorsAvailable: function() {
+		try {
+			return Meteor.users.find({ 
 				$and: [
-					{ 'profile.role': 'mentor' },
+					{ 'roles': 'mentor' },
 					{ 'profile.active': true }
 				] 
-			}).fetch();
-
-		if (mentors.length === 0) {
-			return; // bail
+			}).count() > 0;
+		} catch (e) {
+			return false;
 		}
-		
-		// make a list of the available tags
-		var tags = [];
-		for (var m=0; m<mentors.length; m++) {
-			var mentor_tags = mentors[m].profile.tags;
-			for (var i=0; i<mentor_tags.length; i++) {
-				tags.push(mentor_tags[i]);
-			}
-		}
-		return _.unique(tags).sort();
 	},
+	allTags: function() {
+		// create and return a list of all the tags from the mentors
+		var mentors = Meteor.users.find({ 
+				$and: [
+					{ 'roles': 'mentor' },
+					{ 'profile.active': true }
+				] 
+			}, {
+				fields: {
+					'profile.tags': 1
+				}
+			});
+		// make a list of the available tags
+		var tags = mentors.map(function(doc, index, cursor) {
+			return doc.profile.tags;
+		});
+		return _.unique(_.flatten(tags)).sort();
+	}
 });
 
 Template.mentor.events({
@@ -44,7 +76,7 @@ Template.mentor.events({
 			$name = $form.find('input[name="Name"]'),
 			$location = $form.find('input[name="Location"]'),
 			$phone = $form.find('input[name="Phone Number"]'),
-			tag = $form.find('select[name="tags"]').val(),
+			$tag = $form.find('select[name="tags"]'),
 			now = new Date();
 
 		// check the spam timer
@@ -62,11 +94,9 @@ Template.mentor.events({
 				Forms.highlightError($location, $error_box);
 				return false;
 			}
-			else if (! tag) {
-				Session.set('displayMessage', {
-					title: 'No Active Mentors',
-					body: 'Unfortunately, there are no active mentors to assist you.'
-				});
+			else if (! $tag.val()) {
+				$error_box.html('<b>Form Error!</b> Please provide a tag for your problem.');
+				Forms.highlightError($tag, $error_box);
 				return false;				
 			}
 			else {
@@ -74,7 +104,7 @@ Template.mentor.events({
 					name: $name.val(),
 					loc: $location.val(),
 					phone: $phone.val(),
-					tag: tag,
+					tag: $tag.val(),
 					timestamp: now,
 					ftime: now.toLocaleString(),
 					completed: false,
