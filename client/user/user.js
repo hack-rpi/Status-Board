@@ -50,17 +50,17 @@ Template.user.rendered = function() {
 Template.user.helpers({
   user_page: function() {
     var page = Session.get('user-page');
-    if (page == 'hacker')
+    if (page === 'hacker')
       return 'user_hacker';
-    else if (page == 'mentor')
+    else if (page === 'mentor')
       return 'user_mentor';
-    else if (page == 'volunteer')
+    else if (page === 'volunteer')
       return 'user_volunteer';
-    else if (page == 'announcements')
+    else if (page === 'announcements')
       return 'user_announcements';
-    else if (page == 'database')
+    else if (page === 'database')
       return 'user_database';
-    else if (page == 'server-settings')
+    else if (page === 'server-settings')
       return 'user_server_settings';
     else
       return 'user_profile';

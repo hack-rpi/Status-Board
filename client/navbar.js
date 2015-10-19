@@ -8,9 +8,9 @@ Template.navbar.events({
 		Meteor.logout();
 	},
 	'click #nav-user': function(e) {
-		var moveLeft = 20;
-		var moveDown = 10;
-		var p_position = $("#nav-user").position()
+		var moveLeft = 20,
+			moveDown = 10,
+			p_position = $("#nav-user").position();
 		$(".user-popup").fadeToggle(200)
 			.css("top", p_position.top + $("#nav-user").height() +moveDown)
 			.css("left", p_position.left + $("#nav-user").width() +moveLeft)
@@ -21,10 +21,4 @@ Template.navbar.events({
 		$(".user-popup").fadeToggle(200);
 		e.stopPropagation();
 	}
-});
-
-Template.navbar.helpers({
-	currentUserName: function() {
-		return Meteor.user().username;
-	},
 });

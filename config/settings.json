@@ -23,8 +23,10 @@
 	"twilio_token": "",
 	"twilio_from_num": "",
 
-	"kadira_id": "",
-	"kadira_secret": "",
+	"kadira": {
+		"appId": "",
+		"appSecret": ""
+	},
 
 	"secret_key": "",
 	

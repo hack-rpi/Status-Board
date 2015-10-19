@@ -16,7 +16,9 @@ Meteor.users.allow({
 		if (doc._id === admin_id && _.contains(fieldNames, 'roles'))
 			return false;
 		// users can only edit their own data
-		else if (doc._id === userId || Roles.userIsInRole(userId, 'admin'))
+		else if (doc._id === userId && fieldNames.length === 0 && fieldNames[0] === 'profile')
+			return true;
+		else if (Roles.userIsInRole(userId, 'admin'))
 			return true;
 		else
 			return false;

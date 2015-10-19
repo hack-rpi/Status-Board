@@ -1,6 +1,10 @@
 var edit_skills_flag = false,
     edit_skills_dep  = new Tracker.Dependency;
 
+Template.user_mentor.rendered = function() {
+  Meteor.subscribe("MentorQueue"); 
+}
+
 Template.user_mentor.helpers({
   active: function() {
     // return the status of the mentor
@@ -8,7 +12,6 @@ Template.user_mentor.helpers({
   },
   assignment: function() {
     // returns the details of the mentor's current assignment
-    Meteor.subscribe("MentorQueue");
     if (Meteor.user().profile.mentee_id)
       return MentorQueue.findOne({
         '_id': Meteor.user().profile.mentee_id
@@ -126,9 +129,8 @@ Template.user_mentor.events({
         break;
       case 'complete-task':
         // complete the mentor's current assignment
-        var mentee_id = Meteor.user().profile.mentee_id;
-        Meteor.subscribe("MentorQueue");
-        var mentee = MentorQueue.findOne({ "_id": mentee_id });
+        var mentee_id = Meteor.user().profile.mentee_id,
+            mentee = MentorQueue.findOne({ "_id": mentee_id });
         Meteor.users.update({ "_id": Meteor.userId() }, {
           $set: {
             "profile.available": true,
@@ -148,7 +150,6 @@ Template.user_mentor.events({
       case 'waive-btn':
         // return the current task back to the queue to be assigned to someone
         //   else (nothing preventing self re-assignment!)
-        Meteor.subscribe("MentorQueue");
         var mentee_doc = MentorQueue.findOne({
           '_id': Meteor.user().profile.mentee_id
         });

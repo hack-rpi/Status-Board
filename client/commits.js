@@ -15,12 +15,20 @@ var markFavorites = function() {
 	});
 }
 
+Template.commits.rendered = function() {
+	Meteor.subscribe("CommitMessages");
+}
+
 Template.commits.helpers({
-	message: function() {
+	messages: function() {
 		// return only the ten most recent commits
-		Meteor.subscribe("CommitMessages");
-		var commits = CommitMessages.find({}, {sort: {date:-1}, limit:10});
-		setTimeout(markFavorites,2000);
+		var commits = CommitMessages.find({}, {
+			sort: {
+				date:-1
+			}, 
+			limit:10
+		});
+		setTimeout(markFavorites, 2000);
 		return commits;
 	},
 });

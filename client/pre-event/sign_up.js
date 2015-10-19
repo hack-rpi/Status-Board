@@ -7,7 +7,7 @@ Template.sign_up.rendered = function() {
 			padding: '50px 20px',
 			top: '200px'
 		}, 1500);
-	$('.splash-header, .splash-content')
+	$('.splash-header, .splash-content, .splash-subheader')
 		.delay(1500)
 		.velocity('fadeIn');
 };
@@ -61,7 +61,7 @@ Template.sign_up.events({
 	},
 	'click .login-btn': function(e) {
 		var email = $('.splash-login input[name="Email"]').val(),
-				password = $('.splash-login input[name="Password"]').val();
+			password = $('.splash-login input[name="Password"]').val();
 		Meteor.loginWithPassword(email, password, function(error) {
 			if (error) {
 				Session.set('displayMessage', {
