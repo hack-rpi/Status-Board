@@ -48,6 +48,7 @@ $ sudo mount --bind /home/vagrant/mock/HackRPI-Status-Board/.meteor .meteor
 
 Thanks to [gabrieljenik](https://gist.github.com/gabrieljenik/d926cbb90706d95abdee) for his Meteor on Windows using Vagrant tutorial.
 
+----------------------------------------------------------------
 
 ## Features
 Version 1.0.0
