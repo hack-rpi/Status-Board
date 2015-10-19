@@ -1,0 +1,48 @@
+<template name="check_in">
+	
+	<div class="checkin-panel">
+		{{> Template.dynamic template = checkin_page }}
+		<div class="btn checkin-btn checkin-return-btn" data-action="home">
+			Return to Check In
+		</div>
+	</div>
+	
+</template>
+
+<template name="check_in_main">
+	<div class="checkin-container">		
+		{{#if validated}}
+			<div class="confirm-checkin">
+				<h2>Welcome to HackRPI 2015</h2>
+				<div class="alert alert-danger form-error" role="alert"></div>
+				<input type="email" name="Email" placeholder="Email">
+				<div class="btn checkin-btn" data-action="checkin">
+					Check In
+				</div> <br>
+				<div class="btn checkin-btn" data-action="register">
+					Register
+				</div>
+			</div>
+		{{ else }}
+			<div class="validate">
+				<h2>Enter Event Code</h2>
+				<input type="password" name="Code" placeholder="Code">
+				<div class="btn checkin-btn" data-action="validate-code">
+					Submit
+				</div>
+			</div>
+		{{/if}}
+	</div>
+</template>
+
+<template name="check_in_success">
+	<div class="checkin-success-container">
+		<div class="message">
+			<h1>Glad you could make it!</h1>
+			<p>You're all set.</p>
+			<div class="btn checkin-btn" data-action="home">
+				Check In Another
+			</div>
+		</div>
+	</div>
+</template>

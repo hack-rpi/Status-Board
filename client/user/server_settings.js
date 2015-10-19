@@ -12,6 +12,29 @@ Template.user_server_settings.helpers({
     if (Meteor.user().settings)
       return Meteor.user().settings.alert_numbers;
     else return [];
+  },
+  stage: function() {
+    if (Meteor.user().settings) {
+      var stage = Meteor.user().settings.event_stage;
+      return [
+        {
+          name: 'Registration',
+          value: 'registration',
+          checked: stage === 'registration'
+        },
+        {
+          name: 'Check-In',
+          value: 'check-in',
+          checked: stage === 'check-in'
+        },
+        {
+          name: 'Main Event',
+          value: 'main-event',
+          checked: stage === 'main-event'
+        }
+      ];
+    }
+    else return [];
   }
 });
 
@@ -50,6 +73,7 @@ Template.user_server_settings.events({
       }
     });
   },
+  // alert numbers
   'click #add-alert-number-btn': function() {
     var phone = $('#alertNum-input').val();
     $('#alertNum-input').val('');
@@ -65,6 +89,15 @@ Template.user_server_settings.events({
     Meteor.users.update({ '_id': Meteor.userId() }, {
       $pull: {
         'settings.alert_numbers': this + ''
+      }
+    });
+  },
+  // event stage
+  'change .event-stage': function(e) {
+    var stage = $(e.target).attr('value');
+    Meteor.users.update({ '_id': Meteor.userId() }, {
+      $set: {
+        'settings.event_stage': stage
       }
     });
   }

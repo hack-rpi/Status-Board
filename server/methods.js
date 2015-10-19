@@ -208,4 +208,41 @@ Meteor.methods({
 		});
 	},
 
+	getEventState: function() {
+		return Meteor.users.findOne({ _id: admin_id }).settings.event_stage;
+	},
+	
+	validateCheckInCode: function(code) {
+		return Meteor.settings.checkin_code === code;
+	},
+	
+	checkInUser: function(code, email) {
+		try {
+			if (! Meteor.call('validateCheckInCode', code)) {
+				throw new Meteor.Error('Access Denied', 
+					'A valid check in code must be provided to check in a user.');
+			}
+			var userDoc =  Meteor.users.findOne({ 
+				emails: {
+					$elemMatch: { address: email } 
+				} 
+			});
+			if (userDoc) {
+				Meteor.users.update({ _id: userDoc._id }, {
+					$set: {
+						checked_in: true
+					}
+				});
+				return true;
+			}
+			else {
+				throw new Meteor.Error('Invalid Email', 
+					'No user found with email: ' + email);
+			}
+		}
+		catch (e) {
+			throw e;
+		}
+	}
+
 });

@@ -1,6 +1,6 @@
 // Global API Configuration
-Restivus.configure({
-	useAuth: true,
+API = new Restivus({
+	apiPath: 'api',
 	prettyJson: true
 });
 
@@ -57,7 +57,7 @@ var formTwilioResponse = function(code, message) {
 
 // routes to /api/CommitMessages to handle interactions with the
 // CommitMessages collection
-Restivus.addRoute('CommitMessages', { authRequired: false}, {
+API.addRoute('CommitMessages', { authRequired: false}, {
 	get: function() {
 		return {
 			status: 'success',
@@ -200,7 +200,7 @@ Restivus.addRoute('CommitMessages', { authRequired: false}, {
 
 
 // routes to /api/Mentor to handle interactions with twilio and mentors
-Restivus.addRoute('Mentor', {authRequired: false} , {
+API.addRoute('Mentor', {authRequired: false} , {
 	get: function() {
 		return {
 			status: 'success',
@@ -344,7 +344,7 @@ Restivus.addRoute('Mentor', {authRequired: false} , {
 });
 
 
-Restivus.addRoute('swag', {authRequired: false}, {
+API.addRoute('swag', {authRequired: false}, {
 	get: function() {
 		return {
 			statusCode: 200,

@@ -6,7 +6,7 @@ The outline for v2.0.0 of the Status Board has been outlined on the [wiki](https
 ## Setup
 Copy `config/settings.json` to `config/hackrpi_settings.json` and update the defaults appropriately. Note: default admin username and password are required at a minimum. Be sure to run meteor with the custom settings: `meteor --settings config/hackrpi_settings.json`.
 
-**Windows Users!** With Meteor 1.1, the Meteor Development Group has released official support for Meteor on Windows. Meteor is now completely supported on Windows which means that developers can now contribute to the same Meteor project while working on different platforms without issue. To that extent, the current Meteor version that the Status Board is running is **Meteor v1.1.0.2**.
+**Windows Users!** With Meteor 1.1, the Meteor Development Group has released official support for Meteor on Windows. Meteor is now completely supported on Windows which means that developers can now contribute to the same Meteor project while working on different platforms without issue. To that extent, the current Meteor version that the Status Board is running is **Meteor v1.2.0.4**.
 
 You can still work within a Vagrant VM if you desire. The instructions follow.
 

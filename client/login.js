@@ -5,8 +5,8 @@ Template.login.events({
     var email = t.find('#login-email').value,
         password = t.find('#login-password').value;
 
-    email = trimInput(email);
-    password = trimInput(password);
+    email = Forms.trimInput(email);
+    password = Forms.trimInput(password);
 
     // If validation passes, supply the appropriate fields to the
     // Meteor.loginWithPassword() function.
@@ -19,7 +19,6 @@ Template.login.events({
 			}
       else {
         // The user has been logged in.
-        Session.set("selectedUserId", Meteor.userId());
 				Router.go("/user");
 			}
     });

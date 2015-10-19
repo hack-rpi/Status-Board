@@ -13,10 +13,12 @@ Meteor.users.allow({
 			return false;
 	},
 	update: function(userId, doc, fieldNames, modifier) {
-		if (doc._id == admin_id && _.contains(fieldNames, 'roles'))
+		if (doc._id === admin_id && _.contains(fieldNames, 'roles'))
 			return false;
 		// users can only edit their own data
-		else if (doc._id == userId || Roles.userIsInRole(userId, 'admin'))
+		else if (doc._id === userId && fieldNames.length === 0 && fieldNames[0] === 'profile')
+			return true;
+		else if (Roles.userIsInRole(userId, 'admin'))
 			return true;
 		else
 			return false;
@@ -179,4 +181,16 @@ AnonReports.allow({
 	update: function(userId, doc) {
 		return Roles.userIsInRole(userId, 'admin');
 	}
-})
+});
+
+AnonUserData.allow({
+	insert: function(userId, doc) {
+		return true;
+	},
+	remove: function(userId, doc) {
+		return Roles.userIsInRole(userId, 'admin');
+	},
+	update: function(userId, doc, fieldNames, modifier) {
+		return Roles.userIsInRole(userId, 'admin');
+	}
+});

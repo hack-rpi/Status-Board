@@ -38,7 +38,29 @@
             {{/each}}
           </ul>
           <input type="text" name="alertNum-input" id="alertNum-input">
-          <div class="btn btn-primary" id="add-alert-number-btn">Add</div>
+          <div class="btn btn-primary btn-sm" id="add-alert-number-btn">Add</div>
+        </div>
+      </div>
+
+      <div class="row user-table-row">
+        <div class="col-xs-3 col-xs-offset-2 user-table-label">
+          Event Stage
+        </div>
+        <div class="col-xs-6">
+          {{# each stage}}
+            <div class="radio">
+              <label>
+                {{# if checked }}
+                  <input type="radio" name="event-stage" class="event-stage"
+                    value="{{ value }}" checked>
+                {{ else }}
+                <input type="radio" name="event-stage" class="event-stage"
+                  value="{{ value }}">
+                {{/ if}}
+                {{ name }}
+              </label>
+            </div>
+          {{/ each}}
         </div>
       </div>
 
