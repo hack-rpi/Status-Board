@@ -1,3 +1,5 @@
+@import "global";
+
 .jumbotron-container {
   background: #FFFFFF;
 }
@@ -16,6 +18,20 @@
   text-align: center;
 }
 
+.announcement {
+  display: none;
+}
+
+.announcement.active {
+  display: block;
+}
+
 .announce-box {
-  color: #000000;
+  h1 {	
+  	color: #333;
+  }
+
+  p {
+  	color: #999;
+  }
 }

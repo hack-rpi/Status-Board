@@ -12,14 +12,15 @@
             <div class="announcements-panel">
 
               <div class="row">
-                <div class="col-xs-1">
+                <div class="col-xs-1 prev-announcement">
                   <i class="fa fa-angle-left fa-5x accent"></i>
                 </div>
 
                 <div class="col-xs-10">
                   <div class="announce-box">
                     {{#each announcements}}
-                      <div class="announcement">
+                      <div class="announcement 
+                        {{#if showAnnouncement @index}} active {{/if}}">
                         <h1>{{header}}</h1>
                         <p>{{text}}</p>
                       </div>
@@ -27,7 +28,7 @@
                   </div>
                 </div>
 
-                <div class="col-xs-1">
+                <div class="col-xs-1 next-announcement">
                   <i class="fa fa-angle-right fa-5x accent"></i>
                 </div>
 
