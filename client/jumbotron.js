@@ -3,7 +3,6 @@ Session.setDefault('currentAnnouncement', 0);
 
 Template.jumbotron.helpers({
   showJumbo: function() {
-    Meteor.subscribe("Announcements");
     if (Announcements.find({visible:true}).count() === 0) {
       return false;
     }
@@ -29,7 +28,6 @@ Template.jumbotron.helpers({
     }
   },
   announcements: function() {
-    Meteor.subscribe("Announcements");
     return Announcements.find({ visible:true }, {sort: {startTime: -1}}).fetch();
   },
   showAnnouncement: function(index) {
