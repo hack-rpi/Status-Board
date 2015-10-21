@@ -1,3 +1,4 @@
+Meteor.subscribe('Announcements');
 Session.setDefault('currentAnnouncement', 0);
 
 Template.jumbotron.helpers({
@@ -8,6 +9,23 @@ Template.jumbotron.helpers({
     }
     else {
       return true;
+    }
+  },
+  showPrev: function() {
+    if(Session.get('currentAnnouncement') + 1 
+      < Announcements.find({visible:true}).count()) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  },
+  showNext: function() {
+    if(Session.get('currentAnnouncement') - 1 >= 0) {
+      return true;
+    }
+    else {
+      return false;
     }
   },
   announcements: function() {
@@ -21,15 +39,15 @@ Template.jumbotron.helpers({
 
 Template.jumbotron.events({
   'click .next-announcement': function(e) {
-    var nextAnnouncement = Session.get('currentAnnouncement') + 1;
-    var numAnnouncements = Announcements.find({visible:true}).count()
-    if(nextAnnouncement < numAnnouncements) {
+    var nextAnnouncement = Session.get('currentAnnouncement') - 1;
+    if(nextAnnouncement >= 0) {
       Session.set('currentAnnouncement', nextAnnouncement);
     }
   },
   'click .prev-announcement': function(e) {
-    var prevAnnouncement = Session.get('currentAnnouncement') - 1;
-    if(prevAnnouncement >= 0) {
+    var prevAnnouncement = Session.get('currentAnnouncement') + 1;
+    var numAnnouncements = Announcements.find({visible:true}).count()
+    if(prevAnnouncement < numAnnouncements) {
       Session.set('currentAnnouncement', prevAnnouncement);
     }
   }
