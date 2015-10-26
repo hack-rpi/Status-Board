@@ -1,0 +1,47 @@
+@import "global";
+
+.confirm-template {
+	
+	.content {
+		margin: auto 200px;
+		padding: 200px 0;
+		text-align: center;
+		font-size: 18px;
+	}
+	
+	h2 {
+		margin-bottom: 30px;
+	}
+	
+	.btn {
+		display: inline-block;
+		width: auto;
+		background-color: @accent;
+		margin: 20px;
+		&:hover {
+			color: #FFF;
+			border: 1px solid #000;
+		}
+		&:active {
+			background-color: @dark-accent-2;
+			color: #FFF;
+		}
+	}
+	
+	.btn[data-action="confirm"] {
+		font-size: 36px;
+	}
+	
+	.nav {
+		margin-top: 100px;
+	}
+	
+	.accept-travel {
+		margin-top: 15px;
+	}
+	
+	.travel-explaination {
+		display: none;
+	}
+	
+}

@@ -6,11 +6,11 @@ Meteor.publish("MentorQueue", function() {    return MentorQueue.find(); });
 // users can view all of their own data but only the profiles and usernames
 //  of other users
 Meteor.publish("UserData", function(userId) {
-	if (Roles.userIsInRole(this.userId, 'admin')){
+	if (Roles.userIsInRole(userId, 'admin')){
 		return Meteor.users.find();
 	}
 	else if (userId) {
-		return Meteor.users.find({ "_id": this.userId });
+		return Meteor.users.find({ "_id": userId });
 	}
 	else {
 		this.ready();

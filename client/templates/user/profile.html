@@ -123,6 +123,18 @@
       </form>
 
     {{else}}
+      <p>
+        {{#if accepted}}
+          {{#if not_confirmed}}
+          <b>You have been accepted to HackRPI 2015! 
+            <a href="/confirm">Confirm your spot!</a></b>   
+          {{/if}}
+        {{else}}
+        You are still on the waiting list. The waiting list for HackRPI 2015 is FIFO. 
+        We will let you know as soon as possible when a spot opens up for you. 
+        Hang in there!
+        {{/if}}
+      </p>
       <div class="user-table">
         <div class="row user-table-row">
           <div class="col-xs-offset-3 col-xs-2 user-table-label">Name</div>

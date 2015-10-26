@@ -243,6 +243,58 @@ Meteor.methods({
 		catch (e) {
 			throw e;
 		}
+	},
+	
+	userConfirmAcceptance: function(acceptTravel, explaination) {
+		var id = Meteor.userId(),
+			now = new Date();
+		if (! id) {
+			throw new Meteor.Error('No User',
+				'You must login to perform this action.');
+		}
+		var doc = Meteor.users.findOne({ _id: id });
+		if (doc.settings.accepted.flag && 
+			now <= doc.settings.accepted.expires) {
+			Meteor.users.update({ _id: id }, {
+				$set: {
+					'settings.confirmed.flag': true,
+					'settings.confirmed.travel.accepted': acceptTravel,
+					'settings.confirmed.travel.explaination': explaination
+				}
+			});
+			return true;
+		}
+		else if (doc.settings.accepted.flag &&
+				 now > doc.settings.accepted.expires) {
+			throw new Meteor.Error('Acceptance Expired', 
+				'Sorry, your acceptance offer has expired.');
+		}
+		else {
+			throw new Meteor.Error('Not Accepted', 
+				'User has not been accepted.');
+		}
+	},
+	
+	userRejectAcceptance: function() {
+		var id = Meteor.userId();
+		if (! id) {
+			throw new Meteor.Error('No User',
+				'You must login to perform this action.');
+		}
+		var doc = Meteor.users.findOne({ _id: id });
+		if (doc.settings.accepted.flag) {
+			Meteor.users.update({ _id: id }, {
+				$set: {
+					'settings.confirmed.flag': false,
+					'settings.accepted.flag': false
+				}
+			});
+			return true;
+		}
+		else {
+			throw new Meteor.Error('Not Accepted', 
+				'User has not been accepted.');
+		}
 	}
 
 });
