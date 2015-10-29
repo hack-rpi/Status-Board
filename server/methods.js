@@ -243,6 +243,75 @@ Meteor.methods({
 		catch (e) {
 			throw e;
 		}
+	},
+	
+	userConfirmAcceptance: function(acceptTravel, explaination) {
+		var id = Meteor.userId(),
+			now = new Date();
+		if (! id) {
+			throw new Meteor.Error('No User',
+				'You must login to perform this action.');
+		}
+		var doc = Meteor.users.findOne({ _id: id });
+		// check if the user's bus is full
+		if (acceptTravel === true &&
+			doc.settings.accepted.travel.method.search(/bus/gi) != -1) {
+			var confirmed_on_bus = Meteor.users.find({ 
+				$and: [ 
+					{ 'settings.accepted.travel.method': doc.settings.accepted.travel.method },
+					{ 'settings.confirmed.travel.accepted': true } 
+				]
+			}).count();
+			if (confirmed_on_bus >= 55) {
+				throw new Meteor.Error('Bus Capacity Reached', 
+					'The bus that you have been approved to travel on has already been' + 
+					' filled to capacity. If you would still like to attend, reject this' + 
+					' travel and find other means of transportation. Please contact us' + 
+					' at gohackrpi@gmail.com for additional travel reimbursement.');
+			}
+		}
+		if (doc.settings.accepted.flag && 
+			now <= doc.settings.accepted.expires) {
+			Meteor.users.update({ _id: id }, {
+				$set: {
+					'settings.confirmed.flag': true,
+					'settings.confirmed.travel.accepted': acceptTravel,
+					'settings.confirmed.travel.explaination': explaination
+				}
+			});
+			return true;
+		}
+		else if (doc.settings.accepted.flag &&
+				 now > doc.settings.accepted.expires) {
+			throw new Meteor.Error('Acceptance Expired', 
+				'Sorry, your acceptance offer has expired.');
+		}
+		else {
+			throw new Meteor.Error('Not Accepted', 
+				'User has not been accepted.');
+		}
+	},
+	
+	userRejectAcceptance: function() {
+		var id = Meteor.userId();
+		if (! id) {
+			throw new Meteor.Error('No User',
+				'You must login to perform this action.');
+		}
+		var doc = Meteor.users.findOne({ _id: id });
+		if (doc.settings.accepted.flag) {
+			Meteor.users.update({ _id: id }, {
+				$set: {
+					'settings.confirmed.flag': false,
+					'settings.accepted.flag': false
+				}
+			});
+			return true;
+		}
+		else {
+			throw new Meteor.Error('Not Accepted', 
+				'User has not been accepted.');
+		}
 	}
 
 });
