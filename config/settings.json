@@ -12,6 +12,8 @@
 	},
 
 	"root_url": "",
+	
+	"mail_url": "",
 
 	"default_admin_username": "",
 	"default_admin_password": "",
