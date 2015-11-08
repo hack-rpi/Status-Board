@@ -54,7 +54,8 @@ Meteor.methods({
 			mentors = Meteor.users.find({ $and: [
 				{ "profile.role": "mentor" },
 				{ "profile.active": true },
-				{ "profile.available": true }
+				{ "profile.available": true },
+				{ 'settings.checked_in': true }
 			] }).fetch();
 
 			if (mentors.length == 0)
@@ -230,7 +231,7 @@ Meteor.methods({
 			if (userDoc) {
 				Meteor.users.update({ _id: userDoc._id }, {
 					$set: {
-						checked_in: true
+						'settings.checked_in': true
 					}
 				});
 				return true;

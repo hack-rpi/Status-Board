@@ -2,10 +2,19 @@ var edit_skills_flag = false,
     edit_skills_dep  = new Tracker.Dependency;
 
 Template.user_mentor.rendered = function() {
-  Meteor.subscribe("MentorQueue"); 
+  Meteor.subscribe("MentorQueue");
+  Meteor.subscribe('UserData', Meteor.userId());
 }
 
 Template.user_mentor.helpers({
+  checked_in: function() {
+    try {
+      return Meteor.user().settings.checked_in;
+    }
+    catch (e) {
+      return false;
+    }
+  },
   active: function() {
     // return the status of the mentor
     return Meteor.user().profile.active;

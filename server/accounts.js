@@ -11,6 +11,7 @@ Accounts.onCreateUser(function(options, user) {
 		}
 	};
 	user.settings.bus_captain = false;
+	user.settings.checked_in = false;
 	user.settings.confirmed = {
 		flag: false,
 		travel: {
