@@ -56,8 +56,10 @@ Template.check_in.events({
 				});
 				break;
 			case 'checkin':
-				var $email = $('.confirm-checkin input[name="Email"]');
-				Meteor.call('checkInUser', checkin_code, $email.val(), function (error, result) {
+				var $email = $('.confirm-checkin input[name="Email"]'),
+					$wifi_username = $('.confirm-checkin input[name="WiFi Username"]'),
+					wifi_username = $wifi_username.val();
+				Meteor.call('checkInUser', checkin_code, $email.val(), wifi_username, function (error, result) {
 					if (error) {
 						var $form_error = $('.confirm-checkin .form-error');
 						$form_error

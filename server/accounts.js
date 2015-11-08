@@ -12,6 +12,7 @@ Accounts.onCreateUser(function(options, user) {
 	};
 	user.settings.bus_captain = false;
 	user.settings.checked_in = false;
+	user.settings.wifi_username = null;
 	user.settings.confirmed = {
 		flag: false,
 		travel: {

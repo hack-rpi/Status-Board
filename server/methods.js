@@ -217,7 +217,7 @@ Meteor.methods({
 		return Meteor.settings.checkin_code === code;
 	},
 	
-	checkInUser: function(code, email) {
+	checkInUser: function(code, email, wifi_username) {
 		try {
 			if (! Meteor.call('validateCheckInCode', code)) {
 				throw new Meteor.Error('Access Denied', 
@@ -231,7 +231,8 @@ Meteor.methods({
 			if (userDoc) {
 				Meteor.users.update({ _id: userDoc._id }, {
 					$set: {
-						'settings.checked_in': true
+						'settings.checked_in': true,
+						'settings.wifi_username': wifi_username
 					}
 				});
 				return true;
