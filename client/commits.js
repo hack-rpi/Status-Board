@@ -27,7 +27,7 @@ Template.commits.helpers({
 				date:-1
 			}, 
 			limit: 10,
-			reactive: false
+			// reactive: false
 		});
 		setTimeout(markFavorites, 2000);
 		return commits;
