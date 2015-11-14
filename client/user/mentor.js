@@ -110,7 +110,7 @@ Template.user_mentor.events({
         $("#user-mentor-checkbox-frames input:checked").each(function() {
           frameworks.push(this.name); all.push(this.name);
         });
-        $("#user-mentor-checkbox-apis input:checkbox").each(function() {
+        $("#user-mentor-checkbox-apis input:checked").each(function() {
           apis.push(this.name); all.push(this.name);
         });
         if (Meteor.users.update({ '_id': Meteor.userId() }, {
