@@ -61,6 +61,12 @@ Meteor.startup(function() {
 		}
 		throw new Meteor.Error(403, "Not authorized to create new users");
 	});
+	
+	
+	/**
+	 * Set the environment variable to send mail
+	 */
+	process.env.MAIL_URL = Meteor.settings.mail_url;
 
 
 	// Repeating Server Actions ==================================================

@@ -8,15 +8,11 @@ Template.register.helpers({
       return 'register_hacker';
     }
     else if (Session.equals('register_page', 'mentor')) {
-      // Meteor.setTimeout(function() {
-      //   $('.register-mentor-1')
-      //     .velocity('transition.slideRightBigIn', 1000);
-      // }, 100);
-      // return 'register_mentor';
-      Session.set('displayMessage', {
-        title: 'Mentor Registration Closed',
-        body: 'Mentor registration has not yet opened.'
-      });
+      Meteor.setTimeout(function() {
+        $('.register-mentor-1')
+          .velocity('transition.slideRightBigIn', 1000);
+      }, 100);
+      return 'register_mentor';
       return 'register_landing';
     }
     else if (Session.equals('register_page', 'volunteer')) {
@@ -476,7 +472,7 @@ Template.register.events({
                 gender: gender,
                 race: race
               });
-            }            
+            }
             // success
             Session.set('register_page', 'complete');
           }
@@ -495,80 +491,100 @@ Template.register.events({
     }
   },
   // -------------------------------------------------------------------------
-  'click #reg-mentor-page1-next': function(e) {
-    // check input on page 1
-    var name = trimInput($("#reg-mentor-name").val()),
-        affil = trimInput($("#reg-mentor-affiliation").val()),
-        phone = trimInput($("#reg-mentor-phone").val()),
-        email = trimInput($("#reg-mentor-email").val()),
-        pass1 = trimInput($("#reg-mentor-pass1").val()),
-        pass2 = trimInput($("#reg-mentor-pass2").val());
-    if (!name || !affil || !phone || !email || !pass1 || !pass2)
-      Session.set("displayMessage", {title: "Field Required", body: "One or more required fields are empty"});
-    else if (!stripPhone(phone))
-      Session.set("displayMessage", {title: "Error", body: "Invalid phone number"});
-    else if (!isValidEmail(email))
-      Session.set("displayMessage", {title: "Error", body: "Invalid email"});
-    else if (!isValidPassword(pass1))
-      Session.set("displayMessage", {title: "Error", body: "Password must be at least 6 characters"});
-    else if (pass1 != pass2)
-      Session.set("displayMessage", {title: "Error", body: "Passwords do not match"});
-    else {
-      $("#reg-mentor-page1").toggle("slide");
-      $("#reg-mentor-page2").toggle("slide");
-    }
-  },
-  'click #reg-mentor-page2-prev': function(e) {
-    $("#reg-mentor-page2").toggle("slide");
-    $("#reg-mentor-page1").toggle("slide");
-  },
-  'click #reg-mentor-page2-next': function(e) {
-    $("#reg-mentor-page2").toggle("slide");
-    $("#reg-mentor-page3").toggle("slide");
-  },
-  'click #reg-mentor-page3-prev': function(e) {
-    $("#reg-mentor-page3").toggle("slide");
-    $("#reg-mentor-page2").toggle("slide");
-  },
-  'click #reg-mentor-page3-next': function(e) {
-    $("#reg-mentor-page3").toggle("slide");
-    $("#reg-mentor-page4").toggle("slide");
-  },
-  'click #reg-mentor-page4-prev': function(e) {
-    $("#reg-mentor-page4").toggle("slide");
-    $("#reg-mentor-page3").toggle("slide");
-  },
-  'click #reg-mentor-submit': function(e,t) {
+  'click .register-mentor-4 .register-btn[data-action="register"]': function(e,t) {
     e.preventDefault();
-    var name  = trimInput($("#reg-mentor-name").val()),
-        affil = trimInput($("#reg-mentor-affiliation").val()),
-        phone = trimInput($("#reg-mentor-phone").val()),
-        email = trimInput($("#reg-mentor-email").val()),
-        pass1 = trimInput($("#reg-mentor-pass1").val()),
-        pass2 = trimInput($("#reg-mentor-pass2").val()),
-        languages = [],
-        frameworks = [],
-        apis = [],
-        tags = [];
+    var $form = $('.register-mentor'),
+        $error_box = $form.find('.form-error'),
+        $email = $form.find('input[name="Email"]'),
+        email = $email.val() || '',
+        $pass1 = $form.find('input[name="Password"]'),
+        pass1 = $pass1.val() || '',
+        $pass2 = $form.find('input[name="Confirm Password"]'),
+        pass2 = $pass2.val() || '',
+        $name = $form.find('input[name="Full Name"]'),
+        name = $name.val() || '',
+        $affiliation = $form.find('input[name="Affiliation"]'),
+        affiliation = $affiliation.val() || '',
+        $phone = $form.find('input[name="Phone Number"]'),
+        phone = $phone.val() || '',
+        $languages = $form.find('.language-selection'),
+        languages = _.map($languages.find('input:checked'), function(d) {
+          return $(d).attr('value');
+        }) || [],
+        $frameworks = $form.find('.framework-selection'),
+        frameworks = _.map($frameworks.find('input:checked'), function(d) {
+          return $(d).attr('value');
+        }) || [],
+        $apis = $form.find('.api-selection'),
+        apis = _.map($apis.find('input:checked'), function(d) {
+          return $(d).attr('value');
+        }) || [],
+        tags = _.flatten([languages, frameworks, apis]);
 
-    $("#reg-mentor-languages input:checked").each(function() {
-      languages.push(this.name); tags.push(this.name);
-    });
-    $("#reg-mentor-frameworks input:checked").each(function() {
-      frameworks.push(this.name); tags.push(this.name);
-    });
-    $("#reg-mentor-apis input:checked").each(function() {
-      apis.push(this.name); tags.push(this.name);
-    });
+    phone = Forms.stripPhone(phone);
+    
+    $error_box.empty();
+    $error_box.hide();
+    var form_errors = [],       // form errors to be displayed
+        first_error = 0;        // first section to contain an error
+    
+    if (name === '') {
+      form_errors.push('Please enter your name.');
+      first_error = first_error || 1;
+      Forms.highlightError($name);
+    }
+    
+    if (! Forms.isValidEmail(email)) {
+      form_errors.push('Please enter a valid email');
+      first_error.first_error || 1;
+      Forms.highlightError($email);
+    }
+    
+    if (! Forms.isValidPassword(pass1)) {
+      form_errors.push('Password must be at least 6 characters.');
+      first_error.first_error || 1;
+      Forms.highlightError($pass1);
+    }
+    
+    if (pass1 !== pass2) {
+      form_errors.push('Passwords must match.');
+      first_error.first_error || 1;
+      Forms.highlightError(pass2);
+    }
+    
+    if (! phone) {
+      form_errors.push('Please enter a valid phone number.');
+      first_error.first_error || 1;
+      Forms.highlightError($phone);
+    }
+    
+    if (form_errors.length > 0) {
+      // Load error messages into error box
+      var error_header = document.createElement('strong');
+      error_header.appendChild(document.createTextNode('Please fix the following errors:'));
+      $error_box.append(error_header);
 
-    phone = stripPhone(phone);
+      for (var i = 0; i < form_errors.length; i++) {
+        var listNode = document.createElement('li');
+        listNode.appendChild(document.createTextNode(form_errors[i]));
+        $error_box.append(listNode);
+      }
 
-    Accounts.createUser({ email: email,
-        password: pass1,
-        profile: {
+      $error_box.velocity('transition.bounceIn', 200);
+
+      // Bring user back to the form section that has the first error
+      $('.register-mentor-4')
+        .velocity('transition.slideUpBigOut', 300);
+      $('.register-mentor-' + first_error)
+        .velocity('transition.slideUpBigIn', 300);
+
+      return false;
+    }
+    
+    var profile = {
           role: "mentor",
           name: name,
-          affiliation: affil,
+          affiliation: affiliation,
           phone: phone,
           languages: languages,
           frameworks: frameworks,
@@ -578,20 +594,40 @@ Template.register.events({
           mentee_id: null,
           history: [],
           tags: tags
-        },
-      }, function(err) {
-      if (err) {
-        if (err.error == 403) {
-          Session.set("displayMessage", {title: "Access Denied", body: "Account creation is currently disabled"});
+        };
+        
+    console.log(profile);
+
+    Accounts.createUser(
+      { 
+        email: email,
+        password: pass1,
+        profile: profile,
+      }, 
+      function(err) {
+        if (err) {
+          if (err.error == 403) {
+            Session.set("displayMessage",
+              {
+                title: "Account Creation Failed",
+                body: err.reason
+              }
+            );
+          }
+          else {
+              Session.set("displayMessage",
+                {
+                  title: "Error",
+                  body: "Something happened. Please try again later."
+                }
+              );
+          }
         }
         else {
-          Session.set("displayMessage", {title: "Error", body: "Something went wrong. Please try again later"});
-        }
-      }
-      else {
-        // success
-        Router.go("/");
-      }
+          // success
+          Session.set('register_page', 'complete');
+          return true;
+        } 
     });
     return false;
   },

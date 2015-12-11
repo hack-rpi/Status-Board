@@ -295,7 +295,8 @@
 <template name="register_mentor">
 
 	<div class="register-mentor">
-
+		<div class="alert alert-danger form-error" role="alert"></div>
+		
 		<div class="register-mentor-1">
 			<h3>Mentor Registration</h3>
 			<div class="row">
@@ -345,8 +346,8 @@
 			Mentor Registration - Languages
 			<div class="language-selection">
 				{{#each languages}}
-					<label class="_checkbox"><input name="{{this}}" type="checkbox">
-						{{ this }}</label><br>
+					<label class="_checkbox"><input value="{{this}}" type="checkbox">
+						{{ this }}</label>
 				{{/each}}
 			</div>
 			<div class="_form-group">
@@ -365,8 +366,8 @@
 			Mentor Registration - Frameworks and Libraries
 			<div class="framework-selection">
 				{{#each frameworks}}
-					<label class="_checkbox"><input name="{{this}}" type="checkbox">
-						{{ this }}</label><br>
+					<label class="_checkbox"><input value="{{this}}" type="checkbox">
+						{{ this }}</label>
 				{{/each}}
 			</div>
 			<div class="_form-group">
@@ -385,12 +386,12 @@
 			Mentor Registration - APIs
 			<div class="api-selection">
 				{{#each apis}}
-					<label class="_checkbox"><input name="{{this}}" type="checkbox">
-						{{ this }}</label><br>
+					<label class="_checkbox"><input value="{{this}}" type="checkbox">
+						{{ this }}</label>
 				{{/each}}
 			</div>
 			<div class="_form-group">
-				<div class="btn btn-default register-btn">
+				<div class="btn btn-default register-btn" data-action="register">
 					Register
 				</div>
 			</div>

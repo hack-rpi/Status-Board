@@ -1,8 +1,24 @@
 Template.user_profile.rendered = function() {
-  Meteor.subscribe("UserData");
+  Meteor.subscribe("UserData", Meteor.userId());
 }
 
 Template.user_profile.helpers({
+  accepted: function() {
+    try {
+      return Meteor.user().settings.accepted.flag;
+    }
+    catch (e) {
+      return false;
+    }
+  },
+  not_confirmed: function() {
+    try {
+      return ! Meteor.user().settings.confirmed.flag;
+    }
+    catch (e) {
+      return false;
+    }
+  },
   email: function() {
     try {
       return Meteor.user().emails[0].address;
