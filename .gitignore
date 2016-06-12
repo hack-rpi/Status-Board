@@ -2,3 +2,4 @@ hackrpi_settings.json
 *.xcf
 .vagrant
 shared/*
+typings

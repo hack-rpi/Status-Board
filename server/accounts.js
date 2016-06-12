@@ -62,7 +62,7 @@ Accounts.emailTemplates.resetPassword.text = function(user, url) {
 	return 'Hello ' + user.profile.name + ', \n\n' +
 	'Use the link below to reset your password. If you did not' + 
 	' not request this email, no action need be taken. \n\n' +
-	url + '\n\n'
+	url + '\n\n' +
 	'- The HackRPI Team';
 }
 Accounts.emailTemplates.resetPassword.html = function(user, url) {

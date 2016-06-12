@@ -1,6 +1,7 @@
 {
 
 	"public": {
+		"event_state": "",
 		"event_start": "",
 		"event_end": "",
 
