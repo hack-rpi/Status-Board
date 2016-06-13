@@ -55,36 +55,36 @@ Meteor.startup(function() {
   // =========================================================================
 
   // create the admin account with a default password
-  if ( Meteor.users.find({ username: Meteor.settings.default_admin_username })
-      .fetch().length === 0) {
-    console.log(">> admin account created");
-    admin_id = Accounts.createUser({
-      "username": Meteor.settings.default_admin_username,
-      "password": Meteor.settings.default_admin_password,
-      "profile": {
-        "name": "Administrator",
-        "settings": {
-          "allow_account_creation": false,
-          "mentoring_system": false
-        }
-      },
-      'settings': {
-        'alert_numbers': [],
-        'event_stage': 'registration'
-      }
-    });
-    // give the admin admin rights
-    var adminUser = Meteor.users.findOne({ "_id":admin_id });
-    Roles.addUsersToRoles(adminUser, 'admin');
-  }
+  // if ( Meteor.users.find({ username: Meteor.settings.default_admin_username })
+  //     .fetch().length === 0) {
+  //   console.log(">> admin account created");
+  //   admin_id = Accounts.createUser({
+  //     "username": Meteor.settings.default_admin_username,
+  //     "password": Meteor.settings.default_admin_password,
+  //     "profile": {
+  //       "name": "Administrator",
+  //       "settings": {
+  //         "allow_account_creation": false,
+  //         "mentoring_system": false
+  //       }
+  //     },
+  //     'settings': {
+  //       'alert_numbers': [],
+  //       'event_stage': 'registration'
+  //     }
+  //   });
+  //   // give the admin admin rights
+  //   var adminUser = Meteor.users.findOne({ "_id":admin_id });
+  //   Roles.addUsersToRoles(adminUser, 'admin');
+  // }
 
   // Prevent non-authorized users from creating new users:
-  Accounts.validateNewUser(function (user) {
-    if (Meteor.users.findOne({ "_id":admin_id }).profile.settings.allow_account_creation) {
-      return true;
-    }
-    throw new Meteor.Error(403, "Not authorized to create new users");
-  });
+  // Accounts.validateNewUser(function (user) {
+  //   if (Meteor.users.findOne({ "_id":admin_id }).profile.settings.allow_account_creation) {
+  //     return true;
+  //   }
+  //   throw new Meteor.Error(403, "Not authorized to create new users");
+  // });
   
   
   /**
