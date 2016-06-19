@@ -44,4 +44,8 @@ Meteor.publish('AnonUserData', function() {
 
 Meteor.publish('USColleges', function() {
 	return USColleges.find();
-})
+});
+
+// Meteor.publish('PreRegistration', function() {
+// 	return this.ready();
+// });
