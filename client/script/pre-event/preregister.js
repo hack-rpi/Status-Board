@@ -58,6 +58,16 @@ Template.preregister.events({
           body: "You're all set! You should receive a confirmation email " +
             "shortly."
         });
+        var subject = 'HackRPI Preregistration Complete!'
+        Meteor.call('sendEmail', 
+          $email_field.val(), 
+          subject, 
+          {
+            name: $name_field.val(),
+            subject: subject,
+          },
+          'prereg_confirm.html'
+        );
         $name_field.val('');
         $email_field.val('');
         $school_field.val('');

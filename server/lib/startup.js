@@ -15,8 +15,7 @@ Meteor.startup(function() {
   Meteor.users._ensureIndex({ 'profile.name': 1 });
   Meteor.users._ensureIndex({ 'profile.affiliation': 1 });
   Meteor.users._ensureIndex({ 'profile.phone': 1 });
-  Meteor.users._ensureIndex({ 'roles': 1, 'profile.active': 1,
-    'profile.available': 1 });
+  Meteor.users._ensureIndex({ 'roles': 1, 'profile.active': 1, 'profile.available': 1 });
 
   RepositoryList._ensureIndex({ 'name': 1 });
   RepositoryList._ensureIndex({ 'full_name': 1 });
@@ -40,6 +39,10 @@ Meteor.startup(function() {
       for (var d in list) {
         USColleges.insert({
           name: list[d].replace('\r', '')
+        }, function(error, id) {
+          if (error) {
+            console.log(error);
+          }
         });
       }
     });
@@ -92,6 +95,11 @@ Meteor.startup(function() {
    */
   process.env.MAIL_URL = Meteor.settings.mail_url;
 
+  if (Meteor.settings.mongo_url) {
+    process.env.MONGO_URL = Meteor.settings.mongo_url;
+  }
+
+  /* Turn these off for now
 
   // Repeating Server Actions ==================================================
 
@@ -106,4 +114,7 @@ Meteor.startup(function() {
   }, 10*1000);
 
   // ===========================================================================
+
+  */
+
 });
