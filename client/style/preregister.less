@@ -1,0 +1,39 @@
+@import "global";
+
+.content#preregister {
+
+  h2 {
+    color: @accent;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  form {
+    text-align: center;
+    input {
+      width: 325px;
+    }
+    button {
+      margin-top: 50px;
+      font-family: 'Lucida Console', Monaco, monospace;
+    }
+  }
+
+  @media only screen and (max-width: @small) {
+    font-size: 32px;
+    padding: 5px;
+  }
+  @media only screen and (min-width: @small) and (max-width: @large) {
+    font-size: 26px;
+    padding: 10px;
+  }
+  @media only screen and (min-width: @large) {
+    width: 70%;
+    margin: auto;
+    p {
+      width: 600px;
+      margin: auto;
+    }
+  }
+
+}

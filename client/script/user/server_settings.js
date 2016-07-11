@@ -1,14 +1,14 @@
 Template.user_server_settings.helpers({
   allowAccountCreation: function() {
-    Meteor.subscribe('userData');
+    Meteor.subscribe('UserData', Meteor.userId());
     return Meteor.user().profile.settings.allow_account_creation;
   },
   mentoringSystemStatus: function() {
-    Meteor.subscribe('userData');
+    Meteor.subscribe('UserData', Meteor.userId());
     return Meteor.user().profile.settings.mentoring_system;
   },
   alertNumbers: function() {
-    Meteor.subscribe('userData');
+    Meteor.subscribe('UserData', Meteor.userId());
     if (Meteor.user().settings)
       return Meteor.user().settings.alert_numbers;
     else return [];
@@ -41,7 +41,7 @@ Template.user_server_settings.helpers({
 Template.user_server_settings.events({
   // Account Creating Settings
   'click #admin-allow-account-creation-off-btn': function() {
-    Meteor.subscribe("userData");
+    Meteor.subscribe("UserData", Meteor.userId());
     Meteor.users.update( {"_id":Meteor.userId()}, {
       $set: {
         "profile.settings.allow_account_creation": false
@@ -49,7 +49,7 @@ Template.user_server_settings.events({
     });
   },
   'click #admin-allow-account-creation-on-btn': function() {
-    Meteor.subscribe("userData");
+    Meteor.subscribe("UserData", Meteor.userId());
     Meteor.users.update( {"_id":Meteor.userId()}, {
       $set: {
         "profile.settings.allow_account_creation": true
@@ -58,7 +58,7 @@ Template.user_server_settings.events({
   },
   // Mentoring Settings
   'click #admin-mentoring-off-btn': function() {
-    Meteor.subscribe("userData");
+    Meteor.subscribe("UserData", Meteor.userId());
     Meteor.users.update( {"_id":Meteor.userId()}, {
       $set: {
         "profile.settings.mentoring_system": false
@@ -66,7 +66,7 @@ Template.user_server_settings.events({
     });
   },
   'click #admin-mentoring-on-btn': function() {
-    Meteor.subscribe("userData");
+    Meteor.subscribe("UserData", Meteor.userId());
     Meteor.users.update( {"_id":Meteor.userId()}, {
       $set: {
         "profile.settings.mentoring_system": true
@@ -78,7 +78,7 @@ Template.user_server_settings.events({
     var phone = $('#alertNum-input').val();
     $('#alertNum-input').val('');
     if (! phone) return;
-    phone = stripPhone(phone);
+    phone = Forms.stripPhone(phone);
     Meteor.users.update({ '_id': Meteor.userId() }, {
       $push: {
         'settings.alert_numbers': phone

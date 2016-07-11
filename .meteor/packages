@@ -22,5 +22,8 @@ underscore
 matb33:collection-hooks
 velocityjs:velocityjs
 less
-standard-minifiers
 meteorhacks:ssr
+sergeyt:typeahead
+email
+standard-minifier-css
+standard-minifier-js

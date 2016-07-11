@@ -1,0 +1,48 @@
+@import "global";
+
+.jumbotron-container {
+  background: #FFFFFF;
+}
+
+.jumbotron {
+  background: #FFFFFF;
+  height: 200px;
+}
+
+.banner-logo {
+  width: 200px;
+  margin-top: 20px;
+}
+
+.announcements-panel {
+  text-align: center;
+}
+
+.announcement {
+  display: none;
+}
+
+.announcement.active {
+  display: block;
+}
+
+.announce-box {
+  h1 {	
+  	color: #333;
+  }
+
+  p {
+  	color: #999;
+  }
+}
+
+.next-announcement, 
+.prev-announcement {
+	&:hover {	
+		cursor: pointer;
+	}
+	color: #ddd;
+	-webkit-user-select: none;   
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+}

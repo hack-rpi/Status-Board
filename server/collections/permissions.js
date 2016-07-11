@@ -194,3 +194,28 @@ AnonUserData.allow({
 		return Roles.userIsInRole(userId, 'admin');
 	}
 });
+
+PreRegistration.allow({
+	insert: function(userId, doc) {
+		var doc_keys = _.keys(doc);
+		if (!_.isEqual(_.keys(doc), ['name', 'email', 'school'])) {
+			return false;
+		}
+		if (doc.name == '' || doc.email == '' || doc.school == '') {
+			return false;
+		}
+		if (PreRegistration.find({ email: doc.email }).count() > 0) {
+			throw new Meteor.Error('Email Exists', 
+				'This email address has already been preregistered');
+			return false;
+		}
+		return true;
+	},
+	remove: function(userId, doc) {
+		return false;
+	},
+	update: function(userId, doc, fieldNames, modifier) {
+		return false;
+	},
+	fetch: ['email']
+});

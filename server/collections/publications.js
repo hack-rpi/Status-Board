@@ -40,4 +40,12 @@ Meteor.publish('AnonUserData', function() {
 	if (Roles.userIsInRole(this.userId, 'admin')) {
 		return AnonUserData.find();
 	}
-})
+});
+
+Meteor.publish('USColleges', function() {
+	return USColleges.find();
+});
+
+// Meteor.publish('PreRegistration', function() {
+// 	return this.ready();
+// });

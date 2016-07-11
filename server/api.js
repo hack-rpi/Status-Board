@@ -1,6 +1,7 @@
 // Global API Configuration
 API = new Restivus({
 	apiPath: 'api',
+	useDefaultAuth: false,
 	prettyJson: true
 });
 
