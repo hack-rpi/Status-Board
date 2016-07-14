@@ -10,17 +10,18 @@ Meteor.methods({
     // add asset locations
     data.logo_url = Meteor.absoluteUrl('img/hackrpi_logo_red.png');
     // compile the email template
-    SSR.compileTemplate('standardEmail', 
-		  Assets.getText('emailTemplates/' + template));
-	  var html = SSR.render('standardEmail', data);
+    SSR.compileTemplate('email', 
+		  Assets.getText('emailTemplates/' + template + '.html'));
+	  var html = SSR.render('email', data);
     // let the client continue with other calls
     this.unblock();
     // send the email
     Email.send({
       to: to,
-      from: 'support@hackrpi.com',
+      from: 'team@hackrpi.com',
       subject: subject,
-      html: html
+      html: html,
+      text: Assets.getText('emailTemplates/' + template + '.txt'),
     });
   }
 

@@ -66,7 +66,7 @@ Template.preregister.events({
             name: $name_field.val(),
             subject: subject,
           },
-          'prereg_confirm.html'
+          'prereg_confirm'
         );
         $name_field.val('');
         $email_field.val('');

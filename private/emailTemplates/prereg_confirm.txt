@@ -1,0 +1,12 @@
+Hello,
+
+Hooray! You have successfully preregistered for HackRPI 2016! What does this mean?
+
+ - You have made it onto the HackRPI 2016 Mailing List!
+ - You will be one first notified when registration opens for real, which is important because acceptance is on a rolling, first-come, first-served basis.
+ - You're awesome.
+
+Remember, this does not mean that you are registered for HackRPI 2016. Look for registration to open early September!
+
+
+— The HackRPI Dev Team
