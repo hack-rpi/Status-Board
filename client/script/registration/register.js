@@ -794,8 +794,11 @@ Template.register_hacker.events({
       $('div.school-selection').show();
     }
   },
-  'change #travel-origin-type input': function() {
+  'change #travel-origin-type label': function(event) {
     var ttype = $('#travel-origin-type input:checked').attr('value');
+    var $target = $(event.target).parent();
+    $('._radio-group label').removeClass('active');
+    $target.addClass('active');
     $('.zip-code').hide();
     $('.international-loc').hide();
     if (ttype === 'United States')
