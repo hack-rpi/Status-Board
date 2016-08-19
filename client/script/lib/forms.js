@@ -38,3 +38,11 @@ Forms = (function() {
 
   return api;
 })();
+
+Template['pre-eventLayout'].events({
+  'change ._radio-group input': function(event) {
+    var $target = $(event.target).parent();
+    $target.parent().children().removeClass('active');
+    $target.addClass('active');
+  }
+});

@@ -4,6 +4,11 @@
 	<h3>Hacker Registration</h3>
 
 	<div class="_form-group">
+		<label for="Full Name">Full Name</label><br>
+		<input type="text" name="Full Name" placeholder="Full Name">
+	</div>
+
+	<div class="_form-group">
 		<label for="Email">Email</label><br>
 		<input type="text" name="Email" placeholder="Email">
 	</div>
@@ -40,39 +45,14 @@
 	</div>
 
 	<div class="_form-group">
-		<label for="Full Name">Full Name</label><br>
-		<input type="text" name="Full Name" placeholder="Full Name">
-	</div>
-
-	<div class="_form-group">
 		<label for="Graduation Year">Graduation Year</label><br>
-		<input type="number" name="Graduation Year" min="2015" 
+		<input type="number" name="Graduation Year" min="2016" 
 			placeholder="Graduation Year">
-	</div>
-
-	<div id="school-level-selection">
-		<h4>Academic Level</h4>
-		<label><input type="radio" name="school-level" value="high school"/> 
-			High School</label><br>
-		<label><input type="radio" name="school-level" value="college-us"/> 
-			College (US)</label><br>
-		<label><input type="radio" name="school-level" value="college-ca"/> 
-			College (Canada)</label>
-		<label><input type="radio" name="school-level" value="college"/> 
-			College (Not Listed)</label><br>
 	</div>
 
 	<div class="_form-group school-selection">
 		<label for="School">School</label><br>
 		<input type="text" name="School" placeholder="School"/>
-	</div>
-
-	<div class="_form-group us-colleges">
-		<select class="school-selection"></select>
-	</div>
-
-	<div class="_form-group ca-colleges">
-		<select class="school-selection"></select>
 	</div>
 
 	<div id="resume-upload" class="_form-group">
@@ -87,25 +67,25 @@
 			target="_blank">MLH Code of Conduct.</a>
 	</label><br>
 
-	<div id="travel-selection">
-		<h4>Preferred Method of Travel</h4>
-		These are <b>tentative</b> bus routes. <br><br/>
-		{{#each transportation}}
-			<label><input name="bus" value="{{this}}" type="radio">
-				{{ this }}</label><br>
-		{{/each}}
-	</div>
+	<label class="_checkbox"><input name="conduct" type="checkbox"/>
+		I agree to the <a href="https://hackrpi.com/assets/Rules.pdf" 
+			target="_blank">HackRPI 2016 Rules.</a>
+	</label><br>
 
-	<h4>T-Shirt Size</h4>
-	<div class="_form-group tshirt-size">
-		<select name="tshirt-size">
-			<option value="" selected></option>
-			<option value="Small">Small</option>
-			<option value="Medium">Medium</option>
-			<option value="Large">Large</option>
-			<option value="XLarge">XLarge</option>
-			<option value="XXLarge">XXLarge</option>
-		</select>
+	<div id="tshirt-size">
+		<h4>T-Shirt Size</h4>
+    <div class="_radio-group">
+      <label><input type="radio" name="tshirt-size" value="Small"/> 
+        Small</label>
+      <label><input type="radio" name="tshirt-size" value="Medium"/> 
+        Medium</label>
+			<label><input type="radio" name="tshirt-size" value="Large"/> 
+        Large</label>
+			<label><input type="radio" name="tshirt-size" value="XLarge"/> 
+        XLarge</label>
+			<label><input type="radio" name="tshirt-size" value="XXLarge"/> 
+        XXLarge</label>
+    </div>
 	</div>
 
 	<div id="diet-selection">
@@ -118,21 +98,6 @@
 			<label for="Other">Other</label><br>
 			<input type="text" name="Other" placeholder="Other"/>
 		</div>
-	</div>
-
-	<div class="_form-group">
-		<label for="Github Username">Github Username</label><br>
-		<input type="text" name="Github Username" placeholder="Github Username">
-	</div>
-
-	<div class="_form-group">
-		<label for="LinkedIn Profile">LinkedIn Profile</label><br>
-		<input type="text" name="LinkedIn Profile" placeholder="LinkedIn Profile">
-	</div>
-
-	<div class="_form-group">
-		<label for="Personal Website">Personal Website</label><br>
-		<input type="text" name="Personal Website" placeholder="Personal Website">
 	</div>
 	
 	<h4>Interest Areas</h4>
