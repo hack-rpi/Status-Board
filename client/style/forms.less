@@ -65,7 +65,8 @@
 }
 
 
-._radio-group {
+._radio-group,
+._checkbox-group {
 	display: -webkit-flex;
 	display: 	 	 -ms-flex;
 	display: 		     flex;
@@ -78,6 +79,8 @@
 		padding: 2px;
 		font-weight: normal;
 		cursor: pointer;
+		text-align: center;
+		vertical-align: middle;
 	}
 
 	label.active {
@@ -85,8 +88,14 @@
 		color: #FFF;
 	}
 
-	input[type="radio"] {
+	input[type="radio"],
+	input[type="checkbox"] {
 		display: none;
 	}
 
+}
+
+._button-group {
+	width: 100%;
+	text-align: center;
 }

@@ -1,32 +1,100 @@
-#race-selection, #gender-selection {
-	text-align: left;
-	padding-top: 15px;
-	padding-left: 25%;	
-}
+@import "global";
 
-#resume-upload {
-	text-align: left;
-	margin-left: 10%;
-}
+.register {
 
-#school-level-selection, #travel-origin-type, #diet-selection, #travel-selection {
-	// width: 180px;
-	// text-align: left;
+	.register-landing {
+		text-align: center;
+		margin-top: 100px;
+	}
+
 	margin: auto;
+	width: 98%;
+	
+	.group {
+		margin: 30px 0;
+	}
+
+	.school-selection, .zip-code, .international-loc {
+		display: none;
+	}
+
+	div#tshirt-size label {
+		flex-basis: 20%;
+	}
+
+	div#diet-selection label {
+		flex-basis: 25%;
+	}
+
+	div#interest-areas label {
+		flex-basis: 33%;
+	}
+
+	div#gender-selection label {
+		flex-basis: 25%;
+	}
+
+	div#race-selection label {
+		flex-basis: 33%;
+	}
+
+	@media only screen and (max-width: @small) {
+		div#travel-origin-type label,
+		div#tshirt-size label,
+		div#diet-selection label,
+		div#interest-areas label,
+		div#why-selection label,
+		div#gender-selection label,
+		div#race-selection label {
+			flex-basis: 100%;
+			font-size: 16px;
+		}
+		.register-landing {
+			margin-top: 10px;
+		}
+	}
+	@media only screen and (min-width: @small) and (max-width: @large) {
+		width: @small;
+	}
+	@media only screen and (min-width: @large) {
+		width: 600px;
+	}
+
+	#register-btn {
+		color: #FFF;
+		background-color: @accent;
+		width: 120px;
+		margin: 20px 0 40px 0;
+		
+		&:hover {
+			background-color: @dark-accent-2;
+		}
+	}
+
 }
 
-#travel-selection {
-	width: 250px !important;
-}
-
-.school-selection, .zip-code, .international-loc {
+.register .form-error {
+	margin-top: 10px;
 	display: none;
 }
 
-.register-hacker input[name="Number of Previous Hackathons"] {
-	width: 250px;
+.register-landing, .register-complete {
+  	display: none;
+	// position: absolute;
+	// margin-left: 25%;
+	// width: 50%;
 }
 
-div#tshirt-size label {
-	flex-basis: 20%;
+.register-landing .music {
+	display: none;
+}
+
+.language-selection, .framework-selection, .api-selection {
+	text-align: left;
+	padding-top: 15px;
+	margin-left: 15%;
+	
+	label {
+		width: 200px;
+	}
 }
