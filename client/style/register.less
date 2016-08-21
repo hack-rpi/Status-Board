@@ -8,7 +8,7 @@
 	}
 
 	margin: auto;
-	width: 98%;
+	width: 95%;
 	
 	.group {
 		margin: 30px 0;
@@ -39,6 +39,7 @@
 	}
 
 	@media only screen and (max-width: @small) {
+		font-size: @small_font;
 		div#travel-origin-type label,
 		div#tshirt-size label,
 		div#diet-selection label,
@@ -47,10 +48,15 @@
 		div#gender-selection label,
 		div#race-selection label {
 			flex-basis: 100%;
-			font-size: 16px;
+			font-size: @small_font;
 		}
 		.register-landing {
-			margin-top: 10px;
+			margin-top: 30px;
+		}
+		.register-btn,
+		#register-btn {
+			font-size: @small_font;
+			width: 200px;
 		}
 	}
 	@media only screen and (min-width: @small) and (max-width: @large) {
@@ -80,9 +86,6 @@
 
 .register-landing, .register-complete {
   	display: none;
-	// position: absolute;
-	// margin-left: 25%;
-	// width: 50%;
 }
 
 .register-landing .music {
