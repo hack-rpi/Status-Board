@@ -62,11 +62,11 @@ mobile-status-bar@1.0.12
 modules@0.7.6
 modules-runtime@0.7.6
 momentjs:moment@2.8.4
-mongo@1.1.11
+mongo@1.1.12
 mongo-id@1.0.5
 nimble:restivus@0.8.11
 npm-bcrypt@0.9.1
-npm-mongo@1.5.46
+npm-mongo@1.5.48
 oauth@1.1.11
 oauth2@1.1.10
 observe-sequence@1.0.12
