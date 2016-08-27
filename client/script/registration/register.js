@@ -191,7 +191,8 @@ Template.register.events({
         break;
     }
   },
-  'click .register-hacker-4 .register-btn[data-action="register"]': function(e) {
+  'click #register-btn[data-action="register"]': function(e) {
+    console.log('Hit');
     var $form = $('.register-hacker'),
         $error_box = $('.register-hacker .form-error'),
         // login information
@@ -221,7 +222,9 @@ Template.register.events({
         
         $conduct = $form.find('input[name="conduct"]'),
         conduct = $conduct.is(':checked'),
-        $resume = $form.find('input[name="resume"]'),
+        $rules = $form.find('input[name="rules"]'),
+        rules = $rules.is(':checked'),
+        $resume = $('#resume-upload :input[name="resume"]');
         resume_file = $resume[0].files[0],
         
         $transportation = $form.find('#travel-selection'),
@@ -234,14 +237,6 @@ Template.register.events({
         diet = _.map($diet.find('input:checked'), function(d) { 
           return $(d).attr('value'); }) || [],
         diet_special = $form.find('#diet-selection input[name="Other"]').val() || '',
-        
-        $github = $form.find('input[name="Github Username"]'),
-        github = $github.val() || '',
-        $linkedin = $form.find('input[name="LinkedIn Profile"]'),
-        linkedin = $linkedin.val() || '',
-        $website = $form.find('input[name="Personal Website"]'),
-        website = $website.val() || '',
-        
         $interest_areas = $form.find('.interest-areas select'),
         interest_areas = $interest_areas.val() || [],
         $why = $form.find('.why select'),
@@ -264,29 +259,15 @@ Template.register.events({
         first_error = 0;        // first section to contain an error
     
     // grab the school data from the right box
-    if (! school_level) {
-      form_errors.push('Please indicate your level of schooling.');
-      first_error = first_error || 1;
-    }
-    else if (school_level === 'college-us') {
-      $school = $('.us-colleges select.school-selection');
-      school = $school.val();
-    }
-    else if (school_level === 'college-ca') {
-      $school = $('.ca-colleges select.school-selection');
-      school = $school.val();
-    }
-    else {
-      $school = $('.school-selection input');
-      school = $school.val();
-    }
-    
+    $school = $('.school-selection input');
+    school = $school.val();
+   
     // All the form validation
     if (name === '') {
       form_errors.push('Please enter your name.');
       first_error = first_error || 1;
       Forms.highlightError($name, $error_box);
-    } 
+    }
     if (! Forms.isValidEmail(email)) {
       form_errors.push('Please enter a valid email.');
       first_error = first_error || 1;
@@ -307,7 +288,6 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($gyear, $error_box);
     }
-    
     if (travel_origin_type === '') {
       form_errors.push('Please indicate your point of origin.');
       first_error = first_error || 1;
@@ -322,8 +302,7 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($international_loc, $error_box);
     }
-    
-    if (school_level && school === '') {
+    if (school === '') {
       form_errors.push('Please enter your school.');
       first_error = first_error || 1;
       Forms.highlightError($school, $error_box);
@@ -332,6 +311,11 @@ Template.register.events({
       form_errors.push('You must agree to the MLH Code of Conduct.');
       first_error = first_error || 1;
       Forms.highlightError($conduct, $error_box);
+    }
+    if (! rules) {
+      form_errors.push('You must agree to the HackRPI Rules.');
+      first_error = first_error || 1;
+      Forms.highlightError($rules, $error_box);
     }
     if (resume_file && resume_file.type !== 'application/pdf') {
       form_errors.push('Resume upload must be a PDF.');
@@ -393,6 +377,8 @@ Template.register.events({
 
       return false;
     }
+    
+    console.log('Finished Error Checking');
 
     var createNewHacker = function(reader) {
       var binary_data;
@@ -406,10 +392,7 @@ Template.register.events({
       var profile = { 
         role: 'hacker',
         name: name,
-        school: {
-          name: school,
-          level: school_level
-        },
+        school: school,
         resume: binary_data,
         tshirt: tshirt,
         graduating: gyear,
@@ -423,11 +406,6 @@ Template.register.events({
           zipcode: zipcode,
           location: international_loc
         },
-        websites: {
-          github: github,
-          linkedIn: linkedin,
-          personal: website
-        },
         previous_hackathons: num_hacks,
         interests: {
           areas: interest_areas,
@@ -435,6 +413,7 @@ Template.register.events({
         },
         register_flags: {
           conduct: conduct,
+          rules: rules,
           provided_race: provided_race,
           provided_gender: provided_gender,
         }
