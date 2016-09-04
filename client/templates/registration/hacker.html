@@ -3,7 +3,7 @@
 
 	<h2>Hacker Registration</h2>
 
-	<div class="group">
+	<div class="group" id="register-hacker">
 		<div class="_form-group">
 			<label for="Full Name">Full Name</label><br>
 			<input type="text" name="Full Name" placeholder="Full Name">
@@ -11,7 +11,7 @@
 
 		<div class="_form-group">
 			<label for="Graduation Year">Graduation Year</label><br>
-			<input type="number" name="Graduation Year" min="2016" 
+			<input type="number" name="Graduation Year" min="2016"
 				placeholder="Graduation Year">
 		</div>
 
@@ -41,9 +41,9 @@
 	<div class="group" id="travel-origin-type">
 		<h4>Travel Origin</h4>
     <div class="_radio-group">
-      <label><input type="radio" name="travel-origin-type" value="United States"/> 
+      <label><input type="radio" name="travel-origin-type" value="United States"/>
         United States</label>
-      <label><input type="radio" name="travel-origin-type" value="International"/> 
+      <label><input type="radio" name="travel-origin-type" value="International"/>
         International</label>
     </div>
 
@@ -66,15 +66,15 @@
 	<div class="group" id="tshirt-size">
 		<h4>T-Shirt Size</h4>
     <div class="_radio-group">
-      <label><input type="radio" name="tshirt-size" value="Small"/> 
+      <label><input type="radio" name="tshirt-size" value="Small"/>
         Small</label>
-      <label><input type="radio" name="tshirt-size" value="Medium"/> 
+      <label><input type="radio" name="tshirt-size" value="Medium"/>
         Medium</label>
-			<label><input type="radio" name="tshirt-size" value="Large"/> 
+			<label><input type="radio" name="tshirt-size" value="Large"/>
         Large</label>
-			<label><input type="radio" name="tshirt-size" value="XLarge"/> 
+			<label><input type="radio" name="tshirt-size" value="XLarge"/>
         XLarge</label>
-			<label><input type="radio" name="tshirt-size" value="XXLarge"/> 
+			<label><input type="radio" name="tshirt-size" value="XXLarge"/>
         XXLarge</label>
     </div>
 	</div>
@@ -96,7 +96,7 @@
 			<input type="text" name="Other Dietary Restrictions" placeholder="Other Dietary Restrictions"/>
 		</div>
 	</div>
-	
+
 	<div class="group" id="interest-areas">
 		<h4>Interest Areas</h4>
 		<div class="_checkbox-group">
@@ -163,28 +163,28 @@
 			<p><strong>Upload Your Resume</strong></p>
 			<input name="resume" type="file"/>
 		</div>
-		
+
 		<br>
-		<label class="_checkbox"><input name="conduct" type="checkbox"/>
-			I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf" 
+		<label class="_checkbox"><input id="conduct" name="conduct" type="checkbox"/>
+			I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf"
 				target="_blank">MLH Code of Conduct.</a>
 		</label><br>
 
-		<label class="_checkbox"><input name="rules" type="checkbox"/>
-			I agree to the <a href="https://hackrpi.com/assets/Rules.pdf" 
+		<label class="_checkbox"><input id="rules" name="rules" type="checkbox"/>
+			I agree to the <a href="https://hackrpi.com/assets/Rules.pdf"
 				target="_blank">HackRPI 2016 Rules.</a>
 		</label><br>
 	</div>
 
-	<div class="alert alert-danger form-error" role="alert"></div>			
-	
+	<div id="errorField" class="alert alert-danger form-error" role="alert"></div>
+
 	<p>
 		We participate in Major League Hacking (MLH) as a MLH Member Event. You authorize us to share
 		certain application/registration information for event administration, ranking, MLH
 		administration, pre and post-event informational e-mails, and occasional messages about
 		hackathons in line with the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>.
 	</p>
-	
+
 	<div class="_button-group">
 		<div class="btn btn-default" id="register-btn" data-action="register">
 			Register
