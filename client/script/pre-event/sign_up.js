@@ -1,15 +1,15 @@
 Template.sign_up.rendered = function() {
-	$('.splash-text')
-		.velocity({
-			height: '230px',
-			width: '50%',
-			left: '25%',
-			padding: '50px 20px',
-			top: '200px'
-		}, 1500);
-	$('.splash-header, .splash-content, .splash-subheader')
-		.delay(1500)
-		.velocity('fadeIn');
+	// $('.splash-text')
+	// 	.velocity({
+	// 		height: '230px',
+	// 		width: '50%',
+	// 		left: '25%',
+	// 		padding: '50px 20px',
+	// 		top: '200px'
+	// 	}, 1500);
+	// $('.splash-header, .splash-content, .splash-subheader')
+	// 	.delay(1500)
+	// 	.velocity('fadeIn');
 };
 
 Template.sign_up.helpers({
@@ -39,7 +39,7 @@ Template.sign_up.events({
 		switch (target) {
 			case 'login':
 				$('.splash-text').velocity({
-					height: '440px'
+					'min-height': '440px'
 				}, 1000);
 				$('.splash-login')
 					.delay(1000)
