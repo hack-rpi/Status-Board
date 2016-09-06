@@ -25,12 +25,12 @@ Template.register.helpers({
       return 'register_hacker';
     }
     else if (Session.equals('register_page', 'mentor')) {
-      Meteor.setTimeout(function() {
-        $('.register-mentor-1')
-          .velocity('transition.slideRightBigIn', 1000);
-      }, 100);
-      return 'register_mentor';
       return 'register_landing';
+      // Meteor.setTimeout(function() {
+      //   $('.register-mentor-1')
+      //     .velocity('transition.slideRightBigIn', 1000);
+      // }, 100);
+      // return 'register_mentor';
     }
     else if (Session.equals('register_page', 'volunteer')) {
       return 'register_volunteer';
