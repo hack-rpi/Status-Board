@@ -1,0 +1,241 @@
+<template name="register">
+
+	<div class="register">
+
+		{{> Template.dynamic template=register_page }}
+
+	</div>
+
+</template>
+
+
+<template name="register_landing">
+
+	<div class="register-landing">
+		<p>
+			I want to be...
+		</p>
+		<div class="btn btn-default register-btn" data-action="init"
+				data-target="hacker">
+			a hacker.
+		</div><br>
+		<div class="btn btn-default register-btn" data-action="init"
+				data-target="mentor">
+			a mentor.
+		</div><br>
+		<div class="btn btn-default register-btn" data-action="init"
+				data-target="theverybest" data-index="0">
+			the very best.
+		</div>
+		<!-- <div class="row">
+			<button id="register_volunteer_btn"
+				class="btn btn-default register-btn-start">Register as a Volunteer
+			</button>
+		</div> -->
+		
+		<div class="music">
+			<iframe width="420" height="315" src=""
+			frameborder="0" allowfullscreen></iframe>
+		</div>
+		
+	</div>
+
+</template>
+
+
+<template name="register_mentor">
+
+	<div class="register-mentor">
+		<div class="alert alert-danger form-error" role="alert"></div>
+		
+		<div class="register-mentor-1">
+			<h3>Mentor Registration</h3>
+			<div class="row">
+				<div class="col-md-offset-1 col-md-5">
+					<div class="_form-group">
+						<label for="Email">Email</label><br>
+						<input type="text" name="Email" placeholder="Email">
+					</div>
+					<div class="_form-group">
+						<label for="Password">Password</label><br>
+						<input type="password" name="Password" placeholder="Password">
+					</div>
+					<div class="_form-group">
+						<label for="Confirm Password">Confirm Password</label><br>
+						<input type="password" name="Confirm Password"
+							placeholder="Confirm Password">
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="_form-group">
+						<label for="Full Name">Full Name</label><br>
+						<input type="text" name="Full Name" placeholder="Full Name">
+					</div>
+					<div class="_form-group">
+						<label for="Affiliation">Affiliation</label><br>
+						<input type="text" name="Affiliation" placeholder="Affiliation">
+					</div>
+					<div class="_form-group">
+						<label for="Phone Number">Phone Number</label><br>
+						<input type="text" name="Phone Number" placeholder="Phone Number">
+					</div>
+				</div>
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
+					data-target=".register-mentor-2">
+					Next
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-landing">
+				back
+			</div>
+		</div>
+
+		<div class="register-mentor-2">
+			Mentor Registration - Languages
+			<div class="language-selection">
+				{{#each languages}}
+					<label class="_checkbox"><input value="{{this}}" type="checkbox">
+						{{ this }}</label>
+				{{/each}}
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
+					data-target=".register-mentor-3">
+					Next
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-mentor-1">
+				back
+			</div>
+		</div>
+
+		<div class="register-mentor-3">
+			Mentor Registration - Frameworks and Libraries
+			<div class="framework-selection">
+				{{#each frameworks}}
+					<label class="_checkbox"><input value="{{this}}" type="checkbox">
+						{{ this }}</label>
+				{{/each}}
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="next"
+					data-target=".register-mentor-4">
+					Next
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-mentor-2">
+				back
+			</div>
+		</div>
+
+		<div class="register-mentor-4">
+			Mentor Registration - APIs
+			<div class="api-selection">
+				{{#each apis}}
+					<label class="_checkbox"><input value="{{this}}" type="checkbox">
+						{{ this }}</label>
+				{{/each}}
+			</div>
+			<div class="_form-group">
+				<div class="btn btn-default register-btn" data-action="register">
+					Register
+				</div>
+			</div>
+			<div class="btn register-btn" data-action="back"
+			 		data-target=".register-mentor-3">
+				back
+			</div>
+		</div>
+
+	</div>
+
+</template>
+
+
+<template name="register_volunteer">
+
+	<div class="register-panel-title">
+		<h2>Volunteer</h2>
+	</div>
+
+	<div class="register-panel">
+		<form id="register-panel-volunteer" class="form-horizontal" role="form">
+			<div id="reg-volunteer-page1">
+				<div class="form-group">
+					<label for="reg-volunteer-fname" class="col-sm-2 control-label">First Name</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="reg-volunteer-fname">
+					</div>
+					<label for="reg-volunteer-lname" class="col-sm-2 control-label">Last Name</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="reg-volunteer-lname">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="reg-volunteer-phone" class="col-sm-4 control-label">Phone Number</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="reg-volunteer-phone">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="reg-volunteer-email" class="col-sm-4 control-label">Email</label>
+					<div class="col-sm-6">
+						<input type="email" class="form-control" id="reg-volunteer-email">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="reg-volunteer-pass1" class="col-sm-4 control-label">Password</label>
+					<div class="col-sm-6">
+						<input type="password" class="form-control" id="reg-volunteer-pass1">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="reg-volunteer-pass2" class="col-sm-4 control-label">Retype Password</label>
+					<div class="col-sm-6">
+						<input type="password" class="form-control" id="reg-volunteer-pass2">
+					</div>
+				</div>
+				<div>1 of 2</div>
+				<button type="button" class="btn btn-default" id="reg-volunteer-page1-next">Next</button>
+			</div>
+			<div id="reg-volunteer-page2" class="reg-page-hidden">
+				<div class="col-sm-4">
+					<label>Select your availability</label>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="volunteer-time-grid">
+						</div>
+					</div>
+				</div>
+				<div>2 of 2</div>
+				<button type="button" class="btn btn-default" id="reg-volunteer-page2-prev">Prev</button>
+				<div id="reg-volunteer-submit">
+					<button type="submit" class="btn btn-default">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+</template>
+
+
+<template name="register_complete">
+	<div class="register-complete">
+		<h3>Registration Successful!</h3>
+		<p>
+			You have successfully registered for HackRPI 2016. 
+			You should be receiving a confirmation email shortly.
+			See you soon!
+		</p>
+		<div class="btn btn-default register-btn" data-action="link"
+			data-target="/user">
+			Profile
+		</div>
+	</div>
+</template>

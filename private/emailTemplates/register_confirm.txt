@@ -1,0 +1,21 @@
+Hi,
+
+You did it! You registered for the HackRPI 2016. It's going to be the best one yet! The first round of acceptances will be sent out around September 23 and will continue thereafter on a rolling basis every other week until the event.
+
+When you receive your acceptance email, you will have 10 days to confirm your spot. This email will contain information about transportation, including buses and reimbursements. If you fail to confirm your spot, your name will be thrown onto the bottom of the stack.
+
+In the meantime,
+ - Follow us on Twitter @gohackrpi [https://twitter.com/gohackrpi].
+ - Like our Facebook page to talk with other students going to HackRPI 2016 [https://facebook.com/hackrpi].
+ - Admire our last-minute technological preparations on Github [https://github.com/hack-rpi].
+ - Stay awesome.
+
+See you November 12!
+
+
+— The HackRPI Dev Team
+
+
+Facebook [https://www.facebook.com/hackrpi]
+Twitter [https://twitter.com/gohackrpi]
+Instagram [https://www.instagram.com/gohackrpi]

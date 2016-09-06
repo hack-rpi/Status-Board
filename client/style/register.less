@@ -1,0 +1,107 @@
+@import "global";
+
+.register {
+
+	.register-landing {
+		text-align: center;
+		margin-top: 100px;
+	}
+
+	margin: auto;
+	width: 95%;
+
+	.group {
+		margin: 30px 0;
+	}
+
+	.twitter-typeahead {
+		width: 100%;
+	}
+
+	.school-selection, .zip-code, .international-loc {
+		display: none;
+	}
+
+	div#tshirt-size label {
+		flex-basis: 20%;
+	}
+
+	div#diet-selection label {
+		flex-basis: 25%;
+	}
+
+	div#interest-areas label {
+		flex-basis: 33%;
+	}
+
+	div#gender-selection label {
+		flex-basis: 25%;
+	}
+
+	div#race-selection label {
+		flex-basis: 33%;
+	}
+
+	@media only screen and (max-width: @small) {
+		font-size: @small_font;
+		div#travel-origin-type label,
+		div#tshirt-size label,
+		div#diet-selection label,
+		div#interest-areas label,
+		div#why-selection label,
+		div#gender-selection label,
+		div#race-selection label {
+			flex-basis: 100%;
+			font-size: @small_font;
+		}
+		.register-landing {
+			margin-top: 30px;
+		}
+		.register-btn,
+		#register-btn {
+			font-size: @small_font;
+			width: 200px;
+		}
+	}
+	@media only screen and (min-width: @small) and (max-width: @large) {
+		width: @small;
+	}
+	@media only screen and (min-width: @large) {
+		width: 600px;
+	}
+
+	#register-btn {
+		color: #FFF;
+		background-color: @accent;
+		width: 120px;
+		margin: 20px 0 40px 0;
+
+		&:hover {
+			background-color: @dark-accent-2;
+		}
+	}
+
+}
+
+.register .form-error {
+	margin-top: 10px;
+	display: none;
+}
+
+.register-landing, .register-complete {
+  	display: none;
+}
+
+.register-landing .music {
+	display: none;
+}
+
+.language-selection, .framework-selection, .api-selection {
+	text-align: left;
+	padding-top: 15px;
+	margin-left: 15%;
+
+	label {
+		width: 200px;
+	}
+}

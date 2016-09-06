@@ -1,0 +1,199 @@
+<template name="register_hacker">
+<div class="reactive-container">
+
+	<h2>Hacker Registration</h2>
+
+	<div class="group" id="register-hacker">
+		<div class="_form-group">
+			<label for="Full Name">Full Name</label><br>
+			<input type="text" name="Full Name" placeholder="Full Name">
+		</div>
+
+		<div class="_form-group">
+			<label for="Graduation Year">Graduation Year</label><br>
+			<input type="number" name="Graduation Year" min="2016"
+				placeholder="Graduation Year">
+		</div>
+
+		<div class="_form-group">
+			<label for="Email">Email</label><br>
+			<input type="text" name="Email" placeholder="Email">
+		</div>
+
+		<div class="_form-group">
+			<label for="Password">Password</label><br>
+			<input type="password" name="Password" placeholder="Password">
+		</div>
+
+		<div class="_form-group">
+			<label for="Confirm Password">Confirm Password</label><br>
+			<input type="password" name="Confirm Password"
+				placeholder="Confirm Password">
+		</div>
+
+		<div class="_form-group">
+			<label for="Number of Previous Hackathons">Number of Previous Hackathons</label><br>
+			<input type="number" name="Number of Previous Hackathons" min="0"
+				placeholder="Number of Previous Hackathons">
+		</div>
+
+		<div class="_form-group">
+			<label for="school">School</label><br>
+			<input type="text" id='school' class="typeahead" name="School" placeholder="School"
+			 autocomplete="off" data-source="schools">
+		</div>
+	</div>
+
+	<div class="group" id="travel-origin-type">
+		<h4>Travel Origin</h4>
+    <div class="_radio-group">
+      <label><input type="radio" name="travel-origin-type" value="United States"/>
+        United States</label>
+      <label><input type="radio" name="travel-origin-type" value="International"/>
+        International</label>
+    </div>
+
+		<div class="_form-group zip-code">
+			<label for="Zip Code">Zip Code</label><br>
+			<input type="text" id='zipcode' name="Zip Code" placeholder="Zip Code"/>
+		</div>
+
+		<div class="_form-group international-loc">
+			<label for="City, Country">City, Country</label><br>
+			<input type="text" id='internation_start' name="City, Country" placeholder="City, Country"/>
+		</div>
+
+	</div>
+
+	<div class="group" id="tshirt-size">
+		<h4>T-Shirt Size</h4>
+    <div class="_radio-group">
+      <label><input type="radio" name="tshirt-size" value="Small"/>
+        Small</label>
+      <label><input type="radio" name="tshirt-size" value="Medium"/>
+        Medium</label>
+			<label><input type="radio" name="tshirt-size" value="Large"/>
+        Large</label>
+			<label><input type="radio" name="tshirt-size" value="XLarge"/>
+        XLarge</label>
+			<label><input type="radio" name="tshirt-size" value="XXLarge"/>
+        XXLarge</label>
+    </div>
+	</div>
+
+	<div class="group" id="diet-selection">
+		<h4>Dietary Restrictions</h4>
+		<div class="_checkbox-group">
+			<label><input name="diet" value="Vegetarian" type="checkbox">
+				Vegetarian</label>
+			<label><input name="diet" value="Vegan" type="checkbox">
+				Vegan</label>
+			<label><input name="diet" value="Gluten Free" type="checkbox">
+				Gluten Free</label>
+			<label><input name="diet" value="Lactose Intolerant" type="checkbox">
+				Lactose Intolerant</label>
+		</div>
+		<div class="_form-group">
+			<label for="Other Dietary Restrictions">Other Dietary Restrictions</label><br>
+			<input type="text" id='other_diet' name="Other Dietary Restrictions" placeholder="Other Dietary Restrictions"/>
+		</div>
+	</div>
+
+	<div class="group" id="interest-areas">
+		<h4>Interest Areas</h4>
+		<div class="_checkbox-group">
+			<label><input name="interest" value="Frontend (UI/UX)" type="checkbox">
+				Frontend (UI/UX)</label>
+			<label><input name="interest" value="Mobile" type="checkbox">
+				Mobile</label>
+			<label><input name="interest" value="Hardware" type="checkbox">
+				Hardware</label>
+			<label><input name="interest" value="Backend" type="checkbox">
+				Backend</label>
+			<label><input name="interest" value="Data Science" type="checkbox">
+				Data Science</label>
+			<label><input name="interest" value="Game Development" type="checkbox">
+				Game Development</label>
+		</div>
+	</div>
+
+	<div class="group" id="why-selection">
+		<h4>Why HackRPI?</h4>
+		<div class="_checkbox-group">
+			<label><input name="why" value="To make a cool project" type="checkbox">
+				To make a cool project</label>
+			<label><input name="why" value="To explore new technologies" type="checkbox">
+				To explore new technologies</label>
+			<label><input name="why" value="To find a job" type="checkbox">
+				To find a job</label>
+			<label><input name="why" value="To meet new people" type="checkbox">
+				To meet new people</label>
+		</div>
+	</div>
+
+	<div class="group" id="gender-selection">
+		<h4>Gender</h4>
+		<p><i>This field is optional and will have no effect on your admittance to HackRPI.</i></p>		
+		<div class="_radio-group">
+			<label><input type="radio" name="gender" value="male"/>Male</label>
+			<label><input type="radio" name="gender" value="female"/>Female</label>
+			<label><input type="radio" name="gender" value="other"/>Other</label>
+			<label><input type="radio" name="gender" value=""/>Prefer not to answer</label>
+		</div>
+	</div>
+
+	<div class="group" id="race-selection">
+		<h4>Race</h4>
+		<p><i>This field is optional and will have no effect on your admittance to HackRPI.</i></p>
+		<div class="_checkbox-group">
+			<label><input name="interest" value="Asian / Pacific Islander" type="checkbox">
+				Asain / Pacific Islander</label>
+			<label><input name="interest" value="Black / African American" type="checkbox">
+				Black / African American</label>
+			<label><input name="interest" value="Hispanic / Latino" type="checkbox">
+				Hispanic / Latino</label>
+			<label><input name="interest" value="Middle Eastern" type="checkbox">
+				Middle Eastern</label>
+			<label><input name="interest" value="Native American" type="checkbox">
+				Native American</label>
+			<label><input name="interest" value="White" type="checkbox">
+				White</label>
+		</div>
+	</div>
+
+	<div class="group">
+		<div id="resume-upload" class="_form-group">
+			<br>
+			<p><strong>Upload Your Resume</strong></p>
+			<input name="resume" type="file"/>
+		</div>
+
+		<br>
+		<label class="_checkbox"><input id="conduct" name="conduct" type="checkbox"/>
+			I agree to the <a href="http://static.mlh.io/docs/mlh-code-of-conduct.pdf"
+				target="_blank">MLH Code of Conduct.</a>
+		</label><br>
+
+		<label class="_checkbox"><input id="rules" name="rules" type="checkbox"/>
+			I agree to the <a href="https://hackrpi.com/assets/Rules.pdf"
+				target="_blank">HackRPI 2016 Rules.</a>
+		</label><br>
+	</div>
+
+	<div id="errorField" class="alert alert-danger form-error" role="alert"></div>
+
+	<p>
+		We participate in Major League Hacking (MLH) as a MLH Member Event. You authorize us to share
+		certain application/registration information for event administration, ranking, MLH
+		administration, pre and post-event informational e-mails, and occasional messages about
+		hackathons in line with the <a href="https://mlh.io/privacy">MLH Privacy Policy</a>.
+	</p>
+
+	<div class="_button-group">
+		<div class="btn btn-default" id="register-btn" data-action="register">
+			Register
+		</div>
+	</div>
+
+</div>
+</template>

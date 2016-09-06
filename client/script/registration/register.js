@@ -1,3 +1,20 @@
+Template.register.rendered = function() {
+  Meteor.subscribe('userData');
+  Meteor.subscribe('AnonUserData');
+  Session.set('register_page', 'register_landing');
+};
+
+Template.register_hacker.rendered = function() {
+  Meteor.subscribe('USColleges');
+  Meteor.typeahead.inject();
+};
+
+Template.register_landing.events({
+  'click .register-btn': function(e) {
+    Session.set('register_page', $(e.target).attr('data-action'));
+  }
+});
+
 Template.register.helpers({
   register_page: function() {
     if (Session.equals('register_page', 'hacker')) {
@@ -8,12 +25,12 @@ Template.register.helpers({
       return 'register_hacker';
     }
     else if (Session.equals('register_page', 'mentor')) {
-      Meteor.setTimeout(function() {
-        $('.register-mentor-1')
-          .velocity('transition.slideRightBigIn', 1000);
-      }, 100);
-      return 'register_mentor';
       return 'register_landing';
+      // Meteor.setTimeout(function() {
+      //   $('.register-mentor-1')
+      //     .velocity('transition.slideRightBigIn', 1000);
+      // }, 100);
+      // return 'register_mentor';
     }
     else if (Session.equals('register_page', 'volunteer')) {
       return 'register_volunteer';
@@ -31,18 +48,9 @@ Template.register.helpers({
       }, 100);
       return 'register_landing';
     }
-  }
-});
-
-Template.register.rendered = function() {
-  Meteor.subscribe('userData');
-  Meteor.subscribe('AnonUserData');
-  Session.set('register_page', 'register_landing');
-};
-
-Template.register_landing.events({
-  'click .register-btn': function(e) {
-    Session.set('register_page', $(e.target).attr('data-action'));
+  },
+  schools: function() {
+    return USColleges.find().fetch().map(function(d) { return d.name; });
   }
 });
 
@@ -167,21 +175,21 @@ Template.register.events({
             $(target)
               .delay(1000)
               .velocity('transition.slideDownBigIn');
-            break; 
+            break;
           case '.register-hacker-2':
              $('.register-hacker-3').velocity('transition.slideDownBigOut',
               1000);
             $(target)
               .delay(1000)
               .velocity('transition.slideDownBigIn');
-            break; 
+            break;
           case '.register-hacker-1':
              $('.register-hacker-2').velocity('transition.slideDownBigOut',
               1000);
             $(target)
               .delay(1000)
               .velocity('transition.slideDownBigIn');
-            break;              
+            break;
         }
         break;
       case 'link':
@@ -191,9 +199,9 @@ Template.register.events({
         break;
     }
   },
-  'click .register-hacker-4 .register-btn[data-action="register"]': function(e) {
-    var $form = $('.register-hacker'),
-        $error_box = $('.register-hacker .form-error'),
+  'click #register-btn[data-action="register"]': function(e) {
+    var $form = $('#register-hacker'),
+        $error_box = $('#errorField'),
         // login information
         $email = $form.find('input[name="Email"]'),
         email = $email.val() || '',
@@ -206,87 +214,71 @@ Template.register.events({
         name = $name.val() || '',
         $gyear = $form.find('input[name="Graduation Year"]'),
         gyear = $gyear.val() || '',
-        
-        $travel_origin = $form.find('#travel-origin-type input:checked'),
-        travel_origin_type = $travel_origin.attr('value') || '',
-        $zipcode = $form.find('input[name="Zip Code"]'),
+
+        $travel_origin = $("#travel-origin-type input[type='radio']:checked"),
+        travel_origin_type = $travel_origin.val() || '',
+        $zipcode = $('#zipcode'),
         zipcode = $zipcode.val() || '',
-        $international_loc = $form.find('input[name="City, Country"]'),
+        $international_loc = $('#internation_start'),
         international_loc = $international_loc.val(),
-        
-        $school_level = $form.find('#school-level-selection input:checked'),
-        school_level = $school_level.attr('value') || null,
-        $school = null,
-        school = '',
-        
-        $conduct = $form.find('input[name="conduct"]'),
+
+        $conduct = $('#conduct'),
         conduct = $conduct.is(':checked'),
-        $resume = $form.find('input[name="resume"]'),
+        $rules = $('#rules'),
+        rules = $rules.is(':checked'),
+        $resume = $('#resume-upload :input[name="resume"]');
         resume_file = $resume[0].files[0],
-        
         $transportation = $form.find('#travel-selection'),
         transportation = $transportation.find('input:checked').attr('value') || '',
-        
-        $tshirt = $form.find('.tshirt-size select'),
+
+        $tshirt = $("#tshirt-size input[type='radio']:checked"),
         tshirt = $tshirt.val() || '',
-        
-        $diet = $form.find('#diet-selection'),
-        diet = _.map($diet.find('input:checked'), function(d) { 
-          return $(d).attr('value'); }) || [],
-        diet_special = $form.find('#diet-selection input[name="Other"]').val() || '',
-        
-        $github = $form.find('input[name="Github Username"]'),
-        github = $github.val() || '',
-        $linkedin = $form.find('input[name="LinkedIn Profile"]'),
-        linkedin = $linkedin.val() || '',
-        $website = $form.find('input[name="Personal Website"]'),
-        website = $website.val() || '',
-        
-        $interest_areas = $form.find('.interest-areas select'),
-        interest_areas = $interest_areas.val() || [],
-        $why = $form.find('.why select'),
-        why = $why.val() || '',
+        $diet = $("#diet-selection input[type='checkbox']:checked"),
+        diet = [],
+        diet_special = $('#other_diet').val() || '',
+        $interest_areas = $("#interest-areas input[type='checkbox']:checked"),
+        interest_areas = [],
+        $why = $("#why-selection input[type='checkbox']:checked"),
+        why = [],
         $num_hacks = $form.find('input[name="Number of Previous Hackathons"]'),
-        num_hacks = $num_hacks.val() || -1, 
-        
+        num_hacks = $num_hacks.val() || -1,
+
         // anonymous data
-        $gender = $form.find('#gender-selection'),
+        $gender = $('#gender-selection'),
         gender = $gender.find('input:checked').attr('value') || null,
-        $race = $form.find('#race-selection'),
-        race = _.map($race.find('input:checked'), function(r) { 
+        $race = $('#race-selection'),
+        race = _.map($race.find('input:checked'), function(r) {
           return $(r).attr('value'); }) || null,
         provided_race = race !== null,
         provided_gender = gender !== null;
+    //aggregate value from checkbox groups
+    $diet.each(function() {
+      diet.push($(this).val());
+    });
+
+    $interest_areas.each(function() {
+      interest_areas.push($(this).val());
+    });
+
+    $why.each(function() {
+      why.push($(this).val());
+    });
+
 
     $error_box.empty();
     $error_box.hide();
     var form_errors = [],       // form errors to be displayed
         first_error = 0;        // first section to contain an error
-    
+
     // grab the school data from the right box
-    if (! school_level) {
-      form_errors.push('Please indicate your level of schooling.');
-      first_error = first_error || 1;
-    }
-    else if (school_level === 'college-us') {
-      $school = $('.us-colleges select.school-selection');
-      school = $school.val();
-    }
-    else if (school_level === 'college-ca') {
-      $school = $('.ca-colleges select.school-selection');
-      school = $school.val();
-    }
-    else {
-      $school = $('.school-selection input');
-      school = $school.val();
-    }
-    
+    $school = $('#school');
+    school = $school.val();
     // All the form validation
     if (name === '') {
       form_errors.push('Please enter your name.');
       first_error = first_error || 1;
       Forms.highlightError($name, $error_box);
-    } 
+    }
     if (! Forms.isValidEmail(email)) {
       form_errors.push('Please enter a valid email.');
       first_error = first_error || 1;
@@ -307,7 +299,11 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($gyear, $error_box);
     }
-    
+    if (school === '') {
+      form_errors.push('Please provide your school.');
+      first_error = first_error || 1;
+      Forms.highlightError($school, $error_box);
+    }
     if (travel_origin_type === '') {
       form_errors.push('Please indicate your point of origin.');
       first_error = first_error || 1;
@@ -322,8 +318,7 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($international_loc, $error_box);
     }
-    
-    if (school_level && school === '') {
+    if (school === '') {
       form_errors.push('Please enter your school.');
       first_error = first_error || 1;
       Forms.highlightError($school, $error_box);
@@ -333,28 +328,32 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($conduct, $error_box);
     }
-    if (resume_file && resume_file.type !== 'application/pdf') {
-      form_errors.push('Resume upload must be a PDF.');
+    if (! rules) {
+      form_errors.push('You must agree to the HackRPI Rules.');
       first_error = first_error || 1;
-      Forms.highlightError($resume, $error_box);
-    } 
-    if (resume_file && resume_file.size / 1024 > 1024) {
-      form_errors.push('Maximum resume file size is 1MB.');
+      Forms.highlightError($rules, $error_box);
+    }
+    if (!resume_file) {
+      form_errors.push('Please provide a resume');
       first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
     }
-    
-    if (transportation === '') {
-      form_errors.push('Please indicate your method of travel.');
-      first_error = first_error || 2;
-      Forms.highlightError($transportation, $error_box);
+    else if (resume_file.type !== 'application/pdf') {
+      form_errors.push('Resume upload must be a PDF.');
+      first_error = first_error || 1;
+      Forms.highlightError($resume, $error_box);
+    }
+    else if (resume_file && resume_file.size / 1024 > 1024) {
+      form_errors.push('Maximum resume file size is 1MB.');
+      first_error = first_error || 1;
+      Forms.highlightError($resume, $error_box);
     }
     if (tshirt === '') {
       form_errors.push('Please indicate your tshirt size.');
       first_error = first_error || 2;
       Forms.highlightError($tshirt, $error_box);
     }
-    
+
     if (interest_areas.length === 0) {
       form_errors.push('Please indicate your areas of interest.');
       first_error = first_error || 3;
@@ -390,7 +389,6 @@ Template.register.events({
         .velocity('transition.slideUpBigOut', 300);
       $('.register-hacker-' + first_error)
         .velocity('transition.slideUpBigIn', 300);
-
       return false;
     }
 
@@ -403,16 +401,13 @@ Template.register.events({
         binary_data = '';
       }
 
-      var profile = { 
+      var profile = {
         role: 'hacker',
         name: name,
-        school: {
-          name: school,
-          level: school_level
-        },
+        school: school,
         resume: binary_data,
         tshirt: tshirt,
-        graduating: gyear,
+        graduating: parseInt(gyear, 10),
         diet: {
           list: diet,
           special: diet_special
@@ -423,20 +418,18 @@ Template.register.events({
           zipcode: zipcode,
           location: international_loc
         },
-        websites: {
-          github: github,
-          linkedIn: linkedin,
-          personal: website
-        },
-        previous_hackathons: num_hacks,
+        previous_hackathons: parseInt(num_hacks, 10),
         interests: {
           areas: interest_areas,
           why: why
         },
+        meta: {
+          gender: gender,
+          race: race
+        },
         register_flags: {
           conduct: conduct,
-          provided_race: provided_race,
-          provided_gender: provided_gender,
+          rules: rules,
         }
       };
 
@@ -466,20 +459,23 @@ Template.register.events({
             }
           }
           else {
-            // add the anonymous user data
-            if (provided_gender || provided_race) {
-              AnonUserData.insert({
-                gender: gender,
-                race: race
-              });
-            }
             // success
+            var subject = 'HackRPI 2016 Registration Complete!'
+            Meteor.call('sendEmail', 
+              email, 
+              subject, 
+              {
+                name: name,
+                subject: subject,
+              },
+              'register_confirm'
+            );
             Session.set('register_page', 'complete');
           }
         }
       );
     }
-    
+
     if (resume_file) {
       var reader = new FileReader();
       // Create user when the resume binary data is done reading.
@@ -494,7 +490,7 @@ Template.register.events({
   'click .register-mentor-4 .register-btn[data-action="register"]': function(e,t) {
     e.preventDefault();
     var $form = $('.register-mentor'),
-        $error_box = $form.find('.form-error'),
+        $error_box = $.find('#errorField'),
         $email = $form.find('input[name="Email"]'),
         email = $email.val() || '',
         $pass1 = $form.find('input[name="Password"]'),
@@ -522,42 +518,42 @@ Template.register.events({
         tags = _.flatten([languages, frameworks, apis]);
 
     phone = Forms.stripPhone(phone);
-    
+
     $error_box.empty();
     $error_box.hide();
     var form_errors = [],       // form errors to be displayed
         first_error = 0;        // first section to contain an error
-    
+
     if (name === '') {
       form_errors.push('Please enter your name.');
       first_error = first_error || 1;
       Forms.highlightError($name);
     }
-    
+
     if (! Forms.isValidEmail(email)) {
       form_errors.push('Please enter a valid email');
       first_error.first_error || 1;
       Forms.highlightError($email);
     }
-    
+
     if (! Forms.isValidPassword(pass1)) {
       form_errors.push('Password must be at least 6 characters.');
       first_error.first_error || 1;
       Forms.highlightError($pass1);
     }
-    
+
     if (pass1 !== pass2) {
       form_errors.push('Passwords must match.');
       first_error.first_error || 1;
       Forms.highlightError(pass2);
     }
-    
+
     if (! phone) {
       form_errors.push('Please enter a valid phone number.');
       first_error.first_error || 1;
       Forms.highlightError($phone);
     }
-    
+
     if (form_errors.length > 0) {
       // Load error messages into error box
       var error_header = document.createElement('strong');
@@ -580,7 +576,7 @@ Template.register.events({
 
       return false;
     }
-    
+
     var profile = {
           role: "mentor",
           name: name,
@@ -595,15 +591,13 @@ Template.register.events({
           history: [],
           tags: tags
         };
-        
-    console.log(profile);
 
     Accounts.createUser(
-      { 
+      {
         email: email,
         password: pass1,
         profile: profile,
-      }, 
+      },
       function(err) {
         if (err) {
           if (err.error == 403) {
@@ -627,7 +621,7 @@ Template.register.events({
           // success
           Session.set('register_page', 'complete');
           return true;
-        } 
+        }
     });
     return false;
   },
@@ -737,7 +731,7 @@ Template.register_hacker.helpers({
   'races': function() {
     return [
       'Asian / Pacific Islander',
-      'Black / African American', 
+      'Black / African American',
       'Hispanic / Latino',
       'Middle Eastern',
       'Native American',
@@ -794,13 +788,13 @@ Template.register_hacker.events({
       $('div.school-selection').show();
     }
   },
-  'change #travel-origin-type input': function() {
+  'change #travel-origin-type label': function(event) {
     var ttype = $('#travel-origin-type input:checked').attr('value');
     $('.zip-code').hide();
     $('.international-loc').hide();
     if (ttype === 'United States')
       $('.zip-code').show();
-    else 
+    else
       $('.international-loc').show();
   }
 });

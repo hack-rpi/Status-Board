@@ -3,3 +3,4 @@ hackrpi_settings.json
 .vagrant
 shared/*
 typings
+node_modules
