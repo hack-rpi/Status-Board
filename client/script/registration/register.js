@@ -252,15 +252,15 @@ Template.register.events({
         provided_race = race !== null,
         provided_gender = gender !== null;
     //aggregate value from checkbox groups
-    $diet.each(function(){
+    $diet.each(function() {
       diet.push($(this).val());
     });
 
-    $interest_areas.each(function(){
+    $interest_areas.each(function() {
       interest_areas.push($(this).val());
     });
 
-    $why.each(function(){
+    $why.each(function() {
       why.push($(this).val());
     });
 
@@ -334,7 +334,7 @@ Template.register.events({
       Forms.highlightError($rules, $error_box);
     }
     if (!resume_file) {
-      form_errors.push('Please Provide a Resume');
+      form_errors.push('Please provide a resume');
       first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
     }
@@ -407,7 +407,7 @@ Template.register.events({
         school: school,
         resume: binary_data,
         tshirt: tshirt,
-        graduating: gyear,
+        graduating: parseInt(gyear, 10),
         diet: {
           list: diet,
           special: diet_special
@@ -418,16 +418,18 @@ Template.register.events({
           zipcode: zipcode,
           location: international_loc
         },
-        previous_hackathons: num_hacks,
+        previous_hackathons: parseInt(num_hacks, 10),
         interests: {
           areas: interest_areas,
           why: why
         },
+        meta: {
+          gender: gender,
+          race: race
+        },
         register_flags: {
           conduct: conduct,
           rules: rules,
-          provided_race: provided_race,
-          provided_gender: provided_gender,
         }
       };
 
@@ -457,14 +459,17 @@ Template.register.events({
             }
           }
           else {
-            // add the anonymous user data
-            if (provided_gender || provided_race) {
-              AnonUserData.insert({
-                gender: gender,
-                race: race
-              });
-            }
             // success
+            var subject = 'HackRPI 2016 Registration Complete!'
+            Meteor.call('sendEmail', 
+              email, 
+              subject, 
+              {
+                name: name,
+                subject: subject,
+              },
+              'register_confirm'
+            );
             Session.set('register_page', 'complete');
           }
         }
