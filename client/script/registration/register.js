@@ -1,3 +1,20 @@
+Template.register.rendered = function() {
+  Meteor.subscribe('userData');
+  Meteor.subscribe('AnonUserData');
+  Session.set('register_page', 'register_landing');
+};
+
+Template.register_hacker.rendered = function() {
+  Meteor.subscribe('USColleges');
+  Meteor.typeahead.inject();
+};
+
+Template.register_landing.events({
+  'click .register-btn': function(e) {
+    Session.set('register_page', $(e.target).attr('data-action'));
+  }
+});
+
 Template.register.helpers({
   register_page: function() {
     if (Session.equals('register_page', 'hacker')) {
@@ -31,18 +48,9 @@ Template.register.helpers({
       }, 100);
       return 'register_landing';
     }
-  }
-});
-
-Template.register.rendered = function() {
-  Meteor.subscribe('userData');
-  Meteor.subscribe('AnonUserData');
-  Session.set('register_page', 'register_landing');
-};
-
-Template.register_landing.events({
-  'click .register-btn': function(e) {
-    Session.set('register_page', $(e.target).attr('data-action'));
+  },
+  schools: function() {
+    return USColleges.find().fetch().map(function(d) { return d.name; });
   }
 });
 
@@ -207,17 +215,12 @@ Template.register.events({
         $gyear = $form.find('input[name="Graduation Year"]'),
         gyear = $gyear.val() || '',
 
-        $travel_origin = $form.find('#travel-origin-type input:checked'),
-        travel_origin_type = $travel_origin.attr('value') || '',
-        $zipcode = $form.find('input[name="Zip Code"]'),
+        $travel_origin = $("#travel-origin-type input[type='radio']:checked"),
+        travel_origin_type = $travel_origin.val() || '',
+        $zipcode = $('#zipcode'),
         zipcode = $zipcode.val() || '',
-        $international_loc = $form.find('input[name="City, Country"]'),
+        $international_loc = $('#internation_start'),
         international_loc = $international_loc.val(),
-
-        $school_level = $form.find('#school-level-selection input:checked'),
-        school_level = $school_level.attr('value') || null,
-        $school = null,
-        school = '',
 
         $conduct = $('#conduct'),
         conduct = $conduct.is(':checked'),
@@ -232,7 +235,7 @@ Template.register.events({
         tshirt = $tshirt.val() || '',
         $diet = $("#diet-selection input[type='checkbox']:checked"),
         diet = [],
-        diet_special = $form.find('#diet-selection input[name="Other"]').val() || '',
+        diet_special = $('#other_diet').val() || '',
         $interest_areas = $("#interest-areas input[type='checkbox']:checked"),
         interest_areas = [],
         $why = $("#why-selection input[type='checkbox']:checked"),
@@ -248,7 +251,6 @@ Template.register.events({
           return $(r).attr('value'); }) || null,
         provided_race = race !== null,
         provided_gender = gender !== null;
-
     //aggregate value from checkbox groups
     $diet.each(function(){
       diet.push($(this).val());
@@ -269,9 +271,8 @@ Template.register.events({
         first_error = 0;        // first section to contain an error
 
     // grab the school data from the right box
-    $school = $('.school-selection input');
+    $school = $('#school');
     school = $school.val();
-
     // All the form validation
     if (name === '') {
       form_errors.push('Please enter your name.');
@@ -298,7 +299,11 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($gyear, $error_box);
     }
-    /*
+    if (school === '') {
+      form_errors.push('Please provide your school.');
+      first_error = first_error || 1;
+      Forms.highlightError($school, $error_box);
+    }
     if (travel_origin_type === '') {
       form_errors.push('Please indicate your point of origin.');
       first_error = first_error || 1;
@@ -313,14 +318,11 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($international_loc, $error_box);
     }
-    */
-    /*
     if (school === '') {
       form_errors.push('Please enter your school.');
       first_error = first_error || 1;
       Forms.highlightError($school, $error_box);
     }
-    */
     if (! conduct) {
       form_errors.push('You must agree to the MLH Code of Conduct.');
       first_error = first_error || 1;
@@ -331,23 +333,21 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($rules, $error_box);
     }
-    if (resume_file && resume_file.type !== 'application/pdf') {
+    if (!resume_file) {
+      form_errors.push('Please Provide a Resume');
+      first_error = first_error || 1;
+      Forms.highlightError($resume, $error_box);
+    }
+    else if (resume_file.type !== 'application/pdf') {
       form_errors.push('Resume upload must be a PDF.');
       first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
     }
-    if (resume_file && resume_file.size / 1024 > 1024) {
+    else if (resume_file && resume_file.size / 1024 > 1024) {
       form_errors.push('Maximum resume file size is 1MB.');
       first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
     }
-    /*
-    if (transportation === '') {
-      form_errors.push('Please indicate your method of travel.');
-      first_error = first_error || 2;
-      Forms.highlightError($transportation, $error_box);
-    }
-    */
     if (tshirt === '') {
       form_errors.push('Please indicate your tshirt size.');
       first_error = first_error || 2;
@@ -389,11 +389,8 @@ Template.register.events({
         .velocity('transition.slideUpBigOut', 300);
       $('.register-hacker-' + first_error)
         .velocity('transition.slideUpBigIn', 300);
-      console.log(form_errors);
       return false;
     }
-
-    console.log('Finished Error Checking');
 
     var createNewHacker = function(reader) {
       var binary_data;
@@ -589,8 +586,6 @@ Template.register.events({
           history: [],
           tags: tags
         };
-
-    console.log(profile);
 
     Accounts.createUser(
       {
