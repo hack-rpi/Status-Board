@@ -199,10 +199,10 @@ Template.user_profile.events({
       });
       return;
     } 
-    else if (resume_file.size / 1024 > 1024) {
+    else if (resume_file.size / 1024 > 10240) {
       Session.set('displayMessage', {
         title: 'Resume Error',
-        body: 'Maximum resume file size is 1MB.'
+        body: 'Maximum resume file size is 10MB.'
       });
       return;
     }

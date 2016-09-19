@@ -343,8 +343,8 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
     }
-    else if (resume_file && resume_file.size / 1024 > 1024) {
-      form_errors.push('Maximum resume file size is 1MB.');
+    else if (resume_file && resume_file.size / 1024 > 10240) {
+      form_errors.push('Maximum resume file size is 10MB.');
       first_error = first_error || 1;
       Forms.highlightError($resume, $error_box);
     }
