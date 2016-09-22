@@ -199,10 +199,10 @@ Template.user_profile.events({
       });
       return;
     } 
-    else if (resume_file.size / 1024 > 1024) {
+    else if (resume_file.size / 1024 > 10240) {
       Session.set('displayMessage', {
         title: 'Resume Error',
-        body: 'Maximum resume file size is 1MB.'
+        body: 'Maximum resume file size is 10MB.'
       });
       return;
     }
@@ -230,9 +230,6 @@ Template.user_profile.events({
         new_travel = $('.travel-selection input:checked').attr('value') || '',
         new_diet = [],
         new_special_diet = t.find('#UPedit-diet-special').value,
-        new_github = t.find('#UPedit-github').value,
-        new_linkedin = t.find('#UPedit-linkedIn').value,
-        new_website = t.find('#UPedit-website').value,
         new_zipcode = null,
         new_city_country =  null;
         
@@ -247,37 +244,34 @@ Template.user_profile.events({
       new_diet.push(this.value);
     });
 
-    if (Meteor.users.update({ "_id": Meteor.userId() }, {
+    Meteor.users.update({ "_id": Meteor.userId() }, {
         $set: {
           "profile.name": new_name,
           "profile.affiliation": new_affiliation,
           "profile.phone": new_phone,
           'profile.location': new_location,
-          "profile.school.name": new_school,
+          "profile.school": new_school,
           'profile.travel.method': new_travel,
           'profile.travel.zipcode': new_zipcode,
           'profile.travel.location': new_city_country,
           'profile.diet.list': new_diet,
-          'profile.diet.special': new_special_diet,
-          'profile.websites.github': new_github,
-          'profile.websites.linkedIn': new_linkedin,
-          'profile.websites.personal': new_website
+          'profile.diet.special': new_special_diet
         }
-    })) {
-      // data save successfully
-      Session.set("displayMessage", {
-        title: "Success", 
-        body: "Data saved successfully!"
-      });
-    }
-    else {
-      // data failed to save
-      Session.set("displayMessage", {
-        title: "Error", 
-        body: 'Something went wrong saving the data! You may not have ' +
-          'permission to perform this action.'
+    }, {}, function(error, data) {
+      if (error) {
+        Session.set("displayMessage", {
+          title: "Error", 
+          body: 'Something went wrong saving the data! You may not have ' +
+            'permission to perform this action.'
+          });
+      } else {
+        // data save successfully
+        Session.set("displayMessage", {
+          title: "Success", 
+          body: "Data saved successfully!"
         });
-    }
+      }
+    });
 
     user_profile_edit = false;
     user_profile_edit_dep.changed();
