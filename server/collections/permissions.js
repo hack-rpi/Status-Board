@@ -123,7 +123,7 @@ RepositoryList.allow({
 			}
 			// user can edit the other fields freely
 			else if (_.some(doc.contributors, function(x) { return _.isEqual(x, userSet); })
-					&& _.intersection(fieldNames, ['webhook', 'name', 'full_name', 'url'])
+					&& _.intersection(fieldNames, ['webhook', 'name', 'full_name', 'url', 'DevPost'])
 						.length !== 0)
 				return true;
 		}
