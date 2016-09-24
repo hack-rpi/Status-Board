@@ -1,13 +1,13 @@
 // update database reactively instead of in modals
-var challengePost_link = "";
-var challengePost_dep = new Tracker.Dependency;
+var devPost_link = "";
+var devPost_dep = new Tracker.Dependency;
 Tracker.autorun(function() {
-  challengePost_dep.depend();
+  devPost_dep.depend();
   var sub = Meteor.subscribe("RepositoryList");
-  if (sub.ready() && challengePost_link) {
+  if (sub.ready() && devPost_link) {
     RepositoryList.update({"_id": Meteor.user().profile.repositoryId}, {
       $set: {
-        "challengePost": challengePost_link
+        "devPost": devPost_link
       }
     });
   }
@@ -103,16 +103,16 @@ Template.user_hacker.helpers({
   },
   repository_full: generateGetRepoInfo('full_name', ''),
   repository_url: generateGetRepoInfo('url', ''),
-  challengePost: generateGetRepoInfo('challengePost', ''),
+  devPost: generateGetRepoInfo('devPost', ''),
   teamMembers: generateGetRepoInfo('contributors', []),
-  warnChallengePost: function() {
+  warnDevPost: function() {
     project_dep.depend();
     repo_sub = Meteor.subscribe('RepositoryList');
     if (repo_sub.ready()) {
       var repoDoc = RepositoryList.findOne({
         '_id': Meteor.user().profile.repositoryId
       });
-      if (repoDoc && repoDoc.challengePost) {
+      if (repoDoc && repoDoc.devPost) {
         return 'btn-default';
       }
       else {
@@ -218,10 +218,10 @@ Template.user_hacker.events({
       }
     );
   },
-  'click #user-challengePost-save': function() {
-    challengePost_link = $("#challengePost-input").val();
-    challengePost_dep.changed();
-    $("#edit-ChallengePost-modal").modal("hide");
+  'click #user-devPost-save': function() {
+    devPost_link = $("#devPost-input").val();
+    devPost_dep.changed();
+    $("#edit-DevPost-modal").modal("hide");
   },
 
   'click #github-signin': function() {
