@@ -1,0 +1,77 @@
+<template name="register_mentor">
+<div class="reactive-container">
+
+  <h3>Mentor Registration</h3>
+
+  <div class="group">
+    <div class="_form-group">
+      <label for="Full Name">Full Name</label><br>
+      <input type="text" name="Full Name" placeholder="Full Name">
+    </div>
+
+    <div class="_form-group">
+      <label for="Email">Email</label><br>
+      <input type="text" name="Email" placeholder="Email">
+    </div>
+
+    <div class="_form-group">
+      <label for="Password">Password</label><br>
+      <input type="password" name="Password" placeholder="Password">
+    </div>
+    
+    <div class="_form-group">
+      <label for="Confirm Password">Confirm Password</label><br>
+      <input type="password" name="Confirm Password" placeholder="Confirm Password">
+    </div>
+
+    <div class="_form-group">
+      <label for="Affiliation">Affiliation</label><br>
+      <input type="text" name="Affiliation" placeholder="Affiliation">
+    </div>
+
+    <div class="_form-group">
+      <label for="Phone Number">Phone Number</label><br>
+      <input type="text" name="Phone Number" placeholder="Phone Number">
+    </div>
+  </div>
+
+  <div class="group" id="language-selection">
+    <h4>Select your languages.</h4>
+    <div class="_checkbox-group">
+      {{#each languages}}
+        <label class="_checkbox"><input value="{{this}}" type="checkbox">
+          {{ this }}</label>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="group" id="framework-selection">
+    <h4>Select your frameworks.</h4>
+    <div class="_checkbox-group">
+      {{#each frameworks}}
+        <label class="_checkbox"><input value="{{this}}" type="checkbox">
+          {{ this }}</label>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="group" id="api-selection">
+    <h4>Select your APIs</h4>
+    <div class="_checkbox-group">
+      {{#each apis}}
+        <label class="_checkbox"><input value="{{this}}" type="checkbox">
+          {{ this }}</label>
+      {{/each}}
+    </div>
+  </div>
+
+	<div class="alert alert-danger form-error" role="alert"></div>
+
+  <div class="_button-group">
+		<div class="btn btn-default btn-register" data-action="mentor-register">
+			Register
+		</div>
+	</div>
+
+</div>
+</template>
