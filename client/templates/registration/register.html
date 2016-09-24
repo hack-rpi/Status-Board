@@ -43,120 +43,6 @@
 </template>
 
 
-<template name="register_mentor">
-
-	<div class="register-mentor">
-		<div class="alert alert-danger form-error" role="alert"></div>
-		
-		<div class="register-mentor-1">
-			<h3>Mentor Registration</h3>
-			<div class="row">
-				<div class="col-md-offset-1 col-md-5">
-					<div class="_form-group">
-						<label for="Email">Email</label><br>
-						<input type="text" name="Email" placeholder="Email">
-					</div>
-					<div class="_form-group">
-						<label for="Password">Password</label><br>
-						<input type="password" name="Password" placeholder="Password">
-					</div>
-					<div class="_form-group">
-						<label for="Confirm Password">Confirm Password</label><br>
-						<input type="password" name="Confirm Password"
-							placeholder="Confirm Password">
-					</div>
-				</div>
-				<div class="col-md-5">
-					<div class="_form-group">
-						<label for="Full Name">Full Name</label><br>
-						<input type="text" name="Full Name" placeholder="Full Name">
-					</div>
-					<div class="_form-group">
-						<label for="Affiliation">Affiliation</label><br>
-						<input type="text" name="Affiliation" placeholder="Affiliation">
-					</div>
-					<div class="_form-group">
-						<label for="Phone Number">Phone Number</label><br>
-						<input type="text" name="Phone Number" placeholder="Phone Number">
-					</div>
-				</div>
-			</div>
-			<div class="_form-group">
-				<div class="btn btn-default register-btn" data-action="next"
-					data-target=".register-mentor-2">
-					Next
-				</div>
-			</div>
-			<div class="btn register-btn" data-action="back"
-			 		data-target=".register-landing">
-				back
-			</div>
-		</div>
-
-		<div class="register-mentor-2">
-			Mentor Registration - Languages
-			<div class="language-selection">
-				{{#each languages}}
-					<label class="_checkbox"><input value="{{this}}" type="checkbox">
-						{{ this }}</label>
-				{{/each}}
-			</div>
-			<div class="_form-group">
-				<div class="btn btn-default register-btn" data-action="next"
-					data-target=".register-mentor-3">
-					Next
-				</div>
-			</div>
-			<div class="btn register-btn" data-action="back"
-			 		data-target=".register-mentor-1">
-				back
-			</div>
-		</div>
-
-		<div class="register-mentor-3">
-			Mentor Registration - Frameworks and Libraries
-			<div class="framework-selection">
-				{{#each frameworks}}
-					<label class="_checkbox"><input value="{{this}}" type="checkbox">
-						{{ this }}</label>
-				{{/each}}
-			</div>
-			<div class="_form-group">
-				<div class="btn btn-default register-btn" data-action="next"
-					data-target=".register-mentor-4">
-					Next
-				</div>
-			</div>
-			<div class="btn register-btn" data-action="back"
-			 		data-target=".register-mentor-2">
-				back
-			</div>
-		</div>
-
-		<div class="register-mentor-4">
-			Mentor Registration - APIs
-			<div class="api-selection">
-				{{#each apis}}
-					<label class="_checkbox"><input value="{{this}}" type="checkbox">
-						{{ this }}</label>
-				{{/each}}
-			</div>
-			<div class="_form-group">
-				<div class="btn btn-default register-btn" data-action="register">
-					Register
-				</div>
-			</div>
-			<div class="btn register-btn" data-action="back"
-			 		data-target=".register-mentor-3">
-				back
-			</div>
-		</div>
-
-	</div>
-
-</template>
-
-
 <template name="register_volunteer">
 
 	<div class="register-panel-title">
@@ -233,9 +119,12 @@
 			You should be receiving a confirmation email shortly.
 			See you soon!
 		</p>
-		<div class="btn btn-default register-btn" data-action="link"
-			data-target="/user">
-			Profile
+		<div class="_button-group">
+			<a href="/user">
+				<div class="btn btn-default btn-register">
+					Profile
+				</div>
+			</a>
 		</div>
 	</div>
 </template>
