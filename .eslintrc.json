@@ -1,0 +1,22 @@
+{
+    "extends": [
+        "airbnb/base",
+        "plugin:meteor/recommended"
+    ],
+    "installedESLint": true,
+    "plugins": [
+        "react",
+        "jsx-a11y",
+        "import",
+        "meteor"
+    ],
+    "env": {
+        "meteor": true,
+        "node": true,
+        "browser": true
+    },
+    "rules": {
+        "max-len": ["error", 100],
+        "linebreak-style": ["error", "windows"]
+    }
+}
