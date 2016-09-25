@@ -83,7 +83,7 @@ Meteor.methods({
 			// otherwise we found a mentor
 			// now we assign the mentor to the hacker
 			// send a text to the mentor to tell them where to go
-			var msg = Q[i].name + " needs your help with " + h_tag + "!" + " S/he can be found at " + Q[i].loc;
+			var msg = Q[i].name + " needs your help with " + h_tag + "!" + " They can be found at " + Q[i].loc;
 			Meteor.call("sendText", matched_mentor.profile.phone, msg);
 
 			// mark the mentor as busy and give him a pointer to his task
@@ -96,7 +96,7 @@ Meteor.methods({
 
 			// send a text to the hacker to tell them that a mentor is on his way
 			if (Q[i].phone != "") {
-				msg = matched_mentor.profile.name + " from " + matched_mentor.profile.affiliation + " is on his way to assist you!";
+				msg = matched_mentor.profile.name + " from " + matched_mentor.profile.affiliation + " is on their way to assist you!";
 				Meteor.call("sendText", Q[i].phone, msg);
 			}
 
