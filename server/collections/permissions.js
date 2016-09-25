@@ -111,10 +111,10 @@ RepositoryList.allow({
 						contributors: userSet
 					}
 				};
-		// a user can only modify the repo doc that s/he is attached to
+		// a user can only modify the repo doc that they are attached to
 		if (user_doc.profile.repositoryId === doc._id) {
 			// if the user if modifying the userIds/collab field, they may only edit
-			// his/her own entry
+			// their own entry
 			if (_.contains(fieldNames, 'contributors')) {
 				if (_.isEqual(modifier, removeUser) || _.isEqual(modifier, addUser))
 					return true;
