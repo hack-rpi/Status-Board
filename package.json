@@ -1,0 +1,38 @@
+{
+  "name": "status-board",
+  "version": "2.2.1",
+  "description": "Hackathon commit messages, announcements, mentor requests, and more, all in one place",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^0.8.7"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.6.0",
+    "eslint-config-airbnb": "^11.2.0",
+    "eslint-import-resolver-meteor": "^0.3.3",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-meteor": "^4.0.0",
+    "eslint-plugin-react": "^6.3.0"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hack-rpi/Status-Board.git"
+  },
+  "keywords": [
+    "hackathon",
+    "management"
+  ],
+  "author": "Matt Poegel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hack-rpi/Status-Board/issues"
+  },
+  "homepage": "https://github.com/hack-rpi/Status-Board#readme"
+}
