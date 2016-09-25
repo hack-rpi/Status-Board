@@ -1,15 +1,22 @@
 // update database reactively instead of in modals
-var challengePost_link = "";
-var challengePost_dep = new Tracker.Dependency;
+var devPost_link = '',
+    new_devpost_link = '';
+var devPost_dep = new Tracker.Dependency;
 Tracker.autorun(function() {
-  challengePost_dep.depend();
+  devPost_dep.depend();
   var sub = Meteor.subscribe("RepositoryList");
-  if (sub.ready() && challengePost_link) {
-    RepositoryList.update({"_id": Meteor.user().profile.repositoryId}, {
-      $set: {
-        "challengePost": challengePost_link
-      }
-    });
+  if (sub.ready() && new_devpost_link) {
+    if (isValidURL(new_devpost_link)) {
+      RepositoryList.update({"_id": Meteor.user().profile.repositoryId}, {
+        $set: {
+          "DevPost": new_devpost_link
+        }
+      });
+      devPost_link = new_devpost_link;
+      $("#edit-DevPost-modal").modal("hide");
+    } else {
+      Forms.highlightError($("#devPost-input"), null);
+    }
   }
 });
 
@@ -27,7 +34,8 @@ var updateRepository = function(repo_obj) {
       'webhook': {
         'created': false,
         'createdBy': ''
-      }
+      },
+      'DevPost': ''
     });
     repo_doc = RepositoryList.findOne({ '_id': repo_id });
   }
@@ -103,16 +111,16 @@ Template.user_hacker.helpers({
   },
   repository_full: generateGetRepoInfo('full_name', ''),
   repository_url: generateGetRepoInfo('url', ''),
-  challengePost: generateGetRepoInfo('challengePost', ''),
+  devPost: generateGetRepoInfo('DevPost', ''),
   teamMembers: generateGetRepoInfo('contributors', []),
-  warnChallengePost: function() {
+  warnDevPost: function() {
     project_dep.depend();
     repo_sub = Meteor.subscribe('RepositoryList');
     if (repo_sub.ready()) {
       var repoDoc = RepositoryList.findOne({
         '_id': Meteor.user().profile.repositoryId
       });
-      if (repoDoc && repoDoc.challengePost) {
+      if (repoDoc && repoDoc.devPost) {
         return 'btn-default';
       }
       else {
@@ -218,10 +226,9 @@ Template.user_hacker.events({
       }
     );
   },
-  'click #user-challengePost-save': function() {
-    challengePost_link = $("#challengePost-input").val();
-    challengePost_dep.changed();
-    $("#edit-ChallengePost-modal").modal("hide");
+  'click #user-devPost-save': function() {
+    new_devpost_link = $("#devPost-input").val();
+    devPost_dep.changed();
   },
 
   'click #github-signin': function() {

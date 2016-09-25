@@ -26,18 +26,15 @@
 		flex-basis: 20%;
 	}
 
-	div#diet-selection label {
+	div#diet-selection label,
+	div#gender-selection label,
+	div#language-selection label,
+	div#framework-selection label,
+	div#api-selection label {
 		flex-basis: 25%;
 	}
 
-	div#interest-areas label {
-		flex-basis: 33%;
-	}
-
-	div#gender-selection label {
-		flex-basis: 25%;
-	}
-
+	div#interest-areas label,
 	div#race-selection label {
 		flex-basis: 33%;
 	}
@@ -50,7 +47,10 @@
 		div#interest-areas label,
 		div#why-selection label,
 		div#gender-selection label,
-		div#race-selection label {
+		div#race-selection label,
+		div#language-selection label,
+		div#framework-selection label,
+		div#api-selection label {
 			flex-basis: 100%;
 			font-size: @small_font;
 		}
@@ -70,7 +70,7 @@
 		width: 600px;
 	}
 
-	#register-btn {
+	.btn-register {
 		color: #FFF;
 		background-color: @accent;
 		width: 120px;

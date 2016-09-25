@@ -1,0 +1,30 @@
+Hi,
+
+You did it! You registered for the HackRPI 2016. It's going to be the best one yet! Thank you for volunteering to be a mentor! As a mentor you are automatically accepted to HackRPI. If you are not one of our sponsors, you should reach out to us and introduce yourself! Remember, you are on your own for transporting yourself to HackRPI.
+
+When you arrive at HackRPI, see one of our volunteers to check-in in order to activate your mentor status. Here's how our mentor system works:
+
+  1. Edit your mentor skill tags to reflect your expertise. You can do this at any time via your profile page on Status Board.
+  2. Students will submit mentor requests using Status Board. They will be able to select from a list of skill tags from all of the currently active mentors.
+  3. When you get matched with a mentor, you will receive a text message that will tell you where to go and who to help.
+  4. There are four commands that you can text back to interact with Status Board: (1) "DONE" will mark your current task as completed add you back into the active mentor queue, (2) "WAIVE" will forfeit the current task to be given to someone else and automatically suspend you, (3) "SUSPEND" will suspend your mentor status so you won't receive any new tasks and (4) "ACTIVATE" will return you to the active mentor queue if you are suspended.
+  5. All of these interactions are also available on Status Board itself in your profile. There, you can also view your mentoring history.
+
+If you run into any problems, just let one of the organizers know. (You can also directly open an issue on the Status Board repository on Github to buzz the Dev Team!)
+[https://github.com/hack-rpi/Status-Board]
+
+In the meantime,
+ - Follow us on Twitter @gohackrpi where will post event updates [https://twitter.com/gohackrpi].
+ - Like our Facebook page to talk with others going to HackRPI 2016 [https://facebook.com/hackrpi].
+ - Admire our last-minute technological preparations on Github [https://github.com/hack-rpi].
+ - Stay awesome.
+
+See you November 12!
+
+
+— The HackRPI Dev Team
+
+
+Facebook [https://www.facebook.com/hackrpi]
+Twitter [https://twitter.com/gohackrpi]
+Instagram [https://www.instagram.com/gohackrpi]
