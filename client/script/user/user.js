@@ -51,7 +51,7 @@ Template.user.helpers({
   user_page: function() {
     var page = Session.get('user-page');
     if (page === 'hacker')
-      return 'user_hacker';
+      return 'userHacker';
     else if (page === 'mentor')
       return 'user_mentor';
     else if (page === 'volunteer')

@@ -17,6 +17,11 @@
     },
     "rules": {
         "max-len": ["error", 100],
-        "linebreak-style": ["error", "windows"]
+        "linebreak-style": ["error", "windows"],
+        "curly": ["error", "all"],
+        "no-plusplus": [0]
+    },
+    "globals": {
+        "RepositoryList": true
     }
 }
