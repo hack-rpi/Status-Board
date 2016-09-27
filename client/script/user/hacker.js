@@ -22,14 +22,14 @@ Tracker.autorun(function() {
 
 var project_dep = new Tracker.Dependency;
 
-var updateRepository = function(repo_obj) {
-  var repo_doc = RepositoryList.findOne({ 'full_name': repo_obj.full_name });
+var updateRepository = function(repoObj) {
+  var repo_doc = RepositoryList.findOne({ 'full_name': repoObj.full_name });
   if (! repo_doc) {
     var repo_id = RepositoryList.insert({
-      'name': repo_obj.name,
-      'full_name': repo_obj.full_name,
-      'owner': repo_obj.owner_handle,
-      'url': repo_obj.url,
+      'name': repoObj.name,
+      'full_name': repoObj.full_name,
+      'owner': repoObj.owner_handle,
+      'url': repoObj.url,
       'contributors': [],
       'webhook': {
         'created': false,
@@ -41,7 +41,7 @@ var updateRepository = function(repo_obj) {
   }
   Meteor.users.update({ "_id": Meteor.userId() }, {
       $set: {
-        "profile.github_handle": repo_obj.handle,
+        "profile.github_handle": repoObj.handle,
         "profile.repository": repo_doc.name,
         "profile.repositoryId": repo_doc._id
       }
@@ -51,7 +51,7 @@ var updateRepository = function(repo_obj) {
           $addToSet: {
             contributors: {
               id: Meteor.userId(),
-              handle: repo_obj.handle
+              handle: repoObj.handle
             }
           }
       }, function(error2) {
@@ -73,13 +73,13 @@ var updateRepository = function(repo_obj) {
             title: "Error",
             body: "Something went wrong saving the data! You may not have permission to perform this action."});
         }
-        repo_obj = {};
+        repoObj = {};
       });
     }
   });
 };
 
-Template.user_hacker.rendered = function() {
+Template.userHacker.rendered = function() {
   repo_sub = Meteor.subscribe("RepositoryList");
   userData_sub = Meteor.subscribe("userData");
 }
@@ -97,7 +97,7 @@ var generateGetRepoInfo = function(field, onFail) {
   };
 };
 
-Template.user_hacker.helpers({
+Template.userHacker.helpers({
   pre_event: function() {
     return false;
   },
@@ -143,54 +143,61 @@ Template.user_hacker.helpers({
   },
 });
 
-Template.user_hacker.events({
-  'click #user-hacker-join-repo': function() {
-    // clear any old output messages
-    $("#user-hacker-alertbox").empty();
-    var handle = $('#github-handle-input').val(),
-        repo_url = $('#github-repo-input').val(),
-        repo_obj = {},
-        repo = '',
-        owner_handle = '';
+Template.userHacker.events({
+  'click #user-hacker-join-repo': () => {
+    $('#user-hacker-alertbox').empty();
+    const handle = $('#github-handle-input').val();
+    let repoURL = $('#github-repo-input').val();
+    let repoObj;
+    let repo = '';
+    let ownerHandle = '';
     try {
-      if (! handle)   throw "Github handle is required.";
-      if (! repo_url) throw "Repository URL is required.";
-      var i = 0,
-          url_array = repo_url.split('/');
-      while (i < url_array.length && url_array[i].toLowerCase() != 'github.com') i++;
-      if (i+2 > url_array.length) throw "Invalid Repository URL.";
-      Meteor.call('isValidUrl', repo_url, function(error, result) {
-        if (! result) {
-          $("<div>", {
-            "class": "alert alert-danger alert-dismissible",
-            text: 'Repository could not be found. The repository must be public.'
-          }).append('<button type="button" class="close" \
-              data-dismiss="alert" aria-hidden="true">&times;</button>').
-                appendTo("#user-hacker-alertbox");
-        }
-        else {
-          owner_handle = url_array[i+1];
-          repo = url_array[i+2];
-          repo_obj = {
-            handle: handle,
+      if (!handle) {
+        throw new Error('Github handle is required.');
+      }
+      if (!repoURL) {
+        throw new Error('Repository URL is required.');
+      }
+      let i = 0;
+      let URLArray = repoURL.split('/');
+      while (i < URLArray.length && URLArray[i].toLowerCase() !== 'github.com') {
+        i++;
+      }
+      if (i + 2 > URLArray.length) {
+        throw new Error('Invalid Repository URL.');
+      }
+      URLArray = URLArray.slice(0, i + 3);
+      repoURL = URLArray.join('/');
+      Meteor.call('isValidUrl', repoURL, (error, result) => {
+        if (!result) {
+          $('<div>', {
+            class: 'alert alert-danger alert-dismissible',
+            text: 'Repository could not be found. The repository must be public.',
+          }).append('<button type="button" class="close"' +
+              'data-dismiss="alert" aria-hidden="true">&times;</button>')
+                .appendTo('#user-hacker-alertbox');
+        } else {
+          ownerHandle = URLArray[i + 1];
+          repo = URLArray[i + 2];
+          repoObj = {
+            handle,
             name: repo,
-            owner: owner_handle,
-            full_name: owner_handle + '/' + repo,
-            url: repo_url
+            owner: ownerHandle,
+            full_name: `${ownerHandle}/${repo}`,
+            url: repoURL,
           };
-          updateRepository(repo_obj);
-          repo_obj = {};
+          updateRepository(repoObj);
+          repoObj = {};
         }
       });
-    } catch (error_string) {
-      $("<div>", {
-        "class": "alert alert-danger alert-dismissible",
-        text: error_string
-      }).append('<button type="button" class="close" \
-          data-dismiss="alert" aria-hidden="true">&times;</button>').
-            appendTo("#user-hacker-alertbox");
+    } catch (errorString) {
+      $('<div>', {
+        class: 'alert alert-danger alert-dismissible',
+        text: errorString,
+      }).append('<button type="button" class="close"' +
+          'data-dismiss="alert" aria-hidden="true">&times;</button>')
+            .appendTo('#user-hacker-alertbox');
     }
-
   },
   'click #user-hacker-leave-repo': function() {
     if (!confirm("Are you sure want to leave this project?"))
