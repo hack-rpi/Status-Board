@@ -1,65 +1,63 @@
 <template name="confirm">
-	<div class="container confirm-template">
-		<div class="content">
-			
-			{{#if currentUser}}
-				{{#if accepted}}
-					{{#if confirmed}}
-					<p>
-						You're all set to come to HackRPI 2015! Stay tuned for busing 
-						or parking information. Our schedule will be released soon on 
-						our main page, <a href="http://www.hackrpi.com">hackrpi.com</a>.
-					</p>
-					{{else}}
-					<h2>Hooray! You're officially invited to HackRPI 2015!</h2>
-					<p>
-						We have arranged for you to travel by <b class="accent">{{ travel }}</b>
-						with a travel reimbursement of <b class="accent">${{ reimbursement }}</b>.
-						If your travel arrangement is on one of the buses we are providing, it will
-						be of no cost to you.
-					</p>
-					<p>
-						<b class="accent">This offer expires on {{ expire_date }}</b>. After such 
-						date you will be placed on the bottom of the queue.
-					</p>
-					<div class="accept-travel">
-						<label>
-							<input type="radio" name="travel" value="accept" checked/> Accept Travel
-						</label><br>
-						<label>
-							<input type="radio" name="travel" value="reject"/> Reject Travel
-						</label>
-					</div>
-					<div class="_form-group travel-explaination">
-						<label for="Please Explain You Travel">Please Explain You Travel
-							</label><br>
-						<input type="text" name="Please Explain You Travel"
-							placeholder="Please Explain You Travel">
-					</div>
-					<div class="btn" data-action="confirm">
-						Confirm My Spot
-					</div>
-					<br>
-					<div class="btn" data-action="reject">
-						I actually don't like fun.
-					</div>
-					{{/if}}
-				{{else}}
-					<h2>You're still on the waiting list.</h2>
-					<p>
-						The waiting list for HackRPI 2015 is FIFO. We will 
-						let you know as soon as possible when a spot opens 
-						up for you. Hang in there!
-					</p>
-				{{/if}}
-			{{else}}
-				<p>Please login to confirm your spot.</p>
-			{{/if}}
-			
-			<div class="nav">
-				<a href="/user">Return To Profile</a>
-			</div>
-			
-		</div>
-	</div>
+  <div id="confirm-container" class="reactive-container">
+    {{#if currentUser}}
+      {{#if accepted}}
+        {{#if confirmed}}
+          <p>
+            You're all set to come to HackRPI! Check out the event schedule and other goodies
+            on our main website, <a target="_blank" href="http://www.hackrpi.com">hackrpi.com</a>.
+          </p>
+
+        {{else}}
+          <h2>Hooray! You're officially invited to HackRPI!</h2>
+
+          {{#if travel}}
+            <p>
+              We have arranged for you to travel on the <b class="accent">{{ travel }}</b>.
+              It will be of no cost to you. We'll be in touch with the details shortly.
+            </p>
+            <div class="_radio-group" id="accept-travel">
+              <label class="active"><input type="radio" name="travel" value="accept" checked/>
+                Accept Travel</label>
+              <label><input type="radio" name="travel" value="reject"/>
+                Reject Travel</label>
+            </div>
+            <div class="_form-group" id="travel-explaination">
+              <label for="Please Explain You Travel">Please Explain You Travel
+                </label><br>
+              <input type="text" name="Please Explain You Travel"
+                placeholder="Please Explain You Travel">
+            </div>
+          {{/if}}
+          <!--<p>
+            <b class="accent">This offer expires on {{ expire_date }}</b>. After such 
+            date you will be placed on the bottom of the queue.
+          </p>-->
+          <div class="btn" data-action="confirm">
+            Confirm My Spot
+          </div>
+          <br>
+          <div class="btn" data-action="reject">
+            I actually don't like fun.
+          </div>
+        {{/if}}
+
+      {{else}} <!-- not accepted -->
+        <h2>You're still on the waiting list.</h2>
+        <p>
+          The waiting list for HackRPI is FIFO. We will 
+          let you know as soon as possible when a spot opens 
+          up for you. Hang in there!
+        </p>
+      {{/if}}
+
+    {{else}} <!-- not logged in -->
+      <p>Please login to confirm your spot.</p>
+    {{/if}}
+    
+    <div class="nav">
+      <a href="/user">Return To Profile</a>
+    </div>
+      
+  </div>
 </template>
