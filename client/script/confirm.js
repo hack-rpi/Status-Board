@@ -42,6 +42,26 @@ Template.confirm.helpers({
       return '';
     }
   },
+  is_on_bus: () => {
+    try {
+      if (Meteor.user().settings.accepted.travel.method.search(/bus/gi) !== -1) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  },
+  bus_info_link: () => {
+    try {
+      if (Meteor.user().settings.accepted.travel.method.search(/bus/gi) !== -1) {
+        return Meteor.settings.public.bus_info_link;
+      }
+      return '#';
+    } catch (e) {
+      return '#';
+    }
+  },
 });
 
 Template.confirm.events({

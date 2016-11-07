@@ -7,6 +7,12 @@
             You're all set to come to HackRPI! Check out the event schedule and other goodies
             on our main website, <a target="_blank" href="http://www.hackrpi.com">hackrpi.com</a>.
           </p>
+          {{#if is_on_bus}}
+          <p>
+            To find out the departure time and location along with the bus captain information,
+            please see <a target="_blank" href="{{ bus_info_link }}">this</a> document.
+          </p>
+          {{/if}}
 
         {{else}}
           <h2>Hooray! You're officially invited to HackRPI!</h2>
@@ -23,10 +29,10 @@
                 Reject Travel</label>
             </div>
             <div class="_form-group" id="travel-explaination">
-              <label for="Please Explain You Travel">Please Explain You Travel
+              <label for="Please Explain Your Travel">Please Explain Your Travel
                 </label><br>
-              <input type="text" name="Please Explain You Travel"
-                placeholder="Please Explain You Travel">
+              <input type="text" name="Please Explain Your Travel"
+                placeholder="Please Explain Your Travel">
             </div>
           {{/if}}
           <!--<p>

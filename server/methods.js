@@ -264,7 +264,7 @@ Meteor.methods({
           { 'settings.confirmed.travel.accepted': true },
         ],
       }).count();
-      if (confirmedOnBus >= 65) {
+      if (confirmedOnBus >= 60) {
         throw new Meteor.Error('Bus Capacity Reached',
           'The bus that you have been approved to travel on has already been' +
           ' filled to capacity. If you would still like to attend, reject this' +
