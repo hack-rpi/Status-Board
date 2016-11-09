@@ -264,12 +264,11 @@ Meteor.methods({
           { 'settings.confirmed.travel.accepted': true },
         ],
       }).count();
-      if (confirmedOnBus >= 60) {
+      if (doc.settings.accepted.travel.method.search(/bus/gi) !== -1) {
         throw new Meteor.Error('Bus Capacity Reached',
           'The bus that you have been approved to travel on has already been' +
           ' filled to capacity. If you would still like to attend, reject this' +
-          ' travel and find other means of transportation. Please contact us' +
-          ' at team@hackrpi.com for additional travel reimbursement.');
+          ' travel and find other means of transportation.');
       }
     }
     if (doc.settings.accepted.flag) {

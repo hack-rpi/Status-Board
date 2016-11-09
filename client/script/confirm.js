@@ -44,7 +44,8 @@ Template.confirm.helpers({
   },
   is_on_bus: () => {
     try {
-      if (Meteor.user().settings.accepted.travel.method.search(/bus/gi) !== -1) {
+      if (Meteor.user().settings.confirmed.travel.accepted &&
+          Meteor.user().settings.accepted.travel.method.search(/bus/gi) !== -1) {
         return true;
       }
       return false;
