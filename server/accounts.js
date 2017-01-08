@@ -1,3 +1,7 @@
+Accounts.config({
+  loginExpirationInDays: 1,
+});
+
 // Construct new users, add to roles, and validate new user data
 Accounts.onCreateUser(function(options, user) {
   user.profile = options.profile;
