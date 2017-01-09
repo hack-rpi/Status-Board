@@ -23,10 +23,10 @@ to their profile and set up a web hook that will be triggered every time a commi
 the repo. The newest commits are featured on the main event page.
 
 ### Mentor Matching
-*Ask for a mentor to help with your specific problem.* Anyone can request a mentor when he/she 
+*Ask for a mentor to help with your specific problem.* Anyone can request a mentor when they 
 needs help by submitting a mentor request. The help tags in the request will help match the person 
 to the best fit active mentor in the database. The mentor will be sent a text message when someone 
-needs his/her help. The mentor can respond to the text when the job is completed to be re-added to
+needs their help. The mentor can respond to the text when the job is completed to be re-added to
 the active queue.
 
 ### Announcements
