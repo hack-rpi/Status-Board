@@ -69,7 +69,7 @@ Template.user_profile.helpers({
   },
   travel_method: function() {
     try {
-      return Meteor.user().profile.travel.method;
+      return Meteor.user().settings.accepted.travel.method;
     }
     catch (e) {
       return '';

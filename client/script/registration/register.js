@@ -332,20 +332,22 @@ Template.register.events({
       first_error = first_error || 1;
       Forms.highlightError($rules, $error_box);
     }
-    if (!resume_file) {
-      form_errors.push('Please provide a resume');
-      first_error = first_error || 1;
-      Forms.highlightError($resume, $error_box);
-    }
-    else if (resume_file.type !== 'application/pdf') {
-      form_errors.push('Resume upload must be a PDF.');
-      first_error = first_error || 1;
-      Forms.highlightError($resume, $error_box);
-    }
-    else if (resume_file && resume_file.size / 1024 > 10240) {
-      form_errors.push('Maximum resume file size is 10MB.');
-      first_error = first_error || 1;
-      Forms.highlightError($resume, $error_box);
+    if (Meteor.settings.public.event_state !== 'check-in') {
+      if (!resume_file) {
+        form_errors.push('Please provide a resume');
+        first_error = first_error || 1;
+        Forms.highlightError($resume, $error_box);
+      }
+      else if (resume_file.type !== 'application/pdf') {
+        form_errors.push('Resume upload must be a PDF.');
+        first_error = first_error || 1;
+        Forms.highlightError($resume, $error_box);
+      }
+      else if (resume_file && resume_file.size / 1024 > 10240) {
+        form_errors.push('Maximum resume file size is 10MB.');
+        first_error = first_error || 1;
+        Forms.highlightError($resume, $error_box);
+      }
     }
     if (tshirt === '') {
       form_errors.push('Please indicate your tshirt size.');

@@ -1,13 +1,23 @@
 @import "global";
 
-.confirm-template {
-	
-	.content {
-		margin: auto 200px;
-		padding: 200px 0;
-		text-align: center;
-		font-size: 18px;
+#confirm-container.reactive-container {
+	text-align: center;
+	margin: auto;	
+
+	@media only screen and (max-width: @small) {
+		padding: 5px;
+		width: 100%;
 	}
+	@media only screen and (min-width: @small) and (max-width: @large) {
+		padding: 50px 50px;
+		font-size: 22px;
+	}
+	@media only screen and (min-width: @large) {
+		padding-top: 100px;
+		font-size: 18px;		
+		width: 600px;
+	}
+
 	
 	h2 {
 		margin-bottom: 30px;
@@ -36,12 +46,11 @@
 		margin-top: 100px;
 	}
 	
-	.accept-travel {
+	#accept-travel {
 		margin-top: 15px;
 	}
 	
-	.travel-explaination {
+	#travel-explaination {
 		display: none;
 	}
-	
 }
